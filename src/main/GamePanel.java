@@ -8,6 +8,9 @@ import java.awt.Graphics2D;
 import java.io.IOException;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import javax.swing.JPanel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
 import javax.swing.JFrame;
@@ -24,8 +27,24 @@ public class GamePanel extends JPanel implements Runnable{
         this.setBackground(Color.decode("#67b835"));
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int mouseX = e.getX();
+                int mouseY = e.getY();
+                rotatePipe(mouseX, mouseY);
+            }
+        });
     }
+    private void rotatePipe(int mouseX, int mouseY) {
+        int row = mouseY / tileSize;
+        int col = mouseX / tileSize;
 
+        if (row >= 0 && row < map.length && col >= 0 && col < map[0].length) {
+            map[row][col].rotate();
+            repaint();
+        }
+    }
     public void startGameThread() {
         gameThread.start();
     }
