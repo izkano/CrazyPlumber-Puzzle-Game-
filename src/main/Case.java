@@ -39,6 +39,9 @@ public class Case {
                 break;
         }
     }
+    public void rotate() {
+        orientation = (orientation + 1) % 4;
+    }
 
     public int getOrientation() {
         return orientation;
