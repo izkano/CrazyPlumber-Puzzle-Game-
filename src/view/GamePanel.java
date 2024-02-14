@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import control.MouseHandler;
 import exception.MapException;
 import model.Map;
+import model.State;
 
 public class GamePanel extends JPanel implements Runnable{
 	
@@ -26,6 +27,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	// SYSTEM
 	public Map map;
+	private State gameState;
     private MouseHandler mouseHandler = new MouseHandler(this);
     private Thread gameThread = new Thread(this);
     
@@ -37,6 +39,8 @@ public class GamePanel extends JPanel implements Runnable{
 		this.setFocusable(true);
 		
 		this.addMouseListener(mouseHandler);
+		
+		this.gameState = State.MENU;
 		
 		setLevel(1);
     }
@@ -73,6 +77,7 @@ public class GamePanel extends JPanel implements Runnable{
     }
     
     public void setLevel(int level) {
+    	gameState = State.PLAYING;
     	try {
     		map = new Map(level);
     	} catch (MapException e) {
@@ -84,10 +89,20 @@ public class GamePanel extends JPanel implements Runnable{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         
-        if (map != null) {
-            for (int i = 0 ; i < map.getHeight() ; i++)
-                for (int j = 0 ; j < map.getWidth() ; j++)
-                	map.drawCell(i, j, g2, j*tileSize+mapOffset, i*tileSize+mapOffset, tileSize);
+        if (gameState == State.MENU) {
+        	// afficher le menu etc...
+        }
+        
+        else if (gameState == State.PLAYING) {
+        	if (map != null) {
+                for (int i = 0 ; i < map.getHeight() ; i++)
+                    for (int j = 0 ; j < map.getWidth() ; j++)
+                    	map.drawCell(i, j, g2, j*tileSize+mapOffset, i*tileSize+mapOffset, tileSize);
+            }
+        }
+        
+        else if (gameState == State.PAUSE) {
+        	// afficher l'écran de pause...
         }
     }
 }
