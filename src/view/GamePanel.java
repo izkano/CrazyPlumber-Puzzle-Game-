@@ -59,7 +59,7 @@ public class GamePanel extends JPanel implements Runnable{
         aideButton.setContentAreaFilled(false); 
         aideButton.setBorderPainted(false);
         aideButton.setFocusPainted(false);
-        aideButton.addActionListener(e -> afficherReglesDuJeu());
+        aideButton.addActionListener(e -> ShowRulesGame());
         this.add(aideButton);
         aideButton.setVisible(false);
 		
@@ -69,11 +69,8 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		setLevel(1);
     }
-    private void afficherReglesDuJeu() {
-        // Charger l'image des règles du jeu
+    private void ShowRulesGame() {   
         ImageIcon reglesIcon = new ImageIcon("res/pipes/pngegg1.png");
-
-        // Créer une boîte de dialogue pour afficher l'image
         JOptionPane.showMessageDialog(this, "", "Règles du jeu", JOptionPane.PLAIN_MESSAGE, reglesIcon);
     }
     
