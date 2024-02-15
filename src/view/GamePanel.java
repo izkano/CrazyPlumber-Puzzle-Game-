@@ -86,7 +86,9 @@ public class GamePanel extends JPanel implements Runnable{
         long currentTime;
         
         while(gameThread != null) {
-            
+            if (map.isWon()){
+                System.out.println("Vous avez gagné!");
+            }
             currentTime = System.nanoTime();
             
             delta += (currentTime-lastTime) / drawInterval;
