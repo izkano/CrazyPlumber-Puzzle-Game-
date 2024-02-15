@@ -39,13 +39,14 @@ public class GamePanel extends JPanel implements Runnable{
 	private  JButton aideButton;
 	private JLabel aideLabel;
     
-	
+
 	// SYSTEM
 	public Map map;
 	private State gameState;
     private MouseHandler mouseHandler = new MouseHandler(this);
     private Thread gameThread = new Thread(this);
     
+    private int lvl = 1;
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(tileSize*7,tileSize*7));
@@ -53,7 +54,7 @@ public class GamePanel extends JPanel implements Runnable{
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
 		
-		ImageIcon aideIcon = new ImageIcon("res/pipes/help_boutant.png");
+		ImageIcon aideIcon = new ImageIcon("res/pipes/help_button.png");
         setLayout((LayoutManager) new FlowLayout(FlowLayout.RIGHT, 0, 0));
         aideButton = new JButton(aideIcon);
         aideButton.setContentAreaFilled(false); 
@@ -67,10 +68,10 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		this.gameState = State.MENU;
 		
-		setLevel(1);
+		setLevel(lvl);
     }
     private void ShowRulesGame() {   
-        ImageIcon reglesIcon = new ImageIcon("res/pipes/pngegg1.png");
+        ImageIcon reglesIcon = new ImageIcon("res/pipes/help_button.png");
         JOptionPane.showMessageDialog(this, "", "Règles du jeu", JOptionPane.PLAIN_MESSAGE, reglesIcon);
     }
     
@@ -88,6 +89,8 @@ public class GamePanel extends JPanel implements Runnable{
         while(gameThread != null) {
             if (map.isWon()){
                 System.out.println("Vous avez gagné!");
+                lvl++;
+                setLevel(lvl);
             }
             currentTime = System.nanoTime();
             
