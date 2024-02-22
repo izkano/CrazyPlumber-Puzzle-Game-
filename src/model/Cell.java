@@ -17,6 +17,9 @@ public class Cell {
         loadImage(pipeType);
     }
     
+    /** 
+     * @param pipeType : 0-case vide, 1-tuyau horizontal, 2-tuyau courbé, 3-tuyau jonction, 4-tuyau de départ/arrivée
+     */
     private void loadImage(int pipeType) {
     	String path = null;
         switch(pipeType){
@@ -44,32 +47,41 @@ public class Cell {
             e.printStackTrace();
         }
     }
+    
 
     public int getOrientation() {
         return orientation;
     }
+    
 
     public int getPipeType() {
         return pipeType;
     }
 
+    
     public void setOrientation(int orientation) {
         this.orientation = orientation;
     }
+    
 
     public void setPipeType(int pipeType) {
         this.pipeType = pipeType;
     }
+    
 
     public BufferedImage getImage(){
         return image;
     }
 
-    //Vraiment utile ?
+
     public void setImage(BufferedImage image){
         this.image = image;
     }
     
+    
+    /**
+     * Fait tourner un tuyau de 90 degré dans le sens horraire, et met a jour son attribut orientation.
+     */
     public void rotate() {
     	if (pipeType == 0) return;
         orientation = (orientation + 1) % 4;
@@ -87,7 +99,15 @@ public class Cell {
 
 	    image = dest;
     }
+    
 
+    /**
+     * @param g2
+     * @param x
+     * @param y
+     * @param tileSize
+     * Dessine la cellule sur la fenêtre
+     */
     public void drawCell(Graphics2D g2, int x, int y, int tileSize) {
     	if (pipeType != 0) {
     		g2.drawImage(image,x,y,tileSize,tileSize,null);

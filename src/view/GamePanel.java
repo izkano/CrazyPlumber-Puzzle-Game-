@@ -71,15 +71,24 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		setLevel(lvl);
     }
+    
     private void ShowRulesGame() {   
         ImageIcon reglesIcon = new ImageIcon("res/pipes/help_button.png");
         JOptionPane.showMessageDialog(this, "", "Règles du jeu", JOptionPane.PLAIN_MESSAGE, reglesIcon);
     }
     
+    
+    /**
+     * Lancement du thread pour la boucle principale du jeu
+     */
     public void startGameThread() {
         gameThread.start();
     }
 
+    
+    /**
+     * Boucle principale 
+     */
     public void run() {
     	
         double drawInterval = 1000000000/60;
@@ -108,10 +117,16 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
     
+    
     public void update() {
 		
     }
     
+    
+    /**
+     * @param int level : numéro du niveau 
+     * Charge le niveau dans l'attribut de type Map
+     */
     public void setLevel(int level) {
     	gameState = State.PLAYING;
     	try {
@@ -121,6 +136,10 @@ public class GamePanel extends JPanel implements Runnable{
     	}
     }
 
+    
+    /**
+     * Affichage des composants graphiques, appelée depuis repaint() l.106 à chaque tour de boucle du jeu
+     */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;

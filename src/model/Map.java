@@ -15,6 +15,11 @@ public class Map {
 	private Cell[][] start;
 	private int[][] solution;
 	
+	/**
+	 * 
+	 * @param level : niveau représenter par un entier
+	 * @throws MapException : si le fichier texte ne se charge pas
+	 */
 	public Map(int level) throws MapException {
 		String path = "res/level/" + level + ".txt";		
 		String sol = "res/solution/solution"+level+".txt";
@@ -33,6 +38,7 @@ public class Map {
 	public int getWidth() {
 		return start[0].length;
 	}
+	
 	
 	public Cell[][] readMatrixFromFile(String filePath) throws IOException {
 		BufferedReader reader = new BufferedReader(new FileReader(filePath));
@@ -66,6 +72,8 @@ public class Map {
 	    reader.close();
 	    return matrix;
 	}
+	
+	
 	public static int[][] readEndFile(String filePath) throws IOException {
 		BufferedReader reader = new BufferedReader(new FileReader(filePath));
 		String line;
@@ -92,6 +100,14 @@ public class Map {
 		reader.close();
 		return matrix;
 	}
+	
+	
+	/**
+	 * @param mouseX : coordonnées X du clic de la souris
+	 * @param mouseY : coordonnées Y du clic de la souris
+	 * @param tileSize : taille d'une cellule
+	 * Permet de determiner sur quelle cellule le joueur a cliqué, et appelle rotate sur celle ci
+	 */
 	public void rotatePipe(int mouseX, int mouseY, int tileSize) {
         int row = mouseY / tileSize;
         int col = mouseX / tileSize;
@@ -101,10 +117,24 @@ public class Map {
         }
     }
 	
+	
+	/**
+	 * 
+	 * @param i : indice de la ligne de la cellule dans le tableau start
+	 * @param j : indice de la colonne de la cellule dans le tableau start
+	 * @param g2 : composant graphique
+	 * @param x : coordonée x 
+	 * @param y : coordonnée y 
+	 * @param tileSize : 
+	 */
 	public void drawCell(int i, int j, Graphics2D g2, int x, int y, int tileSize) {
 		start[i][j].drawCell(g2, x, y, tileSize);
 	}
+	
 
+	/** 
+	 * @return : true si le niveau est terminé, false sinon
+	 */
 	public boolean isWon(){
 		for (int i = 0; i<start.length; i++){
 			for (int j = 0; j<start[0].length; j++){
@@ -113,7 +143,7 @@ public class Map {
 						return false;
 					}
 				}
-				else{
+				else {
 					if(this.solution[i][j]!=this.start[i][j].getOrientation()){
 						return false;
 					}
@@ -123,6 +153,10 @@ public class Map {
 		return true;
     }
 
+	
+	/**
+	 * @debug Fonctions de deboguage
+	 */
 	public void printOrientation(){
 		System.out.println("Orientation:");
 		for (int i = 0; i<start.length;i++){
