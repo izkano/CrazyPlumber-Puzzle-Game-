@@ -98,7 +98,6 @@ public class GamePanel extends JPanel implements Runnable{
         
         while(gameThread != null) {
             if (map.isWon()){
-                System.out.println("Vous avez gagné!");
                 unlockNextLvl(lvl);
                 lvl++;
                 setLevel(lvl);
