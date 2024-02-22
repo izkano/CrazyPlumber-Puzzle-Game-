@@ -47,6 +47,7 @@ public class GamePanel extends JPanel implements Runnable{
     private Thread gameThread = new Thread(this);
     
     private int lvl = 1;
+    private boolean[] unlocked = new boolean[]{true,false,false,false,false,false,false};
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(tileSize*7,tileSize*7));
@@ -89,6 +90,7 @@ public class GamePanel extends JPanel implements Runnable{
         while(gameThread != null) {
             if (map.isWon()){
                 System.out.println("Vous avez gagné!");
+                unlockNextLvl(lvl);
                 lvl++;
                 setLevel(lvl);
             }
@@ -139,6 +141,12 @@ public class GamePanel extends JPanel implements Runnable{
         else if (gameState == State.PAUSE) {
         	aideButton.setVisible(true);
         	// afficher l'écran de pause...
+        }
+    }
+    
+    public void unlockNextLvl(int lvl){
+        if (lvl+1<unlocked.length){
+            unlocked[lvl+1] = true;
         }
     }
 }
