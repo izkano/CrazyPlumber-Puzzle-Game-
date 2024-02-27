@@ -27,6 +27,9 @@ import exception.MapException;
 import model.Map;
 import model.State;
 
+/**
+ * Moteur principal du jeu
+ */
 public class GamePanel extends JPanel implements Runnable{
 	
 	// SIZES
@@ -79,7 +82,6 @@ public class GamePanel extends JPanel implements Runnable{
     }
     
 
-
     public UserInterface getUserInterface() {
     	return this.ui;
     }
@@ -130,6 +132,9 @@ public class GamePanel extends JPanel implements Runnable{
     }
     
     
+    /**
+     * Méthode appelé tous les tours de boucles, met à jour la partie méchanique du jeu
+     */
     public void update() {
     	
     }

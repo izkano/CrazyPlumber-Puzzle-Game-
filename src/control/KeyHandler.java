@@ -6,6 +6,9 @@ import java.awt.event.KeyListener;
 import model.State;
 import view.GamePanel;
 
+/**
+ * Gestion des entrées au clavier de l'utilisateur
+ */
 public class KeyHandler implements KeyListener {
 	private GamePanel gp;
 	

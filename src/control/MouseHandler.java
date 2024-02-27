@@ -9,6 +9,10 @@ import view.Button;
 import view.GamePanel;
 import view.UserInterface;
 
+
+/**
+ * Gestion des actions de la souris de l'utilisateur
+ */
 public class MouseHandler extends MouseAdapter implements MouseListener {
 	
 	private GamePanel gp;

@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+
 public class Cell {
     private int pipeType;
     private int orientation;
@@ -18,6 +19,7 @@ public class Cell {
     }
     
     /** 
+     * Charge dans l'attribut image, l'image correspondant au type de tuyau donné en argument
      * @param pipeType : 0-case vide, 1-tuyau horizontal, 2-tuyau courbé, 3-tuyau jonction, 4-tuyau de départ/arrivée
      */
     private void loadImage(int pipeType) {
@@ -80,7 +82,7 @@ public class Cell {
     
     
     /**
-     * Fait tourner un tuyau de 90 degré dans le sens horraire, et met a jour son attribut orientation.
+     * Fait tourner un tuyau de 90 degré dans le sens horaire, et met a jour son attribut orientation.
      */
     public void rotate() {
     	if (pipeType == 0) return;
@@ -102,11 +104,11 @@ public class Cell {
     
 
     /**
+     * Dessine la cellule sur la fenetre
      * @param g2
      * @param x
      * @param y
      * @param tileSize
-     * Dessine la cellule sur la fenêtre
      */
     public void drawCell(Graphics2D g2, int x, int y, int tileSize) {
     	if (pipeType != 0) {

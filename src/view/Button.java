@@ -7,6 +7,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+
+/**
+ * Classe qui permet de représenter des boutons, notamment les boutons des menus
+ */
 public class Button {
 	private BufferedImage[] src;
 	private BufferedImage current;
@@ -32,6 +36,11 @@ public class Button {
 		createBounds();
 	}
 	
+	
+	/**
+	 * Charge les images, on et off des boutons dans le tableau src
+	 * @param path
+	 */
 	private void loadImage(String path) {
 		this.src = new BufferedImage[2];
 		
@@ -43,6 +52,10 @@ public class Button {
 		}
 	}
 	
+	
+	/**
+	 * Crée un rectangle pour délimiter la zone du bouton
+	 */
 	private void createBounds() {
 		this.bounds = new Rectangle(x,y,width,height);
 	}

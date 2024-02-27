@@ -45,6 +45,10 @@ public class UserInterface {
 		loadAssets();
 	}
 	
+	
+	/**
+	 * Charge toutes les images dans les attributs correspondants et création des boutons
+	 */
 	public void loadAssets() {		
 		try {
 			pauseWindow = ImageIO.read(getClass().getResourceAsStream("/menu/pause_window.png"));;
@@ -79,18 +83,32 @@ public class UserInterface {
 		return this.menuBtnPause;
 	}
 	
+	
+	/**
+	 * Réinitialise l'état des boutons
+	 */
 	public void resetButtons() {
 		playBtnPause.setMouseOver(false);
 		settingsBtnPause.setMouseOver(false);
 		menuBtnPause.setMouseOver(false);
 	}
 	
+	
+	/**
+	 * Méthode appelée depuis le GamePanel pour afficher les composants graphiques
+	 * @param g2
+	 */
 	public void draw(Graphics2D g2) {
 		if (gp.gameState == State.PAUSE) {
 			drawPauseMenu(g2);
 		}
 	}
 	
+	
+	/**
+	 * Dessine le menu de pause
+	 * @param g2
+	 */
 	private void drawPauseMenu(Graphics2D g2) {	
 	
 		g2.drawImage(pauseWindow, pauseWindowXcoord, pauseWindowYcoord, null);

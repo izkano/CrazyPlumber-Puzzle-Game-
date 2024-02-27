@@ -16,7 +16,7 @@ public class Map {
 	private int[][] solution;
 	
 	/**
-	 * 
+	 * Permet de stocker les informations sur la partie en cours
 	 * @param level : niveau représenter par un entier
 	 * @throws MapException : si le fichier texte ne se charge pas
 	 */
@@ -40,6 +40,12 @@ public class Map {
 	}
 	
 	
+	/**
+	 * Lis le fichier et construit une matrice afin de représenter les cellules du jeu
+	 * @param filePath : chemin d'accès au fichier correspondant
+	 * @return : tableau de tableau contenant les cellules du jeu
+	 * @throws IOException : si n'arrive pas a lire le fichier à partir du filePath donné en argument
+	 */
 	public Cell[][] readMatrixFromFile(String filePath) throws IOException {
 		BufferedReader reader = new BufferedReader(new FileReader(filePath));
 		String line;
@@ -103,10 +109,10 @@ public class Map {
 	
 	
 	/**
+	 * Permet de determiner sur quelle cellule le joueur a cliqué, et appelle rotate sur celle ci
 	 * @param mouseX : coordonnées X du clic de la souris
 	 * @param mouseY : coordonnées Y du clic de la souris
 	 * @param tileSize : taille d'une cellule
-	 * Permet de determiner sur quelle cellule le joueur a cliqué, et appelle rotate sur celle ci
 	 */
 	public void rotatePipe(int mouseX, int mouseY, int tileSize) {
         int row = mouseY / tileSize;
@@ -119,13 +125,13 @@ public class Map {
 	
 	
 	/**
-	 * 
+	 * Permet de dessiner une cellule en appellant la méthode draw() de la classe Cellule
 	 * @param i : indice de la ligne de la cellule dans le tableau start
 	 * @param j : indice de la colonne de la cellule dans le tableau start
 	 * @param g2 : composant graphique
 	 * @param x : coordonée x 
 	 * @param y : coordonnée y 
-	 * @param tileSize : 
+	 * @param tileSize : taille d'une cellule
 	 */
 	public void drawCell(int i, int j, Graphics2D g2, int x, int y, int tileSize) {
 		start[i][j].drawCell(g2, x, y, tileSize);
@@ -133,6 +139,7 @@ public class Map {
 	
 
 	/** 
+	 * Verifie si le joueur a completé le niveau
 	 * @return : true si le niveau est terminé, false sinon
 	 */
 	public boolean isWon(){
