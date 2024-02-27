@@ -176,7 +176,7 @@ public class GamePanel extends JPanel implements Runnable{
         
         aideButton.setVisible(true);
         	// afficher l'écran de pause...
-        }
+        
     }
     
     public void unlockNextLvl(int lvl){
