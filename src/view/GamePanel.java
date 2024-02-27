@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,8 +18,10 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+
 import javax.swing.JPanel;
 
+import control.KeyHandler;
 import control.MouseHandler;
 import exception.MapException;
 import model.Map;
@@ -42,15 +45,17 @@ public class GamePanel extends JPanel implements Runnable{
 
 	// SYSTEM
 	public Map map;
-	private State gameState;
+	public State gameState;
+	private UserInterface ui = new UserInterface(this);
     private MouseHandler mouseHandler = new MouseHandler(this);
+    private KeyHandler keyHandler = new KeyHandler(this);
     private Thread gameThread = new Thread(this);
     
     private int lvl = 1;
     private boolean[] unlocked = new boolean[]{true,false,false,false,false,false,false};
 
     public GamePanel(){
-        this.setPreferredSize(new Dimension(tileSize*7,tileSize*7));
+        this.setPreferredSize(new Dimension(tileSize*maxScreenCol,tileSize*maxScreenRow));
         this.setBackground(Color.decode("#67b835"));
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
@@ -66,12 +71,20 @@ public class GamePanel extends JPanel implements Runnable{
         aideButton.setVisible(false);
 		
 		this.addMouseListener(mouseHandler);
+		this.addKeyListener(keyHandler);
 		
 		this.gameState = State.MENU;
 		
 		setLevel(lvl);
     }
     
+
+
+    public UserInterface getUserInterface() {
+    	return this.ui;
+    }
+    
+
     private void ShowRulesGame() {   
         ImageIcon reglesIcon = new ImageIcon("res/pipes/help_button.png");
         JOptionPane.showMessageDialog(this, "", "Règles du jeu", JOptionPane.PLAIN_MESSAGE, reglesIcon);
@@ -118,7 +131,7 @@ public class GamePanel extends JPanel implements Runnable{
     
     
     public void update() {
-		
+    	
     }
     
     
@@ -144,7 +157,7 @@ public class GamePanel extends JPanel implements Runnable{
         Graphics2D g2 = (Graphics2D) g;
         
         if (gameState == State.MENU) {
-        	// afficher le menu etc...
+        	
         }
         
         else if (gameState == State.PLAYING) {
@@ -157,7 +170,11 @@ public class GamePanel extends JPanel implements Runnable{
         }
         
         else if (gameState == State.PAUSE) {
-        	aideButton.setVisible(true);
+
+        	ui.draw(g2);
+        }
+        
+        aideButton.setVisible(true);
         	// afficher l'écran de pause...
         }
     }
@@ -168,3 +185,4 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
 }
+
