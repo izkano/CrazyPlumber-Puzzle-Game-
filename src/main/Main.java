@@ -1,5 +1,8 @@
 package main;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 import javax.swing.JFrame;
 
 import view.GamePanel;
@@ -10,6 +13,7 @@ public class Main {
         GamePanel gamePanel = new GamePanel();
         
         frame.setLocationRelativeTo(null);
+        
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
@@ -17,6 +21,10 @@ public class Main {
         
         frame.pack();
         frame.setVisible(true);
+        
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setLocation(dim.width/2 - frame.getWidth()/2, dim.height/2 - frame.getHeight()/2);
+        
         gamePanel.startGameThread();
     }
 }
