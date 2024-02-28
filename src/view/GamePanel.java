@@ -24,8 +24,8 @@ import javax.swing.JPanel;
 import control.KeyHandler;
 import control.MouseHandler;
 import exception.MapException;
-import model.Map;
-import model.State;
+import model.*;
+
 
 /**
  * Moteur principal du jeu
@@ -113,6 +113,7 @@ public class GamePanel extends JPanel implements Runnable{
         
         while(gameThread != null) {
             if (map.isWon()){
+                Cell.playSound("res/pipes/win.wav");
                 unlockNextLvl(lvl);
                 lvl++;
                 setLevel(lvl);
