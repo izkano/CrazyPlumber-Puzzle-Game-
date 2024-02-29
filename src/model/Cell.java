@@ -88,10 +88,10 @@ public class Cell {
      * Fait tourner un tuyau de 90 degré dans le sens horaire, et met a jour son attribut orientation.
      */
     public void rotate() {
-        playSound("res/pipes/pipe_rotate.wav");
+        
     	if (pipeType == 0) return;
         orientation = (orientation + 1) % 4;
-        
+        playSound("res/pipes/pipe_rotate.wav");
         int width = image.getWidth();
 	    int height = image.getHeight();
 
