@@ -32,7 +32,18 @@ public class KeyHandler implements KeyListener {
 					break;
 			}
 		}
-		
+		if (code == KeyEvent.VK_ENTER) {
+			switch (gp.gameState) {
+				case PLAYING:
+					gp.gameState = State.SELECT;
+					break;
+				case SELECT:
+					gp.gameState = State.PLAYING;
+					break;
+				default:
+					break;
+			}
+		}
 	}
 
 	@Override

@@ -1,5 +1,10 @@
 package view;
 
+import java.util.LinkedList;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -50,12 +55,13 @@ public class GamePanel extends JPanel implements Runnable{
 	public Map map;
 	public State gameState;
 	private UserInterface ui = new UserInterface(this);
+    private SelectLevel sl = new SelectLevel(this);
     private MouseHandler mouseHandler = new MouseHandler(this);
     private KeyHandler keyHandler = new KeyHandler(this);
     private Thread gameThread = new Thread(this);
     
     private int lvl = 1;
-    private boolean[] unlocked = new boolean[]{true,false,false,false,false,false,false};
+    private LinkedList<Boolean> unlocked;
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(tileSize*maxScreenCol,tileSize*maxScreenRow));
@@ -79,8 +85,12 @@ public class GamePanel extends JPanel implements Runnable{
 		this.gameState = State.MENU;
 		
 		setLevel(lvl);
+        unlocked = createUnlock();
     }
     
+    public SelectLevel getSelectLevel() {
+    	return sl;
+    }
 
     public UserInterface getUserInterface() {
     	return this.ui;
@@ -112,12 +122,6 @@ public class GamePanel extends JPanel implements Runnable{
         long currentTime;
         
         while(gameThread != null) {
-            if (map.isWon()){
-                Cell.playSound("res/pipes/win.wav");
-                unlockNextLvl(lvl);
-                lvl++;
-                setLevel(lvl);
-            }
             currentTime = System.nanoTime();
             
             delta += (currentTime-lastTime) / drawInterval;
@@ -137,7 +141,11 @@ public class GamePanel extends JPanel implements Runnable{
      * Méthode appelé tous les tours de boucles, met à jour la partie méchanique du jeu
      */
     public void update() {
-    	
+    	if (map.isWon()){
+            unlockNextLvl(lvl);
+            lvl++;
+            setLevel(lvl);
+        }
     }
     
     
@@ -180,15 +188,41 @@ public class GamePanel extends JPanel implements Runnable{
         	ui.draw(g2);
         }
         
+        else if (gameState == State.SELECT) {
+        	sl.draw(g2);
+        }
+
         aideButton.setVisible(true);
         	// afficher l'écran de pause...
         
     }
     
     public void unlockNextLvl(int lvl){
-        if (lvl+1<unlocked.length){
-            unlocked[lvl+1] = true;
+        if (lvl+1<unlocked.size()){
+            unlocked.set(lvl+1,true);
         }
+    }
+
+    public LinkedList<Boolean> getUnlock(){
+        return unlocked;
+    }
+
+    public LinkedList<Boolean> createUnlock(){
+        LinkedList<Boolean> unlock = new LinkedList<Boolean>();
+        BufferedReader reader;
+        int i = 1;
+        while (true){
+            try{
+                reader = new BufferedReader(new FileReader("res/level/" + i + ".txt"));
+                unlock.add(false);
+            }
+            catch (IOException e){
+                break;
+            }
+            i++;
+        }
+        unlock.set(0,true);
+        return unlock;
     }
 }
 
