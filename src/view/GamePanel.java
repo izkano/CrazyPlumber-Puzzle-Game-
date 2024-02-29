@@ -82,7 +82,7 @@ public class GamePanel extends JPanel implements Runnable{
 		this.addMouseListener(mouseHandler);
 		this.addKeyListener(keyHandler);
 		
-		this.gameState = State.MENU;
+		this.gameState = State.SELECT;
 		
 		setLevel(lvl);
         unlocked = createUnlock();
@@ -154,7 +154,8 @@ public class GamePanel extends JPanel implements Runnable{
      * Charge le niveau dans l'attribut de type Map
      */
     public void setLevel(int level) {
-    	gameState = State.PLAYING;
+    	//gameState = State.PLAYING;
+        this.lvl = level;
     	try {
     		map = new Map(level);
     	} catch (MapException e) {
@@ -171,7 +172,7 @@ public class GamePanel extends JPanel implements Runnable{
         Graphics2D g2 = (Graphics2D) g;
         
         if (gameState == State.MENU) {
-        	
+
         }
         
         else if (gameState == State.PLAYING) {
@@ -198,8 +199,8 @@ public class GamePanel extends JPanel implements Runnable{
     }
     
     public void unlockNextLvl(int lvl){
-        if (lvl+1<unlocked.size()){
-            unlocked.set(lvl+1,true);
+        if (lvl<unlocked.size()){
+            unlocked.set(lvl,true);
         }
     }
 

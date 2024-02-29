@@ -53,7 +53,7 @@ public class SelectLevel {
         // SELECT LEVEL MENU
         int i = 1;
         int j = 0;
-        while (true && i<8){
+        while (true && i<=12){
             if (j%5==0) j=0;
             try {
                 test = ImageIO.read(getClass().getResourceAsStream("/menu/help_button_on.png"));;
