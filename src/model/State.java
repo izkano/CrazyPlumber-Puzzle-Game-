@@ -7,6 +7,7 @@ package model;
  */
 public enum State {
 	MENU,
+	SELECT,
 	PLAYING,
 	PAUSE,
 	SETTINGS

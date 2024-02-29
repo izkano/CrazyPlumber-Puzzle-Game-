@@ -7,6 +7,7 @@ import java.awt.event.MouseListener;
 import model.State;
 import view.Button;
 import view.GamePanel;
+import view.SelectLevel;
 import view.UserInterface;
 
 
@@ -17,11 +18,12 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 	
 	private GamePanel gp;
 	private UserInterface ui;
-	
+	private SelectLevel sl;
 	
 	public MouseHandler(GamePanel gp) {
 		this.gp = gp;
 		this.ui = gp.getUserInterface();
+		this.sl = gp.getSelectLevel();
 	}
 
 
@@ -49,6 +51,16 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 			
 			else if ( isIn(e, ui.getMenuButtonPause()) ) {
 				gp.gameState = State.MENU;
+			}
+		}
+
+		// GAME STATE : SELECT
+
+		if (gp.gameState == State.SELECT) {
+			for (int i = 0; i<sl.getLevelButton().size();i++){
+				if ( isIn(e, sl.getLevelButton().get(i)) && gp.getUnlock().get(i)==true) { 
+					gp.gameState = State.PLAYING;
+				}
 			}
 		}
 		
