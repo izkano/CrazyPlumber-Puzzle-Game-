@@ -5,6 +5,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 
 public class Cell {
@@ -49,7 +52,7 @@ public class Cell {
             e.printStackTrace();
         }
     }
-    
+
 
     public int getOrientation() {
         return orientation;
@@ -85,6 +88,7 @@ public class Cell {
      * Fait tourner un tuyau de 90 degré dans le sens horaire, et met a jour son attribut orientation.
      */
     public void rotate() {
+        playSound("res/pipes/pipe_rotate.wav");
     	if (pipeType == 0) return;
         orientation = (orientation + 1) % 4;
         
@@ -114,5 +118,16 @@ public class Cell {
     	if (pipeType != 0) {
     		g2.drawImage(image,x,y,tileSize,tileSize,null);
     	}
+    }
+     public static void playSound(String soundFilePath) {
+        try {
+            File soundFile = new File(soundFilePath);
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioIn);
+            clip.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
