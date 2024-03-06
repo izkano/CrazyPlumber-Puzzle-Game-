@@ -62,6 +62,8 @@ public class GamePanel extends JPanel implements Runnable{
     
     private int lvl = 1;
     private LinkedList<Boolean> unlocked;
+    private int amountLevel = countLevel();
+    private int difficulty;
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(tileSize*maxScreenCol,tileSize*maxScreenRow));
@@ -165,6 +167,10 @@ public class GamePanel extends JPanel implements Runnable{
     	}
     }
 
+    public void setDifficulty(int difficulty){
+        this.difficulty = difficulty;
+        gameState = State.SELECT;
+    }
     
     /**
      * Affichage des composants graphiques, appelée depuis repaint() l.106 à chaque tour de boucle du jeu
@@ -233,5 +239,20 @@ public class GamePanel extends JPanel implements Runnable{
     public int getLevel(){
         return lvl;
     }
+
+    public int countLevel(){
+        int i = 1;
+        while (true){
+            try{
+                BufferedReader reader = new BufferedReader(new FileReader("res/level/" + i + ".txt"));
+            }
+            catch (IOException e){
+                break;
+            }
+            i++;
+        }
+        return i-1;
+    }
+
 }
 

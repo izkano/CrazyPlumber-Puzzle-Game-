@@ -15,6 +15,8 @@ public class Map {
 	private Cell[][] start;
 	private int[][] solution;
 	
+	private int move;
+
 	/**
 	 * Permet de stocker les informations sur la partie en cours
 	 * @param level : niveau représenter par un entier
@@ -185,4 +187,19 @@ public class Map {
 		}
 		System.out.println("");
 	}
+
+	public int getMove() {
+		return move;
+	}
+
+	public int countMove(){
+		int res = 0;
+		for (int e[] : solution){
+			for (int f : e){
+				res += f;
+			}
+		}
+		return res+20;
+	}
+
 }

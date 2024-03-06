@@ -31,13 +31,13 @@ public class Cell {
         	case 0 :
         		path = "res/pipes/none.png";
         		break;
-            case 1:
+            case 1,6:
             	path = "res/pipes/horizontal.png";
             	break;
-            case 2:
+            case 2,7:
                 path = "res/pipes/curve.png";
                 break;
-            case 3:
+            case 3,8:
                 path = "res/pipes/cross.png";
                 break;
             case 4:
@@ -90,7 +90,9 @@ public class Cell {
     public void rotate() {
         
     	if (pipeType == 0) return;
-        orientation = (orientation + 1) % 4;
+        if (pipeType<=5){
+            orientation = (orientation + 1) % 4;
+        }
         playSound("res/pipes/pipe_rotate.wav");
         int width = image.getWidth();
 	    int height = image.getHeight();
