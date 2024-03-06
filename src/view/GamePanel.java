@@ -83,8 +83,6 @@ public class GamePanel extends JPanel implements Runnable{
 		this.addKeyListener(keyHandler);
 		
 		this.gameState = State.SELECT;
-		
-		setLevel(lvl);
         unlocked = createUnlock();
     }
     
@@ -141,12 +139,16 @@ public class GamePanel extends JPanel implements Runnable{
      * Méthode appelé tous les tours de boucles, met à jour la partie méchanique du jeu
      */
     public void update() {
-    	if (map.isWon()){
-            unlockNextLvl(lvl);
-            lvl++;
-            setLevel(lvl);
+        if (gameState == State.PLAYING && map != null) {
+            if (map.isWon()){
+                unlockNextLvl(lvl);
+                setLevel(lvl);
+                Cell.playSound("res/pipes/win.wav");
+                this.gameState = State.TRANSITION;
+            }
         }
     }
+
     
     
     /**
@@ -154,7 +156,7 @@ public class GamePanel extends JPanel implements Runnable{
      * Charge le niveau dans l'attribut de type Map
      */
     public void setLevel(int level) {
-    	//gameState = State.PLAYING;
+    	gameState = State.PLAYING;
         this.lvl = level;
     	try {
     		map = new Map(level);
@@ -192,7 +194,9 @@ public class GamePanel extends JPanel implements Runnable{
         else if (gameState == State.SELECT) {
         	sl.draw(g2);
         }
-
+        else if (gameState == State.TRANSITION) {
+        	ui.draw(g2);
+        }
         aideButton.setVisible(true);
         	// afficher l'écran de pause...
         
@@ -224,6 +228,10 @@ public class GamePanel extends JPanel implements Runnable{
         }
         unlock.set(0,true);
         return unlock;
+    }
+
+    public int getLevel(){
+        return lvl;
     }
 }
 
