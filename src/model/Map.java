@@ -157,7 +157,6 @@ public class Map {
 				}
 			}
 		}
-		Cell.playSound("res/pipes/win.wav");
 		return true;
     }
 
