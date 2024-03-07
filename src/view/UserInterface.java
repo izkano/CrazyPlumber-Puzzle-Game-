@@ -15,15 +15,25 @@ public class UserInterface {
 	// WINDOW IMAGES
 	private BufferedImage pauseWindow;
 	private BufferedImage victoryWindow;
+	private BufferedImage mainBackground;
+
 	
 	// BUTTONS : PAUSE
 	private Button playBtnPause;
 	private Button settingsBtnPause;
 	private Button menuBtnPause;
-	
+
+
+	// BUTTONS : TRANSITION
 	private Button nextLevelBtn;
 	private Button retryBtn;
 	private Button mainMenuBtn;
+
+
+	// BUTTONS : MAIN MENU
+	private Button startGameBtn;
+	private Button creditsBtn;
+	private Button exitGameBtn;
 
 	
 	// CONSTANT GRAPHIC COORDS
@@ -57,6 +67,7 @@ public class UserInterface {
 		try {
 			pauseWindow = ImageIO.read(getClass().getResourceAsStream("/menu/pause_window.png"));;
 			victoryWindow = ImageIO.read(getClass().getResourceAsStream("/menu/victory_window.png"));;
+			mainBackground = ImageIO.read(getClass().getResourceAsStream("/menu/bgMain.jpg"));;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -82,10 +93,24 @@ public class UserInterface {
 	
 		String basePath = "/menu/"; // Chemin de base pour accéder au dossier des images des boutons
 
-		// Initialisation avec les nouvelles images
+		//nitialisation avec les images pour la transition
 		this.nextLevelBtn = new Button(basePath + "nextLevelButton", pauseButtonXcoord + buttonGlobalXoffset, pauseButtonYcoord + buttonGlobalYoffset);
 		this.retryBtn = new Button(basePath + "restartButton", pauseButtonXcoord + buttonGlobalXoffset + relativeXoffset, pauseButtonYcoord + buttonGlobalYoffset);
 		this.mainMenuBtn = new Button(basePath + "mainMenuButton", pauseButtonXcoord + buttonGlobalXoffset, pauseButtonYcoord + buttonGlobalYoffset + relativeYoffset);
+
+
+		// Calcul pour centrer les boutons horizontalement avec la correction
+		int buttonCenterX = (gp.screenWidth / 2) - 314; // Centre du bouton aligné avec le centre de l'écran
+
+		// Ajustement des positions Y initiales et de l'espacement
+		int startY = gp.screenHeight / 4; // Ajuste selon le besoin
+		int gapY = 200; // Ajuste l'espacement selon le besoin
+	
+		// Initialisation des boutons du menu principal avec les nouvelles coordonnées
+		startGameBtn = new Button("/menu/newGame", buttonCenterX, startY);
+		creditsBtn = new Button("/menu/credits", buttonCenterX, startY + gapY);
+		exitGameBtn = new Button("/menu/exit", buttonCenterX, startY + 2 * gapY);
+
 
 	}
 	
@@ -123,6 +148,10 @@ public class UserInterface {
 		if (gp.gameState == State.TRANSITION) {
 			drawTransitionMenu(g2);
 		}
+		if (gp.gameState == State.MENU) {
+			drawMainMenu(g2);
+		}
+
 	}
 	
 	
@@ -148,6 +177,13 @@ public class UserInterface {
 		retryBtn.draw(g2);
 		mainMenuBtn.draw(g2);
 	}
+
+	public void drawMainMenu(Graphics2D g2) {
+		g2.drawImage(mainBackground, 0, 0, null);		startGameBtn.draw(g2);
+		creditsBtn.draw(g2);
+		exitGameBtn.draw(g2);
+	}
+
 	
 	public Button getNextLevelButton() {
         return nextLevelBtn;
@@ -160,5 +196,15 @@ public class UserInterface {
     public Button getMainMenuButton() {
         return mainMenuBtn;
     }
+	public Button getExitGameBtn() {
+		return exitGameBtn;
+	}
+	public Button getStartGameBtn() {
+		return startGameBtn;
+	}
+	public Button getCreditsBtn() {
+		return creditsBtn;
+	}
+
 
 }
