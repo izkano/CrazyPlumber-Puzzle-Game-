@@ -65,6 +65,10 @@ public class GamePanel extends JPanel implements Runnable{
     private int difficulty;
 
     public GamePanel(){
+
+        
+
+        
         this.setPreferredSize(new Dimension(tileSize*maxScreenCol,tileSize*maxScreenRow));
         this.setBackground(Color.decode("#67b835"));
 		this.setDoubleBuffered(true);
@@ -104,7 +108,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     private void ShowRulesGame() {   
         ImageIcon reglesIcon = new ImageIcon("res/pipes/help_button.png");
-        JOptionPane.showMessageDialog(this, "", "Règles du jeu", JOptionPane.PLAIN_MESSAGE, reglesIcon);
+        JOptionPane.showMessageDialog(this, "Pour gagner rien de plus simple : Il suffit de relier les tuyaux afin de former un circuit fermé reliant la base à la fin. Bonne chance !", "Règles du jeu", JOptionPane.PLAIN_MESSAGE, reglesIcon);
     }
     
     
@@ -185,6 +189,7 @@ public class GamePanel extends JPanel implements Runnable{
         Graphics2D g2 = (Graphics2D) g;
         
         if (gameState == State.MENU) {
+            
             ui.drawMainMenu(g2);
         }
         

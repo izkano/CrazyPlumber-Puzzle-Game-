@@ -179,7 +179,8 @@ public class UserInterface {
 	}
 
 	public void drawMainMenu(Graphics2D g2) {
-		g2.drawImage(mainBackground, 0, 0, null);		startGameBtn.draw(g2);
+		g2.drawImage(mainBackground, 0, 0, null);		
+		startGameBtn.draw(g2);
 		creditsBtn.draw(g2);
 		exitGameBtn.draw(g2);
 	}

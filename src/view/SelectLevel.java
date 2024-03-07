@@ -58,16 +58,16 @@ public class SelectLevel {
             try {
                 test = ImageIO.read(getClass().getResourceAsStream("/menu/help_button_on.png"));;
                 if (i>0 && i<=5){
-                    level.add(new Button("/menu/help_button_",buttonGlobalXoffset+(relativeXoffset*j)+pauseButtonXcoord,buttonGlobalYoffset+pauseButtonYcoord));
+                    level.add(new Button("/menu/boxLevel",buttonGlobalXoffset+(relativeXoffset*j)+pauseButtonXcoord,buttonGlobalYoffset+pauseButtonYcoord));
                 }
                 else if (i>5 && i<=10){
-                    level.add(new Button("/menu/help_button_",buttonGlobalXoffset+(relativeXoffset*j)+pauseButtonXcoord,buttonGlobalYoffset+relativeYoffset+pauseButtonYcoord));
+                    level.add(new Button("/menu/boxLevel",buttonGlobalXoffset+(relativeXoffset*j)+pauseButtonXcoord,buttonGlobalYoffset+relativeYoffset+pauseButtonYcoord));
                 }
                 else if (i>10 && i<=15){
-                    level.add(new Button("/menu/help_button_",buttonGlobalXoffset+(relativeXoffset*j)+pauseButtonXcoord,buttonGlobalYoffset+2*relativeYoffset+pauseButtonYcoord));
+                    level.add(new Button("/menu/boxLevel",buttonGlobalXoffset+(relativeXoffset*j)+pauseButtonXcoord,buttonGlobalYoffset+2*relativeYoffset+pauseButtonYcoord));
                 }
                 else if (i>15 && i<=20){
-                    level.add(new Button("/menu/help_button_",buttonGlobalXoffset+(relativeXoffset*j)+pauseButtonXcoord,buttonGlobalYoffset+3*relativeYoffset+pauseButtonYcoord));
+                    level.add(new Button("/menu/boxLevel",buttonGlobalXoffset+(relativeXoffset*j)+pauseButtonXcoord,buttonGlobalYoffset+3*relativeYoffset+pauseButtonYcoord));
                 }
             } catch (Exception e) {
                 break;
