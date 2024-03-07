@@ -11,5 +11,6 @@ public enum State {
 	PLAYING,
 	TRANSITION,
 	PAUSE,
-	SETTINGS
+	SETTINGS,
+	CREDITS
 }

@@ -84,7 +84,7 @@ public class GamePanel extends JPanel implements Runnable{
 		this.addMouseListener(mouseHandler);
 		this.addKeyListener(keyHandler);
 		
-		this.gameState = State.SELECT;
+		this.gameState = State.MENU;
         unlocked = createUnlock();
     }
     
@@ -180,7 +180,7 @@ public class GamePanel extends JPanel implements Runnable{
         Graphics2D g2 = (Graphics2D) g;
         
         if (gameState == State.MENU) {
-
+            ui.drawMainMenu(g2);
         }
         
         else if (gameState == State.PLAYING) {

@@ -74,6 +74,16 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 				gp.gameState = State.MENU;
 			}
 		}
+		if (gp.gameState == State.MENU) {
+			if (isIn(e, ui.getStartGameBtn())) {
+				gp.gameState = State.SELECT;
+			} else if (isIn(e, ui.getCreditsBtn())) {
+				gp.gameState = State.MENU; // À implémenter
+			} else if (isIn(e, ui.getExitGameBtn())) {
+				System.exit(0);
+			}
+		}
+
 
 	}
 	
@@ -93,6 +103,17 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 				ui.getMenuButtonPause().setMouseOver(true);
 			}
 		}
+		if (gp.gameState == State.MENU) {
+			if (isIn(e, ui.getStartGameBtn())) {
+				ui.getStartGameBtn().setMouseOver(true);
+			} else if (isIn(e, ui.getCreditsBtn())) {
+				ui.getCreditsBtn().setMouseOver(true);
+			} else if (isIn(e, ui.getExitGameBtn())) {
+				ui.getExitGameBtn().setMouseOver(true);
+			}
+			gp.repaint(); // Assurez-vous de rafraîchir l'affichage pour voir les changements
+		}
+
 	}
 
 	@Override
@@ -100,6 +121,13 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 		if (gp.gameState == State.PAUSE) {
 			ui.resetButtons();
 		}
+		if (gp.gameState == State.MENU) {
+			ui.getStartGameBtn().setMouseOver(false);
+			ui.getCreditsBtn().setMouseOver(false);
+			ui.getExitGameBtn().setMouseOver(false);
+			gp.repaint(); // Assurez-vous de rafraîchir l'affichage pour voir les changements
+		}
+
 	}
 	
 	@Override
