@@ -111,7 +111,17 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 			} else if (isIn(e, ui.getExitGameBtn())) {
 				ui.getExitGameBtn().setMouseOver(true);
 			}
-			gp.repaint(); // Assurez-vous de rafraîchir l'affichage pour voir les changements
+			gp.repaint(); 
+		}
+		if (gp.gameState == State.TRANSITION) {
+			if (isIn(e, ui.getNextLevelButton())) {
+				ui.getNextLevelButton().setMouseOver(true);
+			} else if (isIn(e, ui.getMainMenuButton())) {
+				ui.getMainMenuButton().setMouseOver(true);
+			} else if (isIn(e, ui.getRetryButton())) {
+				ui.getRetryButton().setMouseOver(true);
+			}
+			gp.repaint(); 
 		}
 
 	}
@@ -125,7 +135,13 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 			ui.getStartGameBtn().setMouseOver(false);
 			ui.getCreditsBtn().setMouseOver(false);
 			ui.getExitGameBtn().setMouseOver(false);
-			gp.repaint(); // Assurez-vous de rafraîchir l'affichage pour voir les changements
+			gp.repaint(); 
+		}
+		if (gp.gameState == State.TRANSITION) {
+			ui.getNextLevelButton().setMouseOver(false);
+			ui.getMainMenuButton().setMouseOver(false);
+			ui.getRetryButton().setMouseOver(false);
+			gp.repaint(); 
 		}
 
 	}
