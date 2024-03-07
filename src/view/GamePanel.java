@@ -4,20 +4,13 @@ import java.util.LinkedList;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -30,6 +23,12 @@ import control.KeyHandler;
 import control.MouseHandler;
 import exception.MapException;
 import model.*;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.IOException;
 
 
 /**
@@ -70,6 +69,12 @@ public class GamePanel extends JPanel implements Runnable{
         this.setBackground(Color.decode("#67b835"));
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
+
+        //Pour changer le curseur 
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Image image = toolkit.getImage("res/images/cursor_shiny.png");
+        Cursor c = toolkit.createCustomCursor(image , new Point(0,0), "c");
+        setCursor (c);
 		
 		ImageIcon aideIcon = new ImageIcon("res/pipes/help_button.png");
         setLayout((LayoutManager) new FlowLayout(FlowLayout.RIGHT, 0, 0));
