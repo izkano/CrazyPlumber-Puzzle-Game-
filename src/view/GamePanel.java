@@ -4,32 +4,24 @@ import java.util.LinkedList;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import javax.swing.JPanel;
+import javax.imageio.ImageIO;
 
 import control.KeyHandler;
 import control.MouseHandler;
 import exception.MapException;
 import model.*;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.IOException;
 
 
 /**
@@ -65,11 +57,33 @@ public class GamePanel extends JPanel implements Runnable{
     private int amountLevel = countLevel();
     private int difficulty;
 
+
+    private BufferedImage playingBackground;
+    private void loadBackgroundImages() {
+        try {
+            playingBackground = ImageIO.read(getClass().getResourceAsStream("/menu/bgMain.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public GamePanel(){
+
+        
+
+        
         this.setPreferredSize(new Dimension(tileSize*maxScreenCol,tileSize*maxScreenRow));
-        this.setBackground(Color.decode("#67b835"));
+        this.setBackground(Color.decode("#6735"));
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
+        loadBackgroundImages();
+
+
+        //Pour changer le curseur 
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Image image = toolkit.getImage("res/images/cursor_shiny.png");
+        Cursor c = toolkit.createCustomCursor(image , new Point(0,0), "c");
+        setCursor (c);
 		
 		ImageIcon aideIcon = new ImageIcon("res/pipes/help_button.png");
         setLayout((LayoutManager) new FlowLayout(FlowLayout.RIGHT, 0, 0));
@@ -99,7 +113,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     private void ShowRulesGame() {   
         ImageIcon reglesIcon = new ImageIcon("res/pipes/help_button.png");
-        JOptionPane.showMessageDialog(this, "", "Règles du jeu", JOptionPane.PLAIN_MESSAGE, reglesIcon);
+        JOptionPane.showMessageDialog(this, "Pour gagner rien de plus simple : Il suffit de relier les tuyaux afin de former un circuit fermé reliant la base à la fin. Bonne chance !", "Règles du jeu", JOptionPane.PLAIN_MESSAGE, reglesIcon);
     }
     
     
@@ -140,16 +154,28 @@ public class GamePanel extends JPanel implements Runnable{
     /**
      * Méthode appelé tous les tours de boucles, met à jour la partie méchanique du jeu
      */
-    public void update() {
-        if (gameState == State.PLAYING && map != null) {
-            if (map.isWon()){
+    private boolean transitioning = false; // Ajouter comme attribut de classe
+
+public void update() {
+    if (gameState == State.PLAYING && map != null && !transitioning) { // Vérifier également que transitioning est false
+        if (map.isWon()) {
+            transitioning = true; // Empêche l'exécution répétée
+
+            // Temporiser l'exécution du code de transition
+            Timer timer = new Timer(500, e -> {
                 unlockNextLvl(lvl);
                 setLevel(lvl);
                 Cell.playSound("res/pipes/win.wav");
-                this.gameState = State.TRANSITION;
-            }
+                gameState = State.TRANSITION;
+                repaint(); // Pour s'assurer que l'UI est mis à jour
+                transitioning = false; // Réinitialise le drapeau pour permettre de nouvelles transitions
+            });
+            timer.setRepeats(false); // S'assurer que le Timer ne se répète pas
+            timer.start();
         }
     }
+}
+    
 
     
     
@@ -178,8 +204,11 @@ public class GamePanel extends JPanel implements Runnable{
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+
+        g2.drawImage(playingBackground, 0, 0, this.getWidth(), this.getHeight(), null);
         
         if (gameState == State.MENU) {
+            
             ui.drawMainMenu(g2);
         }
         

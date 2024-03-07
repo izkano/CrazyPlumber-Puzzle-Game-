@@ -51,6 +51,8 @@ public class UserInterface {
 
 	private int relativeXoffset = 94 + buttonWidth;
 	private int relativeYoffset = 31 + buttonHeight;
+
+    public Object getNextLevelButton;
 	
 	
 	public UserInterface(GamePanel gp) {
@@ -76,9 +78,6 @@ public class UserInterface {
 		String settingsBtnPausePath = "/menu/settings_btn_pause_";
 		String menuBtnPausePath = "/menu/menu_btn_pause_";
 
-		String nextLevelBtnPath = "/menu/next_level_btn_";
-		String retryBtnPath = "/menu/retry_btn_";
-		String mainMenuBtnPath = "/menu/main_menu_btn_";
 
 		
 		// PAUSE MENU
@@ -93,23 +92,27 @@ public class UserInterface {
 	
 		String basePath = "/menu/"; // Chemin de base pour accéder au dossier des images des boutons
 
+		int buttonCenterXtransition = (gp.screenWidth / 2) - 300;
+		int startYtransition = gp.screenHeight / 4; // Ajuste selon le besoin
+		int gapYtransition = 200; // Ajuste l'espacement selon le besoin
 		//nitialisation avec les images pour la transition
-		this.nextLevelBtn = new Button(basePath + "nextLevelButton", pauseButtonXcoord + buttonGlobalXoffset, pauseButtonYcoord + buttonGlobalYoffset);
-		this.retryBtn = new Button(basePath + "restartButton", pauseButtonXcoord + buttonGlobalXoffset + relativeXoffset, pauseButtonYcoord + buttonGlobalYoffset);
-		this.mainMenuBtn = new Button(basePath + "mainMenuButton", pauseButtonXcoord + buttonGlobalXoffset, pauseButtonYcoord + buttonGlobalYoffset + relativeYoffset);
+		this.nextLevelBtn = new Button(basePath + "nextLevel", buttonCenterXtransition, startYtransition);
+		this.retryBtn = new Button(basePath + "replay", buttonCenterXtransition,startYtransition + gapYtransition);
+		this.mainMenuBtn = new Button(basePath + "mainMenu", buttonCenterXtransition, startYtransition + 2*gapYtransition);
+
 
 
 		// Calcul pour centrer les boutons horizontalement avec la correction
-		int buttonCenterX = (gp.screenWidth / 2) - 314; // Centre du bouton aligné avec le centre de l'écran
+		int buttonCenterXmainMenu = (gp.screenWidth / 2) - 314; // Centre du bouton aligné avec le centre de l'écran
 
 		// Ajustement des positions Y initiales et de l'espacement
-		int startY = gp.screenHeight / 4; // Ajuste selon le besoin
-		int gapY = 200; // Ajuste l'espacement selon le besoin
+		int startYmainMenu = gp.screenHeight / 4; // Ajuste selon le besoin
+		int gapYmainMenu = 200; // Ajuste l'espacement selon le besoin
 	
 		// Initialisation des boutons du menu principal avec les nouvelles coordonnées
-		startGameBtn = new Button("/menu/newGame", buttonCenterX, startY);
-		creditsBtn = new Button("/menu/credits", buttonCenterX, startY + gapY);
-		exitGameBtn = new Button("/menu/exit", buttonCenterX, startY + 2 * gapY);
+		startGameBtn = new Button("/menu/newGame", buttonCenterXmainMenu, startYmainMenu);
+		creditsBtn = new Button("/menu/credits", buttonCenterXmainMenu, startYmainMenu + gapYmainMenu);
+		exitGameBtn = new Button("/menu/exit", buttonCenterXmainMenu, startYmainMenu + 2 * gapYmainMenu);
 
 
 	}
@@ -170,7 +173,7 @@ public class UserInterface {
 
 	private void drawTransitionMenu(Graphics2D g2) {
 		// Utiliser le même arrière-plan que le menu de pause
-		g2.drawImage(victoryWindow, pauseWindowXcoord, pauseWindowYcoord, null);
+		g2.drawImage(victoryWindow, gp.screenWidth/2 -261, gp.screenHeight/2-400, null);
 		
 		// Utiliser les mêmes coordonnées et logique pour dessiner les boutons spécifiques à la transition
 		nextLevelBtn.draw(g2);
@@ -179,7 +182,8 @@ public class UserInterface {
 	}
 
 	public void drawMainMenu(Graphics2D g2) {
-		g2.drawImage(mainBackground, 0, 0, null);		startGameBtn.draw(g2);
+		g2.drawImage(mainBackground, 0, 0, null);		
+		startGameBtn.draw(g2);
 		creditsBtn.draw(g2);
 		exitGameBtn.draw(g2);
 	}
