@@ -95,7 +95,8 @@ public class UserInterface {
 		int buttonCenterXtransition = (gp.screenWidth / 2) - 300;
 		int startYtransition = gp.screenHeight / 4; // Ajuste selon le besoin
 		int gapYtransition = 200; // Ajuste l'espacement selon le besoin
-		//nitialisation avec les images pour la transition
+		
+		// initialisation avec les images pour la transition
 		this.nextLevelBtn = new Button(basePath + "nextLevel", buttonCenterXtransition, startYtransition);
 		this.retryBtn = new Button(basePath + "replay", buttonCenterXtransition,startYtransition + gapYtransition);
 		this.mainMenuBtn = new Button(basePath + "mainMenu", buttonCenterXtransition, startYtransition + 2*gapYtransition);
