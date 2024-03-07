@@ -170,7 +170,7 @@ public class UserInterface {
 
 	private void drawTransitionMenu(Graphics2D g2) {
 		// Utiliser le même arrière-plan que le menu de pause
-		g2.drawImage(victoryWindow, pauseWindowXcoord, pauseWindowYcoord, null);
+		g2.drawImage(victoryWindow, gp.screenWidth/2 -261, gp.screenHeight/2-400, null);
 		
 		// Utiliser les mêmes coordonnées et logique pour dessiner les boutons spécifiques à la transition
 		nextLevelBtn.draw(g2);

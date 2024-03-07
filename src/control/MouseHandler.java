@@ -50,7 +50,7 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 			}
 			
 			else if ( isIn(e, ui.getMenuButtonPause()) ) {
-				gp.gameState = State.SELECT;
+				gp.gameState = State.MENU;
 			}
 		}
 

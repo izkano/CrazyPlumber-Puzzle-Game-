@@ -64,15 +64,27 @@ public class GamePanel extends JPanel implements Runnable{
     private int amountLevel = countLevel();
     private int difficulty;
 
+
+    private BufferedImage playingBackground;
+    private void loadBackgroundImages() {
+        try {
+            playingBackground = ImageIO.read(getClass().getResourceAsStream("/menu/bgMain.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public GamePanel(){
 
         
 
         
         this.setPreferredSize(new Dimension(tileSize*maxScreenCol,tileSize*maxScreenRow));
-        this.setBackground(Color.decode("#67b835"));
+        this.setBackground(Color.decode("#6735"));
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
+        loadBackgroundImages();
+
 
         //Pour changer le curseur 
         Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -187,6 +199,8 @@ public class GamePanel extends JPanel implements Runnable{
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+
+        g2.drawImage(playingBackground, 0, 0, this.getWidth(), this.getHeight(), null);
         
         if (gameState == State.MENU) {
             
