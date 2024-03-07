@@ -78,7 +78,7 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 			if (isIn(e, ui.getStartGameBtn())) {
 				gp.gameState = State.SELECT;
 			} else if (isIn(e, ui.getCreditsBtn())) {
-				gp.gameState = State.MENU; // À implémenter
+				gp.gameState = State.MENU; 
 			} else if (isIn(e, ui.getExitGameBtn())) {
 				System.exit(0);
 			}
