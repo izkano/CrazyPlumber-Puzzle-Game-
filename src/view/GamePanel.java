@@ -11,13 +11,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import javax.swing.JPanel;
 
 import control.KeyHandler;
 import control.MouseHandler;
@@ -161,16 +154,28 @@ public class GamePanel extends JPanel implements Runnable{
     /**
      * Méthode appelé tous les tours de boucles, met à jour la partie méchanique du jeu
      */
-    public void update() {
-        if (gameState == State.PLAYING && map != null) {
-            if (map.isWon()){
+    private boolean transitioning = false; // Ajouter comme attribut de classe
+
+public void update() {
+    if (gameState == State.PLAYING && map != null && !transitioning) { // Vérifier également que transitioning est false
+        if (map.isWon()) {
+            transitioning = true; // Empêche l'exécution répétée
+
+            // Temporiser l'exécution du code de transition
+            Timer timer = new Timer(500, e -> {
                 unlockNextLvl(lvl);
                 setLevel(lvl);
                 Cell.playSound("res/pipes/win.wav");
-                this.gameState = State.TRANSITION;
-            }
+                gameState = State.TRANSITION;
+                repaint(); // Pour s'assurer que l'UI est mis à jour
+                transitioning = false; // Réinitialise le drapeau pour permettre de nouvelles transitions
+            });
+            timer.setRepeats(false); // S'assurer que le Timer ne se répète pas
+            timer.start();
         }
     }
+}
+    
 
     
     
