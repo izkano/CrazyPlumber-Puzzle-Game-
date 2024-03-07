@@ -76,9 +76,9 @@ public class UserInterface {
 		String settingsBtnPausePath = "/menu/settings_btn_pause_";
 		String menuBtnPausePath = "/menu/menu_btn_pause_";
 
-		String nextLevelBtnPath = "/menu/next_level_btn_";
-		String retryBtnPath = "/menu/retry_btn_";
-		String mainMenuBtnPath = "/menu/main_menu_btn_";
+		String nextLevelBtnPath = "/menu/nextLevel";
+		String retryBtnPath = "/menu/replay";
+		String mainMenuBtnPath = "/menu/mainMenu";
 
 		
 		// PAUSE MENU
@@ -94,9 +94,9 @@ public class UserInterface {
 		String basePath = "/menu/"; // Chemin de base pour accéder au dossier des images des boutons
 
 		//nitialisation avec les images pour la transition
-		this.nextLevelBtn = new Button(basePath + "nextLevelButton", pauseButtonXcoord + buttonGlobalXoffset, pauseButtonYcoord + buttonGlobalYoffset);
-		this.retryBtn = new Button(basePath + "restartButton", pauseButtonXcoord + buttonGlobalXoffset + relativeXoffset, pauseButtonYcoord + buttonGlobalYoffset);
-		this.mainMenuBtn = new Button(basePath + "mainMenuButton", pauseButtonXcoord + buttonGlobalXoffset, pauseButtonYcoord + buttonGlobalYoffset + relativeYoffset);
+		this.nextLevelBtn = new Button(basePath + "nextLevel", pauseButtonXcoord + buttonGlobalXoffset, pauseButtonYcoord + buttonGlobalYoffset);
+		this.retryBtn = new Button(basePath + "replay", pauseButtonXcoord + buttonGlobalXoffset + relativeXoffset, pauseButtonYcoord + buttonGlobalYoffset);
+		this.mainMenuBtn = new Button(basePath + "mainMenu", pauseButtonXcoord + buttonGlobalXoffset, pauseButtonYcoord + buttonGlobalYoffset + relativeYoffset);
 
 
 		// Calcul pour centrer les boutons horizontalement avec la correction
