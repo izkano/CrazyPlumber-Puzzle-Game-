@@ -28,6 +28,13 @@ public class UserInterface {
 	private Button startGameBtn;
 	private Button creditsBtn;
 	private Button exitGameBtn;
+	
+	// BUTTONS : PAUSE MENU
+	private Button closeBtnPause;
+	private Button continueBtn;
+	private Button menuBtn;
+	private Button selectBtn;
+	private Button settingsBtn;
 
 	
     public Object getNextLevelButton;
@@ -45,15 +52,15 @@ public class UserInterface {
 	 */
 	public void loadAssets() {		
 		try {
-			pauseWindow = ImageIO.read(getClass().getResourceAsStream("/menu/pause_menu.png"));;
-			victoryWindow = ImageIO.read(getClass().getResourceAsStream("/menu/victory_window.png"));;
+			pauseWindow = ImageIO.read(getClass().getResourceAsStream("/menu/pause/pause_window.png"));;
+			victoryWindow = ImageIO.read(getClass().getResourceAsStream("/menu/transition/victory_window.png"));;
 			mainBackground = ImageIO.read(getClass().getResourceAsStream("/menu/bgMain.jpg"));;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 	
-		String basePath = "/menu/"; // Chemin de base pour accéder au dossier des images des boutons
+		String basePath = "/menu/transition/buttons/"; // Chemin de base pour accéder au dossier des images des boutons
 
 		int buttonCenterXtransition = (gp.screenWidth / 2) - 300;
 		int startYtransition = gp.screenHeight / 4; // Ajuste selon le besoin
@@ -74,11 +81,18 @@ public class UserInterface {
 		int gapYmainMenu = 200; // Ajuste l'espacement selon le besoin
 	
 		// Initialisation des boutons du menu principal avec les nouvelles coordonnées
-		startGameBtn = new Button("/menu/newGame", buttonCenterXmainMenu, startYmainMenu);
-		creditsBtn = new Button("/menu/credits", buttonCenterXmainMenu, startYmainMenu + gapYmainMenu);
-		exitGameBtn = new Button("/menu/exit", buttonCenterXmainMenu, startYmainMenu + 2 * gapYmainMenu);
+		startGameBtn = new Button("/menu/main/buttons/newGame", buttonCenterXmainMenu, startYmainMenu);
+		creditsBtn = new Button("/menu/main/buttons/credits", buttonCenterXmainMenu, startYmainMenu + gapYmainMenu);
+		exitGameBtn = new Button("/menu/main/buttons/exit", buttonCenterXmainMenu, startYmainMenu + 2 * gapYmainMenu);
 
-
+		
+		int offy = 104;
+		closeBtnPause = new Button("/menu/pause/buttons/pause_menu_close_",673,187);
+		
+		continueBtn = new Button("/menu/pause/buttons/continue_pause_",300,320);
+		selectBtn = new Button("/menu/pause/buttons/select_pause_",300,320+offy);
+		settingsBtn = new Button("/menu/pause/buttons/settings_pause_",300,320+offy*2);
+		menuBtn = new Button("/menu/pause/buttons/menu_pause_",300,320+offy*3);
 	}
 	
 	
@@ -86,7 +100,11 @@ public class UserInterface {
 	 * Réinitialise l'état des boutons
 	 */
 	public void resetButtons() {
-		
+		closeBtnPause.setMouseOver(false);
+		continueBtn.setMouseOver(false);
+		selectBtn.setMouseOver(false);
+		settingsBtn.setMouseOver(false);
+		menuBtn.setMouseOver(false);
 	}
 	
 	
@@ -115,6 +133,11 @@ public class UserInterface {
 	private void drawPauseMenu(Graphics2D g2) {	
 	
 		g2.drawImage(pauseWindow,0,0,null);
+		closeBtnPause.draw(g2);
+		continueBtn.draw(g2);
+		selectBtn.draw(g2);
+		settingsBtn.draw(g2);
+		menuBtn.draw(g2);
 	}
 	
 
@@ -157,5 +180,23 @@ public class UserInterface {
 		return creditsBtn;
 	}
 
-
+	public Button getCloseBtnPause() {
+		return closeBtnPause;
+	}
+	
+	public Button getContinueBtn() {
+		return continueBtn;
+	}
+	
+	public Button getSelectBtn() {
+		return selectBtn;
+	}
+	
+	public Button getSettingsBtn() {
+		return settingsBtn;
+	}
+	
+	public Button getMenuBtn() {
+		return menuBtn;
+	}
 }
