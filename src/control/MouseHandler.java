@@ -39,13 +39,20 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 		
 		
 		// GAME STATE : PAUSE
-		if (gp.gameState == State.PAUSE) {
-			
+		else if (gp.gameState == State.PAUSE) {
+			if ( isIn(e, ui.getCloseBtnPause()) || isIn(e, ui.getContinueBtn()) ) {
+				gp.gameState = State.PLAYING;
+			} else if ( isIn(e, ui.getSelectBtn()) ) {
+				gp.gameState = State.SELECT;
+			} else if ( isIn(e, ui.getSettingsBtn()) ) {
+				gp.gameState = State.SETTINGS;
+			} else if ( isIn(e, ui.getMenuBtn()) ) {
+				gp.gameState = State.MENU;
+			}
 		}
 
 		// GAME STATE : SELECT
-
-		if (gp.gameState == State.SELECT) {
+		else if (gp.gameState == State.SELECT) {
 			for (int i = 0; i<sl.getLevelButton().size();i++){
 				if ( isIn(e, sl.getLevelButton().get(i)) && gp.getUnlock().get(i)==true) { 
 					gp.setLevel(i+1);
@@ -54,6 +61,7 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 			}
 		}
 		
+		// GAME STATE : TRANSITION
 		else if (gp.gameState == State.TRANSITION) {
 			if (isIn(e, ui.getNextLevelButton())) {
 				gp.setLevel(gp.getLevel()+1);
@@ -64,6 +72,8 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 			}
 		}
 		
+		
+		// GAME STATE : MENU
 		else if (gp.gameState == State.MENU) {
 			if (isIn(e, ui.getStartGameBtn())) {
 				gp.gameState = State.SELECT;
@@ -81,9 +91,20 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (gp.gameState == State.PAUSE) {
-			
+			if ( isIn(e, ui.getCloseBtnPause()) ) {
+				ui.getCloseBtnPause().setMouseOver(true);
+			} else if ( isIn(e, ui.getContinueBtn()) ) {
+				ui.getContinueBtn().setMouseOver(true);
+			} else if ( isIn(e, ui.getSelectBtn()) ) {
+				ui.getSelectBtn().setMouseOver(true);
+			} else if ( isIn(e, ui.getSettingsBtn()) ) {
+				ui.getSettingsBtn().setMouseOver(true);
+			} else if ( isIn(e, ui.getMenuBtn()) ) {
+				ui.getMenuBtn().setMouseOver(true);
+			}
 		}
-		if (gp.gameState == State.MENU) {
+		
+		else if (gp.gameState == State.MENU) {
 			if (isIn(e, ui.getStartGameBtn())) {
 				ui.getStartGameBtn().setMouseOver(true);
 			} else if (isIn(e, ui.getCreditsBtn())) {
@@ -93,7 +114,8 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 			}
 			gp.repaint(); 
 		}
-		if (gp.gameState == State.TRANSITION) {
+		
+		else if (gp.gameState == State.TRANSITION) {
 			if (isIn(e, ui.getNextLevelButton())) {
 				ui.getNextLevelButton().setMouseOver(true);
 			} else if (isIn(e, ui.getMainMenuButton())) {
@@ -108,22 +130,24 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		
 		if (gp.gameState == State.PAUSE) {
 			ui.resetButtons();
 		}
-		if (gp.gameState == State.MENU) {
+		
+		else if (gp.gameState == State.MENU) {
 			ui.getStartGameBtn().setMouseOver(false);
 			ui.getCreditsBtn().setMouseOver(false);
 			ui.getExitGameBtn().setMouseOver(false);
 			gp.repaint(); 
 		}
-		if (gp.gameState == State.TRANSITION) {
+		
+		else if (gp.gameState == State.TRANSITION) {
 			ui.getNextLevelButton().setMouseOver(false);
 			ui.getMainMenuButton().setMouseOver(false);
 			ui.getRetryButton().setMouseOver(false);
 			gp.repaint(); 
 		}
-
 	}
 
 	@Override

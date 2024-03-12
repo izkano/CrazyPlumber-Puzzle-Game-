@@ -38,7 +38,7 @@ public class SelectLevel {
 	
 	public void loadAssets() {		
         try {
-			background = ImageIO.read(getClass().getResourceAsStream("/menu/pause_menu.png"));;
+			background = ImageIO.read(getClass().getResourceAsStream("/menu/pause/pause_window.png"));;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
