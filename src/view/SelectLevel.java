@@ -21,9 +21,6 @@ public class SelectLevel {
 	private int buttonWidth = 55; 
 	private int buttonHeight = 55;
 
-    private int pauseBackGroundXcoord;
-	private int pauseBackGroundYcoord;
-
     private int buttonGlobalXoffset;
 	private int buttonGlobalYoffset;
 
@@ -41,12 +38,11 @@ public class SelectLevel {
 	
 	public void loadAssets() {		
         try {
-			background = ImageIO.read(getClass().getResourceAsStream("/menu/pause_window.png"));;
+			background = ImageIO.read(getClass().getResourceAsStream("/menu/pause_menu.png"));;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        this.pauseBackGroundXcoord = (gp.screenWidth / 2) - (background.getWidth() / 2);	
-		this.pauseBackGroundYcoord = (gp.screenHeight / 2) - (background.getHeight() / 2);
+
 		this.buttonGlobalXoffset = (gp.screenWidth - background.getWidth()) / 2;
 		this.buttonGlobalYoffset = (gp.screenHeight - background.getHeight()) / 2;
 

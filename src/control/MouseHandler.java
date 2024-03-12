@@ -41,17 +41,6 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 		// GAME STATE : PAUSE
 		if (gp.gameState == State.PAUSE) {
 			
-			if ( isIn(e, ui.getPlayButtonPause()) ) {
-				gp.gameState = State.PLAYING;
-			}
-			
-			else if ( isIn(e, ui.getSettingsButtonPause()) ) {
-				gp.gameState = State.SETTINGS;
-			}
-			
-			else if ( isIn(e, ui.getMenuButtonPause()) ) {
-				gp.gameState = State.MENU;
-			}
 		}
 
 		// GAME STATE : SELECT
@@ -65,7 +54,7 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 			}
 		}
 		
-		if (gp.gameState == State.TRANSITION) {
+		else if (gp.gameState == State.TRANSITION) {
 			if (isIn(e, ui.getNextLevelButton())) {
 				gp.setLevel(gp.getLevel()+1);
 			} else if (isIn(e, ui.getRetryButton())) {
@@ -74,7 +63,8 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 				gp.gameState = State.MENU;
 			}
 		}
-		if (gp.gameState == State.MENU) {
+		
+		else if (gp.gameState == State.MENU) {
 			if (isIn(e, ui.getStartGameBtn())) {
 				gp.gameState = State.SELECT;
 			} else if (isIn(e, ui.getCreditsBtn())) {
@@ -91,17 +81,7 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (gp.gameState == State.PAUSE) {
-			if ( isIn(e, ui.getPlayButtonPause()) ) {
-				ui.getPlayButtonPause().setMouseOver(true);
-			}
 			
-			if ( isIn(e, ui.getSettingsButtonPause()) ) {
-				ui.getSettingsButtonPause().setMouseOver(true);
-			}
-			
-			if ( isIn(e, ui.getMenuButtonPause()) ) {
-				ui.getMenuButtonPause().setMouseOver(true);
-			}
 		}
 		if (gp.gameState == State.MENU) {
 			if (isIn(e, ui.getStartGameBtn())) {
@@ -145,15 +125,6 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 		}
 
 	}
-	
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		System.out.println("x : " + e.getX() + "  y : " + e.getY());
-		
-		if ( isIn(e, ui.getPlayButtonPause()) ) {
-			ui.getPlayButtonPause().setMouseOver(true);
-		}
-	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) { }
@@ -165,6 +136,4 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 	private boolean isIn(MouseEvent e, Button b) {
 		return b.getBounds().contains(e.getX(), e.getY());
 	}
-
-	
 }
