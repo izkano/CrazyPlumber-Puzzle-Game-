@@ -4,30 +4,22 @@ import java.util.LinkedList;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
 import javax.imageio.ImageIO;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 import control.KeyHandler;
 import control.MouseHandler;
 import exception.MapException;
 import model.*;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
-import java.io.IOException;
-
 
 /**
  * Moteur principal du jeu
  */
-public class GamePanel extends JPanel implements Runnable{
+public class GamePanel extends JPanel implements Runnable {
 	
 	// SIZES
 	final int originalTileSize = 32;
@@ -39,12 +31,13 @@ public class GamePanel extends JPanel implements Runnable{
 	final int screenWidth = tileSize * maxScreenCol;
 	final int screenHeight = tileSize * maxScreenRow; 
 	public final int mapOffset = tileSize;
-	private  JButton aideButton;
+	private  JButton helpButton;
 	private JLabel aideLabel;
     
 
 	// SYSTEM
 	public Map map;
+	public Play play;
 	public State gameState;
 	private UserInterface ui = new UserInterface(this);
     private SelectLevel sl = new SelectLevel(this);
@@ -59,47 +52,49 @@ public class GamePanel extends JPanel implements Runnable{
 
 
     private BufferedImage playingBackground;
-    private void loadBackgroundImages() {
-        try {
-            playingBackground = ImageIO.read(getClass().getResourceAsStream("/menu/bgMain.jpg"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    
 
-    public GamePanel(){
-
-        
-
-        
+    public GamePanel() {
         this.setPreferredSize(new Dimension(tileSize*maxScreenCol,tileSize*maxScreenRow));
         this.setBackground(Color.decode("#6735"));
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
         loadBackgroundImages();
-
-
-        //Pour changer le curseur 
-        Toolkit toolkit = Toolkit.getDefaultToolkit();
-        Image image = toolkit.getImage("res/images/cursor_shiny.png");
-        Cursor c = toolkit.createCustomCursor(image , new Point(0,0), "c");
-        setCursor (c);
+        setCursor();
 		
 		ImageIcon aideIcon = new ImageIcon("res/pipes/help_button.png");
         setLayout((LayoutManager) new FlowLayout(FlowLayout.RIGHT, 0, 0));
-        aideButton = new JButton(aideIcon);
-        aideButton.setContentAreaFilled(false); 
-        aideButton.setBorderPainted(false);
-        aideButton.setFocusPainted(false);
-        aideButton.addActionListener(e -> ShowRulesGame());
-        this.add(aideButton);
-        aideButton.setVisible(false);
+        helpButton = new JButton(aideIcon);
+        helpButton.setContentAreaFilled(false); 
+        helpButton.setBorderPainted(false);
+        helpButton.setFocusPainted(false);
+        helpButton.addActionListener(e -> showRulesGame());
+        this.add(helpButton);
+        helpButton.setVisible(false);
 		
 		this.addMouseListener(mouseHandler);
 		this.addKeyListener(keyHandler);
 		
 		this.gameState = State.MENU;
         unlocked = createUnlock();
+        
+        this.play = new Play(this);
+    }
+
+    
+    private void setCursor() {
+    	Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Image image = toolkit.getImage("res/images/cursor_shiny.png");
+        Cursor c = toolkit.createCustomCursor(image , new Point(0,0), "c");
+        setCursor (c);
+    }
+    
+    private void loadBackgroundImages() {
+        try {
+            playingBackground = ImageIO.read(getClass().getResourceAsStream("/menu/bgMain.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
     public SelectLevel getSelectLevel() {
@@ -110,8 +105,11 @@ public class GamePanel extends JPanel implements Runnable{
     	return this.ui;
     }
     
+    public int getLevel() {
+    	return this.lvl;
+    }
 
-    private void ShowRulesGame() {   
+    private void showRulesGame() {   
         ImageIcon reglesIcon = new ImageIcon("res/pipes/help_button.png");
         JOptionPane.showMessageDialog(this, "Pour gagner rien de plus simple : Il suffit de relier les tuyaux afin de former un circuit fermé reliant la base à la fin. Bonne chance !", "Règles du jeu", JOptionPane.PLAIN_MESSAGE, reglesIcon);
     }
@@ -156,25 +154,28 @@ public class GamePanel extends JPanel implements Runnable{
      */
     private boolean transitioning = false; // Ajouter comme attribut de classe
 
-public void update() {
-    if (gameState == State.PLAYING && map != null && !transitioning) { // Vérifier également que transitioning est false
-        if (map.isWon()) {
-            transitioning = true; // Empêche l'exécution répétée
-
-            // Temporiser l'exécution du code de transition
-            Timer timer = new Timer(500, e -> {
-                unlockNextLvl(lvl);
-                setLevel(lvl);
-                Cell.playSound("res/pipes/win.wav");
-                gameState = State.TRANSITION;
-                repaint(); // Pour s'assurer que l'UI est mis à jour
-                transitioning = false; // Réinitialise le drapeau pour permettre de nouvelles transitions
-            });
-            timer.setRepeats(false); // S'assurer que le Timer ne se répète pas
-            timer.start();
-        }
-    }
-}
+	public void update() {
+	    if (gameState == State.PLAYING && map != null) { // Vérifier également que transitioning est false
+	    	
+	    	play.play();
+	    	
+	        /*if (map.isWon()) {
+	            transitioning = true; // Empêche l'exécution répétée
+	
+	            // Temporiser l'exécution du code de transition
+	            Timer timer = new Timer(500, e -> {
+	                unlockNextLvl(lvl);
+	                setLevel(lvl);
+	                Cell.playSound("res/pipes/win.wav");
+	                gameState = State.TRANSITION;
+	                repaint(); // Pour s'assurer que l'UI est mis à jour
+	                transitioning = false; // Réinitialise le drapeau pour permettre de nouvelles transitions
+	            });
+	            timer.setRepeats(false); // S'assurer que le Timer ne se répète pas
+	            timer.start();
+	        }*/
+	    }
+	}
     
 
     
@@ -217,7 +218,7 @@ public void update() {
                 for (int i = 0 ; i < map.getHeight() ; i++)
                     for (int j = 0 ; j < map.getWidth() ; j++)
                     	map.drawCell(i, j, g2, j*tileSize+mapOffset, i*tileSize+mapOffset, tileSize);
-                aideButton.setVisible(true);
+                helpButton.setVisible(true);
             }
         }
         
@@ -232,7 +233,7 @@ public void update() {
         else if (gameState == State.TRANSITION) {
         	ui.draw(g2);
         }
-        aideButton.setVisible(true);
+        helpButton.setVisible(true);
         	// afficher l'écran de pause...
         
     }
@@ -250,7 +251,9 @@ public void update() {
     public LinkedList<Boolean> createUnlock(){
         LinkedList<Boolean> unlock = new LinkedList<Boolean>();
         BufferedReader reader;
+        
         int i = 1;
+        
         while (true){
             try{
                 reader = new BufferedReader(new FileReader("res/level/" + i + ".txt"));
@@ -264,10 +267,7 @@ public void update() {
         unlock.set(0,true);
         return unlock;
     }
-
-    public int getLevel(){
-        return lvl;
-    }
+    
 
     public int countLevel(){
         int i = 1;
