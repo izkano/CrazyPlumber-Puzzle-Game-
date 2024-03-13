@@ -59,15 +59,34 @@ public class Play {
 	}
 	
 	private void timer() {
-		
+
 	}
 	
 	private void limited() {
-		
+		if (gp.map != null && !transitioning) { // Vérifier également que transitioning est false
+	        if (gp.map.isWon()) {
+	            transitioning = true; // Empêche l'exécution répétée
+	
+	            // Temporiser l'exécution du code de transition
+	            Timer timer = new Timer(500, e -> {
+	                gp.unlockNextLvl(gp.getLevel());
+	                gp.setLevel(gp.getLevel());
+	                Cell.playSound("res/pipes/win.wav");
+	                gp.gameState = State.TRANSITION;
+	                gp.repaint(); 
+	                transitioning = false; // Réinitialise le drapeau pour permettre de nouvelles transitions
+	            });
+	            timer.setRepeats(false);
+	            timer.start();
+	        }
+			if (gp.map.getMove() == 0) {
+				gp.gameState = State.TRANSITION;
+	    	}
+		}
 	}
 	
 	private void builder() {
-		
-	}
 	
+	}
+
 }

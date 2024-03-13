@@ -9,6 +9,7 @@ public enum State {
 	MENU,
 	SELECT,
 	PLAYING,
+	GAMEMODE,
 	TRANSITION,
 	PAUSE,
 	SETTINGS,
