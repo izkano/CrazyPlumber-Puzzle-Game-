@@ -176,7 +176,6 @@ public class GamePanel extends JPanel implements Runnable {
 	            timer.start();
 	        }*/
 	    }
-        System.out.println(gamemode);
 	}
     
 
