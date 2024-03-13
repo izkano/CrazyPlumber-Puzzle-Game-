@@ -222,6 +222,9 @@ public class GamePanel extends JPanel implements Runnable {
                     	map.drawCell(i, j, g2, j*tileSize+mapOffset, i*tileSize+mapOffset, tileSize);
                 helpButton.setVisible(true);
             }
+            g2.setColor(Color.BLACK);
+            g2.setFont(new Font("Arial", Font.BOLD, 50));
+            g2.drawString("Niveau "+lvl, 375, 75);
         }
         
         else if (gameState == State.PAUSE) {
