@@ -35,9 +35,9 @@ public class KeyHandler implements KeyListener {
 		if (code == KeyEvent.VK_ENTER) {
 			switch (gp.gameState) {
 				case PLAYING:
-					gp.gameState = State.SELECT;
+					gp.gameState = State.GAMEMODE;
 					break;
-				case SELECT:
+				case GAMEMODE:
 					gp.gameState = State.PLAYING;
 					break;
 				default:

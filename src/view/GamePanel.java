@@ -47,9 +47,10 @@ public class GamePanel extends JPanel implements Runnable {
     
     private int lvl = 1;
     private LinkedList<Boolean> unlocked;
-    private int amountLevel = countLevel();
+    private int[] amountLevel = countLevel();
     private int difficulty;
-
+    private int gamemode;
+    private int move;
 
     private BufferedImage playingBackground;
     
@@ -175,6 +176,7 @@ public class GamePanel extends JPanel implements Runnable {
 	            timer.start();
 	        }*/
 	    }
+        System.out.println(gamemode);
 	}
     
 
@@ -189,6 +191,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.lvl = level;
     	try {
     		map = new Map(level);
+            move = map.countMove();
     	} catch (MapException e) {
     		System.out.println(e.getMessage());
     	}
@@ -233,6 +236,9 @@ public class GamePanel extends JPanel implements Runnable {
         else if (gameState == State.TRANSITION) {
         	ui.draw(g2);
         }
+        else if (gameState == State.GAMEMODE){
+            sl.draw(g2);
+        }
         helpButton.setVisible(true);
         	// afficher l'écran de pause...
         
@@ -269,19 +275,30 @@ public class GamePanel extends JPanel implements Runnable {
     }
     
 
-    public int countLevel(){
-        int i = 1;
-        while (true){
-            try{
-                BufferedReader reader = new BufferedReader(new FileReader("res/level/" + i + ".txt"));
+    public int[] countLevel(){
+        int[] res = new int[4];
+        for (int j =0;j<4;j++){
+            int i = 1;
+            while (true){
+                try{
+                    BufferedReader reader = new BufferedReader(new FileReader("res/level/"+j+"/" + i + ".txt"));
+                }
+                catch (IOException e){
+                    break;
+                }
+                i++;
             }
-            catch (IOException e){
-                break;
-            }
-            i++;
+            res[j] = i-1;
         }
-        return i-1;
+        return res;
     }
 
+    public int[] getAmountLevel(){
+        return amountLevel;
+    }
+
+    public void setGameMode(int gamemode){
+        this.gamemode = gamemode;
+    }
 }
 

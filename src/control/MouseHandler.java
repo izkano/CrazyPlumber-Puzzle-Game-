@@ -76,7 +76,7 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 		// GAME STATE : MENU
 		else if (gp.gameState == State.MENU) {
 			if (isIn(e, ui.getStartGameBtn())) {
-				gp.gameState = State.SELECT;
+				gp.gameState = State.GAMEMODE;
 			} else if (isIn(e, ui.getCreditsBtn())) {
 				gp.gameState = State.MENU; 
 			} else if (isIn(e, ui.getExitGameBtn())) {
@@ -84,7 +84,22 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 			}
 		}
 
-
+		// GAME STATE : GAMEMODE
+		else if (gp.gameState == State.GAMEMODE) {
+			if (isIn(e, sl.getClassicButton())) {
+				gp.setGameMode(0);
+				gp.gameState = State.SELECT;
+			} else if (isIn(e, sl.getTimerButton())) {
+				gp.setGameMode(1);
+				gp.gameState = State.SELECT;
+			} else if (isIn(e, sl.getLimitedButton())) {
+				gp.setGameMode(2);
+				gp.gameState = State.SELECT;
+			} else if (isIn(e, sl.getBuilderButton())) {
+				gp.setGameMode(3);
+				gp.gameState = State.SELECT;
+			}
+		}
 	}
 	
 

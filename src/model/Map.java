@@ -122,6 +122,7 @@ public class Map {
 
         if (row >= 0 && row < start.length && col >= 0 && col < start[0].length) {
         	start[row][col].rotate();
+			move--;
         }
     }
 	
