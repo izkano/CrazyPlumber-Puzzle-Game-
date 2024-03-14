@@ -1,6 +1,7 @@
 package model;
 
 import javax.swing.Timer;
+import javax.swing.event.SwingPropertyChangeSupport;
 
 import view.GamePanel;
 
@@ -11,6 +12,20 @@ public class Play {
 	
 	public Play(GamePanel gp) {
 		this.gp = gp;
+		switch (gp.getGamemode()){
+			case 0:
+				this.gameMode = GameMode.CLASSIC;
+				break;
+			case 1:
+				this.gameMode = GameMode.TIMER;
+				break;
+			case 2:
+				this.gameMode = GameMode.LIMITED;
+				break;
+			case 3:
+				this.gameMode = GameMode.BUILDER;
+				break;
+		}
 	}
 	
 	public GameMode getGameMode() {
@@ -79,8 +94,10 @@ public class Play {
 	            timer.setRepeats(false);
 	            timer.start();
 	        }
-			if (gp.map.getMove() == 0) {
+			if (gp.map.getMove() <= 0) {
 				gp.gameState = State.TRANSITION;
+				gp.repaint(); 
+				transitioning = false;
 	    	}
 		}
 	}

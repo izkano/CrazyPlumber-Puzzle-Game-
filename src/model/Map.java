@@ -31,6 +31,7 @@ public class Map {
 		} catch (IOException e) {
 			throw new MapException("Unable to load map : " + e.getMessage());
 		}
+		move = countMove();
 	}
 	
 	public int getHeight() {

@@ -225,6 +225,9 @@ public class GamePanel extends JPanel implements Runnable {
             g2.setColor(Color.BLACK);
             g2.setFont(new Font("Arial", Font.BOLD, 50));
             g2.drawString("Niveau "+lvl, 375, 75);
+            if (gamemode == 2){
+                g2.drawString("Coups restants : "+map.getMove(), 375, 125);
+            }
         }
         
         else if (gameState == State.PAUSE) {
@@ -301,6 +304,10 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setGameMode(int gamemode){
         this.gamemode = gamemode;
+    }
+
+    public int getGamemode(){
+        return gamemode;
     }
 }
 
