@@ -62,7 +62,7 @@ public class Play {
 	            Timer timer = new Timer(500, e -> {
 	                gp.unlockNextLvl(gp.getLevel());
 	                gp.setLevel(gp.getLevel());
-	                Cell.playSound("res/pipes/win.wav");
+	                if(gp.sound)Cell.playSound("res/pipes/win.wav");
 	                gp.gameState = State.TRANSITION;
 	                gp.repaint(); 
 	                transitioning = false; // Réinitialise le drapeau pour permettre de nouvelles transitions
