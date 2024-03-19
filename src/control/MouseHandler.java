@@ -4,6 +4,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import model.GameMode;
 import model.State;
 import view.Button;
 import view.GamePanel;
@@ -88,15 +89,19 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 		else if (gp.gameState == State.GAMEMODE) {
 			if (isIn(e, sl.getClassicButton())) {
 				gp.setGameMode(0);
+				gp.play.setGameMode(GameMode.CLASSIC);
 				gp.gameState = State.SELECT;
 			} else if (isIn(e, sl.getTimerButton())) {
 				gp.setGameMode(1);
+				gp.play.setGameMode(GameMode.TIMER);
 				gp.gameState = State.SELECT;
 			} else if (isIn(e, sl.getLimitedButton())) {
 				gp.setGameMode(2);
+				gp.play.setGameMode(GameMode.LIMITED);
 				gp.gameState = State.SELECT;
 			} else if (isIn(e, sl.getBuilderButton())) {
 				gp.setGameMode(3);
+				gp.play.setGameMode(GameMode.BUILDER);
 				gp.gameState = State.SELECT;
 			}
 		}
