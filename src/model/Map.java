@@ -15,6 +15,7 @@ public class Map {
 	private Cell[][] start;
 	private int[][] solution;
 	
+	private String mode;
 	private int move;
 
 	/**
@@ -22,8 +23,22 @@ public class Map {
 	 * @param level : niveau représenter par un entier
 	 * @throws MapException : si le fichier texte ne se charge pas
 	 */
-	public Map(int level) throws MapException {
-		String path = "res/level/" + level + ".txt";		
+	public Map(int gamemode, int level) throws MapException {
+		switch(gamemode){
+			case 0:
+				mode = "classic/";
+				break;
+			case 1:
+				mode = "timer/";
+				break;
+			case 2:
+				mode = "limited/";
+				break;
+			case 3:
+				mode = "builder/";
+				break;
+		}
+		String path = "res/level/" + mode + level + ".txt";		
 		String sol = "res/solution/solution"+level+".txt";
 		try {
 			this.start = readMatrixFromFile(path);

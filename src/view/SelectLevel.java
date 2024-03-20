@@ -14,14 +14,19 @@ public class SelectLevel {
 	private GamePanel gp;
 	
 	// WINDOW IMAGES
-	private LinkedList<Button> level = new LinkedList<Button>();
-	private BufferedImage background;
-    private BufferedImage test;
+	private Button[][] level = new Button[3][];
+    private Button[][] locked = new Button[3][];
+    private BufferedImage loseWindow;
 
+    // BUTTONS : MODE DE JEU
     private Button classicButton;
     private Button timerButton;
     private Button limitedButton;
     private Button builderButton;
+
+    // BUTTONS : GAME OVER
+    private Button retryButton;
+    private Button mainMenuButton;
 
 	public SelectLevel(GamePanel gp) {
 		this.gp = gp;
@@ -30,53 +35,55 @@ public class SelectLevel {
 	
 	public void loadAssets() {		
         try {
-			background = ImageIO.read(getClass().getResourceAsStream("/menu/pause/pause_window.png"));;
+            loseWindow = ImageIO.read(getClass().getResourceAsStream("/menu/transition/lose_window.png"));;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		int startYSelectLevel = gp.screenHeight / 4; // Ajuste selon le besoin
-		int gapYtransition = 125; // Ajuste l'espacement selon le besoin
+		int gapYLevel = 125; // Ajuste l'espacement selon le besoin
         int gapXtransition = 100; // Ajuste l'espacement selon le besoin
 
         int startYGamemode = gp.screenHeight / 5;
         int buttonCenterXGamemode = (gp.screenWidth / 2) - 300;
         int gapYGamemode = 150;
 
-        // SELECT LEVEL MENU
-        int i = 1;
-        int j = 0;
-        while (true && i<=20){
-            if (j%5==0) j=0;
-            try {
-                test = ImageIO.read(getClass().getResourceAsStream("/menu/help_button_on.png"));;
-                if (i>0 && i<=5){
-                    level.add(new Button("/menu/boxLevel",250+gapXtransition*j, startYSelectLevel));
-                }
-                else if (i>5 && i<=10){
-                    level.add(new Button("/menu/boxLevel",250+gapXtransition*j,startYSelectLevel+gapYtransition));
-                }
-                else if (i>10 && i<=15){
-                    level.add(new Button("/menu/boxLevel",250+gapXtransition*j,startYSelectLevel+2*gapYtransition));
-                }
-                else if (i>15 && i<=20){
-                    level.add(new Button("/menu/boxLevel",250+gapXtransition*j,startYSelectLevel+3*gapYtransition));
-                }
-            } catch (Exception e) {
-                break;
+        // Initialisation des boutons de sélection de niveau
+
+
+        for (int k = 0; k < 3; k++) {
+            int taille = gp.getAmountLevel()[k];
+            level[k] = new Button[taille];
+            locked[k] = new Button[taille];
+            int j = 0;
+            int l = 0;
+            for (int i = 0; i < taille; i++) {
+                if (j % 5 == 0) j = 0;
+                if (i%5==0 && i!=0) l++;
+                level[k][i] = new Button("/menu/boxLevel", 250 + gapXtransition * j, startYSelectLevel+l*gapYLevel);
+                locked[k][i] = new Button("/menu/help_button_", 250 + gapXtransition * j, startYSelectLevel+l*gapYLevel);
+                j++;
             }
-            i++;
-            j++;
         }
 
+        // Initialisation des boutons de sélection de mode de jeu
         classicButton = new Button("/menu/transition/buttons/nextLevel", buttonCenterXGamemode, startYGamemode);
         timerButton = new Button("/menu/transition/buttons/nextLevel", buttonCenterXGamemode, startYGamemode+gapYGamemode);
         limitedButton = new Button("/menu/transition/buttons/nextLevel", buttonCenterXGamemode, startYGamemode+2*gapYGamemode);
         builderButton = new Button("/menu/transition/buttons/nextLevel", buttonCenterXGamemode, startYGamemode+3*gapYGamemode);
+
+        // Ajustement de la position des boutons : GAME OVER
+        int buttonCenterXtransition = (gp.screenWidth / 2) - 300;
+        int startYtransition = gp.screenHeight / 4;
+        int gapYtransition = 200;
+
+        // Initialisation des boutons lors d'une défaite
+        retryButton = new Button("/menu/transition/buttons/replay", buttonCenterXtransition, startYtransition);
+        mainMenuButton = new Button("/menu/transition/buttons/mainMenu", buttonCenterXtransition, startYtransition+gapYtransition);
     }
 	
 	public void resetButtons() {
-		for (Button e: level){
+		for (Button e: level[gp.getGamemode()]){
             e.setMouseOver(false);
         }
 	}
@@ -84,20 +91,34 @@ public class SelectLevel {
 	public void draw(Graphics2D g2) {
 		if (gp.gameState == State.SELECT) {
 			drawSelectLevel(g2);
+            /*for (int i = 0; i<level.length; i++){
+                for (int j = 0; j<level[i].length; j++){
+                    System.out.print(level[i][j]==null);
+                }
+                System.out.println("");
+            }*/
 		}
         if(gp.gameState == State.GAMEMODE){
             drawSelectMode(g2);
         }
+        if (gp.gameState == State.GAMEOVER){
+            drawLoseWindow(g2);
+        }
 	}
 	
-    public LinkedList<Button> getLevelButton() {
+    public Button[][] getLevelButton() {
         return level;
     }
 
 	private void drawSelectLevel(Graphics2D g2) {	
         //g2.drawImage(background, pauseBackGroundXcoord, pauseBackGroundYcoord, null);
-        for (Button e: level){
-            e.draw(g2);
+        for (int i = 0; i<level[gp.getGamemode()].length;i++){
+            if (gp.getUnlock()[gp.getGamemode()][i]==true){
+                level[gp.getGamemode()][i].draw(g2);
+            }
+            else {
+                locked[gp.getGamemode()][i].draw(g2);
+            }
         }
 	}
 
@@ -107,6 +128,12 @@ public class SelectLevel {
         timerButton.draw(g2);
         limitedButton.draw(g2);
         builderButton.draw(g2);
+    }
+
+    private void drawLoseWindow(Graphics2D g2){
+        g2.drawImage(loseWindow, gp.screenWidth/2 -261, gp.screenHeight/2-400, null);
+        retryButton.draw(g2);
+        mainMenuButton.draw(g2);
     }
 
     public Button getClassicButton(){
@@ -123,5 +150,13 @@ public class SelectLevel {
 
     public Button getBuilderButton(){
         return builderButton;
+    }
+
+    public Button getRetryButton2() {
+        return retryButton;
+    }
+
+    public Button getMainMenuButton2() {
+        return mainMenuButton;
     }
 }

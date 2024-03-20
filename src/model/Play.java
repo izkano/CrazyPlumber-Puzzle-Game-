@@ -95,7 +95,7 @@ public class Play {
 	            timer.start();
 	        }
 			if (gp.map.getMove() <= 0) {
-				gp.gameState = State.TRANSITION;
+				gp.gameState = State.GAMEOVER;
 				gp.repaint(); 
 				transitioning = false;
 	    	}

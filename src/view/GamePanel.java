@@ -34,7 +34,7 @@ public class GamePanel extends JPanel implements Runnable {
 	private  JButton helpButton;
 	private JLabel aideLabel;
     
-
+    private int[] amountLevel = countLevel();
 	// SYSTEM
 	public Map map;
 	public Play play;
@@ -46,8 +46,8 @@ public class GamePanel extends JPanel implements Runnable {
     private Thread gameThread = new Thread(this);
     
     private int lvl = 1;
-    private LinkedList<Boolean> unlocked;
-    private int[] amountLevel = countLevel();
+    private boolean[][] unlocked;
+
     private int difficulty;
     private int gamemode;
     private int move;
@@ -189,7 +189,7 @@ public class GamePanel extends JPanel implements Runnable {
     	gameState = State.PLAYING;
         this.lvl = level;
     	try {
-    		map = new Map(level);
+    		map = new Map(gamemode,level);
             move = map.countMove();
     	} catch (MapException e) {
     		System.out.println(e.getMessage());
@@ -244,38 +244,33 @@ public class GamePanel extends JPanel implements Runnable {
         else if (gameState == State.GAMEMODE){
             sl.draw(g2);
         }
+        else if (gameState == State.GAMEOVER){
+            sl.draw(g2);
+        }
         helpButton.setVisible(true);
         	// afficher l'écran de pause...
         
     }
     
     public void unlockNextLvl(int lvl){
-        if (lvl<unlocked.size()){
-            unlocked.set(lvl,true);
+        if (lvl<unlocked[gamemode].length){
+            unlocked[gamemode][lvl] = true;
         }
     }
 
-    public LinkedList<Boolean> getUnlock(){
+    public boolean[][] getUnlock(){
         return unlocked;
     }
 
-    public LinkedList<Boolean> createUnlock(){
-        LinkedList<Boolean> unlock = new LinkedList<Boolean>();
-        BufferedReader reader;
-        
-        int i = 1;
-        
-        while (true){
-            try{
-                reader = new BufferedReader(new FileReader("res/level/" + i + ".txt"));
-                unlock.add(false);
+    public boolean[][] createUnlock(){
+        boolean[][] unlock = new boolean[3][];
+        for (int i = 0; i<3;i++){
+            unlock[i] = new boolean[amountLevel[i]];
+            for (int j = 1; j<amountLevel[i];j++){
+                unlock[i][j] = false;
             }
-            catch (IOException e){
-                break;
-            }
-            i++;
+            unlock[i][0] = true;
         }
-        unlock.set(0,true);
         return unlock;
     }
     
@@ -286,7 +281,20 @@ public class GamePanel extends JPanel implements Runnable {
             int i = 1;
             while (true){
                 try{
-                    BufferedReader reader = new BufferedReader(new FileReader("res/level/"+j+"/" + i + ".txt"));
+                    switch(j){
+                        case 0:
+                            BufferedReader reader = new BufferedReader(new FileReader("res/level/classic/" + i + ".txt"));
+                            break;
+                        case 1:
+                            BufferedReader reader1 = new BufferedReader(new FileReader("res/level/timer/" + i + ".txt"));
+                            break;
+                        case 2:
+                            BufferedReader reader2 = new BufferedReader(new FileReader("res/level/limited/" + i + ".txt"));
+                            break;
+                        case 3:
+                            BufferedReader reader3 = new BufferedReader(new FileReader("res/level/builder/" + i + ".txt"));
+                            break;
+                    }
                 }
                 catch (IOException e){
                     break;
