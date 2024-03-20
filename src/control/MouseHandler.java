@@ -54,8 +54,8 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 
 		// GAME STATE : SELECT
 		else if (gp.gameState == State.SELECT) {
-			for (int i = 0; i<sl.getLevelButton().size();i++){
-				if ( isIn(e, sl.getLevelButton().get(i)) && gp.getUnlock().get(i)==true) { 
+			for (int i = 0; i<sl.getLevelButton()[gp.getGamemode()].length;i++){
+				if ( isIn(e, sl.getLevelButton()[gp.getGamemode()][i]) && gp.getUnlock()[gp.getGamemode()][i]==true) { 
 					gp.setLevel(i+1);
 					gp.gameState = State.PLAYING;
 				}
@@ -103,6 +103,14 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 				gp.setGameMode(3);
 				gp.play.setGameMode(GameMode.BUILDER);
 				gp.gameState = State.SELECT;
+			}
+		}
+
+		else if (gp.gameState == State.GAMEOVER) {
+			if (isIn(e, sl.getRetryButton2())) {
+				gp.setLevel(gp.getLevel());
+			} else if (isIn(e, sl.getMainMenuButton2())) {
+				gp.gameState = State.MENU;
 			}
 		}
 	}
