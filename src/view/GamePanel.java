@@ -98,6 +98,10 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
     
+    public Thread getGameThread() {
+    	return this.gameThread;
+    }
+    
     public SelectLevel getSelectLevel() {
     	return sl;
     }
@@ -153,13 +157,10 @@ public class GamePanel extends JPanel implements Runnable {
     /**
      * Méthode appelé tous les tours de boucles, met à jour la partie méchanique du jeu
      */
-    private boolean transitioning = false; // Ajouter comme attribut de classe
-
 	public void update() {
 	    if (gameState == State.PLAYING && map != null) { // Vérifier également que transitioning est false
 	    	
 	    	play.play();
-	    	
 	        /*if (map.isWon()) {
 	            transitioning = true; // Empêche l'exécution répétée
 	
