@@ -61,7 +61,7 @@ public class SelectLevel {
                 if (j % 5 == 0) j = 0;
                 if (i%5==0 && i!=0) l++;
                 level[k][i] = new Button("/menu/boxLevel", 250 + gapXtransition * j, startYSelectLevel+l*gapYLevel);
-                locked[k][i] = new Button("/menu/help_button_", 250 + gapXtransition * j, startYSelectLevel+l*gapYLevel);
+                locked[k][i] = new Button("/menu/locked", 250 + gapXtransition * j, startYSelectLevel+l*gapYLevel);
                 j++;
             }
         }
