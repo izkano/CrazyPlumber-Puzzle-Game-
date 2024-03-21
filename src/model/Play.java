@@ -1,14 +1,11 @@
 package model;
 
-import javax.swing.Timer;
-import javax.swing.event.SwingPropertyChangeSupport;
-
 import view.GamePanel;
 
 public class Play {
 	private GamePanel gp;
 	private GameMode gameMode = GameMode.CLASSIC;
-	private boolean transitioning;
+	
 	
 	public Play(GamePanel gp) {
 		this.gp = gp;
@@ -54,50 +51,43 @@ public class Play {
 	}
 	
 	private void classic() {
-		if (gp.map != null && !transitioning) { // Vérifier également que transitioning est false
+		if (gp.map != null) {
 	        if (gp.map.isWon()) {
-	            transitioning = true; // Empêche l'exécution répétée
-	
-	            // Temporiser l'exécution du code de transition
-	            Timer timer = new Timer(500, e -> {
+                gp.repaint();
 	                gp.unlockNextLvl(gp.getLevel());
 	                gp.setLevel(gp.getLevel());
 	                Cell.playSound("res/pipes/win.wav");
+	                try {
+						gp.getGameThread().sleep(300);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 	                gp.gameState = State.TRANSITION;
-	                gp.repaint(); 
-	                transitioning = false; // Réinitialise le drapeau pour permettre de nouvelles transitions
-	            });
-	            timer.setRepeats(false);
-	            timer.start();
 	        }
 	    }
 	}
 	
 	private void timer() {
-
+		System.out.println(System.currentTimeMillis()/1000);
 	}
 	
 	private void limited() {
-		if (gp.map != null && !transitioning) { // Vérifier également que transitioning est false
+		if (gp.map != null) {
 	        if (gp.map.isWon()) {
-	            transitioning = true; // Empêche l'exécution répétée
-	
-	            // Temporiser l'exécution du code de transition
-	            Timer timer = new Timer(500, e -> {
+                gp.repaint();
 	                gp.unlockNextLvl(gp.getLevel());
 	                gp.setLevel(gp.getLevel());
 	                Cell.playSound("res/pipes/win.wav");
+	                try {
+						gp.getGameThread().sleep(300);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 	                gp.gameState = State.TRANSITION;
-	                gp.repaint(); 
-	                transitioning = false; // Réinitialise le drapeau pour permettre de nouvelles transitions
-	            });
-	            timer.setRepeats(false);
-	            timer.start();
 	        }
-			if (gp.map.getMove() <= 0) {
+	        else if (gp.map.getMove() <= 0) {
 				gp.gameState = State.GAMEOVER;
 				gp.repaint(); 
-				transitioning = false;
 	    	}
 		}
 	}
