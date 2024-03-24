@@ -89,7 +89,12 @@ public class Map {
 	        line = reader.readLine();
 	        for (int j = 0; j < line.length(); j++) {
 	            rdm = random.nextInt(4);
-	            matrix[i][j] = new Cell(Character.getNumericValue(line.charAt(j)),0);
+	            int c = Character.getNumericValue(line.charAt(j));
+	            if (c != 0 ) {
+	            	matrix[i][j] = new Cell(c,0);
+	            } else {
+	            	matrix[i][j] = null;
+	            }
 	        }
 	    }
 	
@@ -136,7 +141,7 @@ public class Map {
         int row = mouseY / tileSize;
         int col = mouseX / tileSize;
 
-        if (row >= 0 && row < start.length && col >= 0 && col < start[0].length) {
+        if (row >= 0 && row < start.length && col >= 0 && col < start[0].length && start[row][col] != null) {
         	start[row][col].rotate();
 			move--;
         }
@@ -153,31 +158,75 @@ public class Map {
 	 * @param tileSize : taille d'une cellule
 	 */
 	public void drawCell(int i, int j, Graphics2D g2, int x, int y, int tileSize) {
-		start[i][j].drawCell(g2, x, y, tileSize);
+		if (start[i][j] != null) {
+			start[i][j].drawCell(g2, x, y, tileSize);
+		}
 	}
 	
-
-	/** 
-	 * Verifie si le joueur a completé le niveau
-	 * @return : true si le niveau est terminé, false sinon
-	 */
-	public boolean isWon(){
-		for (int i = 0; i<start.length; i++){
-			for (int j = 0; j<start[0].length; j++){
-				if (this.start[i][j].getPipeType()==1){
-					if(this.solution[i][j]!=(this.start[i][j].getOrientation()%2)){
-						return false;
-					}
-				}
-				else {
-					if(this.solution[i][j]!=this.start[i][j].getOrientation()){
-						return false;
-					}
+	
+	public boolean parcoursProfondeurRec() {
+		boolean res = true;
+		
+		for (int i = 0 ; i < start.length ; i++) {
+			for (int j = 0 ; j < start[i].length ; j++) {
+				if (start[i][j] != null && !start[i][j].isChecked()) {
+					res &= explorer(start[i][j],i,j);
 				}
 			}
 		}
-		return true;
-    }
+		
+		return res;
+	}
+	
+	
+	public boolean explorer(Cell s, int x, int y) {
+		boolean[] con = s.getCon();
+		boolean b = true;
+		
+		s.setChecked();
+		
+		for (int i = 0 ; i < 4 ; i++) {
+			if (con[i] && b) {
+				if (i == 0) {
+						if (x <= 0 || start[x-1][y] == null || !start[x-1][y].getCon()[2])
+							b = false;
+						else if (!start[x-1][y].isChecked())
+							b = explorer(start[x-1][y], x-1,y);
+				}
+				else if (i == 1) {
+						if (y >= start[x].length-1 || start[x][y+1] == null || !start[x][y+1].getCon()[3])
+							b = false;
+						else if (!start[x][y+1].isChecked())
+							b = explorer(start[x][y+1], x,y+1);
+				}
+				else if (i == 2) {
+						if (x >= start.length-1 || start[x+1][y] == null || !start[x+1][y].getCon()[0]) 
+							b = false;
+						else if (!start[x+1][y].isChecked())
+							b = explorer(start[x+1][y], x+1,y);
+				}
+				else if (i == 3) {
+						if (y <= 0  || start[x][y-1] == null || !start[x][y-1].getCon()[1])
+							b = false;
+						else if (!start[x][y-1].isChecked()) 
+							b = explorer(start[x][y-1], x,y-1);
+				}
+			}
+		}
+		
+		return b;
+	}
+	
+	
+	public void resetCells() {
+		for (int i = 0 ; i < start.length ; i++) {
+			for (int j = 0 ; j < start[i].length ; j++) {
+				if (start[i][j] != null) {
+					start[i][j].reset();
+				}
+			}
+		}
+	}
 
 	
 	/**
