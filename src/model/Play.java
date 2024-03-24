@@ -25,13 +25,16 @@ public class Play {
 		}
 	}
 	
+	
 	public GameMode getGameMode() {
 		return this.gameMode;
 	}
 	
+	
 	public void setGameMode(GameMode gm) {
 		this.gameMode = gm;
 	}
+	
 	
 	public void play() {
 		switch (gameMode) {
@@ -50,30 +53,33 @@ public class Play {
 		}
 	}
 	
+	
 	private void classic() {
 		if (gp.map != null) {
-	        if (gp.map.isWon()) {
-                gp.repaint();
-	                gp.unlockNextLvl(gp.getLevel());
-	                gp.setLevel(gp.getLevel());
-	                if(gp.sound) Cell.playSound("res/pipes/win.wav");
-	                try {
-						gp.getGameThread().sleep(300);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-	                gp.gameState = State.TRANSITION;
+	        if (gp.map.parcoursProfondeurRec()) {
+	        	gp.repaint();
+	            gp.unlockNextLvl(gp.getLevel());
+	            if(gp.sound) Cell.playSound("res/pipes/win.wav");
+	            try {
+					gp.getGameThread().sleep(300);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+	            gp.gameState = State.TRANSITION;
 	        }
+	        gp.map.resetCells();
 	    }
 	}
+	
 	
 	private void timer() {
 		System.out.println(System.currentTimeMillis()/1000);
 	}
 	
+	
 	private void limited() {
 		if (gp.map != null) {
-	        if (gp.map.isWon()) {
+	        if (gp.map.parcoursProfondeurRec()) {
                 gp.repaint();
 	                gp.unlockNextLvl(gp.getLevel());
 	                gp.setLevel(gp.getLevel());
@@ -91,6 +97,7 @@ public class Play {
 	    	}
 		}
 	}
+	
 	
 	private void builder() {
 	

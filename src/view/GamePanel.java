@@ -80,6 +80,8 @@ public class GamePanel extends JPanel implements Runnable {
 		this.gameState = State.MENU;
         unlocked = createUnlock();
         
+        setLevel(1);
+        
         this.play = new Play(this);
     }
 
@@ -160,27 +162,10 @@ public class GamePanel extends JPanel implements Runnable {
      */
 	public void update() {
 	    if (gameState == State.PLAYING && map != null) { // Vérifier également que transitioning est false
-	    	
 	    	play.play();
-	        /*if (map.isWon()) {
-	            transitioning = true; // Empêche l'exécution répétée
-	
-	            // Temporiser l'exécution du code de transition
-	            Timer timer = new Timer(500, e -> {
-	                unlockNextLvl(lvl);
-	                setLevel(lvl);
-	                Cell.playSound("res/pipes/win.wav");
-	                gameState = State.TRANSITION;
-	                repaint(); // Pour s'assurer que l'UI est mis à jour
-	                transitioning = false; // Réinitialise le drapeau pour permettre de nouvelles transitions
-	            });
-	            timer.setRepeats(false); // S'assurer que le Timer ne se répète pas
-	            timer.start();
-	        }*/
 	    }
 	}
     
-
     
     
     /**
@@ -188,7 +173,6 @@ public class GamePanel extends JPanel implements Runnable {
      * Charge le niveau dans l'attribut de type Map
      */
     public void setLevel(int level) {
-    	gameState = State.PLAYING;
         this.lvl = level;
     	try {
     		map = new Map(gamemode,level);
@@ -197,11 +181,13 @@ public class GamePanel extends JPanel implements Runnable {
     		System.out.println(e.getMessage());
     	}
     }
+    
 
     public void setDifficulty(int difficulty){
         this.difficulty = difficulty;
         gameState = State.SELECT;
     }
+    
     
     /**
      * Affichage des composants graphiques, appelée depuis repaint() l.106 à chaque tour de boucle du jeu
@@ -250,19 +236,20 @@ public class GamePanel extends JPanel implements Runnable {
             sl.draw(g2);
         }
         helpButton.setVisible(true);
-        	// afficher l'écran de pause...
-        
     }
+    
     
     public void unlockNextLvl(int lvl){
         if (lvl<unlocked[gamemode].length){
             unlocked[gamemode][lvl] = true;
         }
     }
+    
 
     public boolean[][] getUnlock(){
         return unlocked;
     }
+    
 
     public boolean[][] createUnlock(){
         boolean[][] unlock = new boolean[3][];
@@ -307,14 +294,17 @@ public class GamePanel extends JPanel implements Runnable {
         }
         return res;
     }
+    
 
     public int[] getAmountLevel(){
         return amountLevel;
     }
+    
 
     public void setGameMode(int gamemode){
         this.gamemode = gamemode;
     }
+    
 
     public int getGamemode(){
         return gamemode;

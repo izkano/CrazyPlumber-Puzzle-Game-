@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -16,11 +18,17 @@ public class Cell {
     private int orientation;
     private BufferedImage image;
     
+    private boolean[] con;
+    private boolean checked;
+    
+    
     public Cell (int pipeType,int orientation){
         this.pipeType = pipeType;
         this.orientation = orientation;
         loadImage(pipeType);
+        initCon();
     }
+    
     
     /** 
      * Charge dans l'attribut image, l'image correspondant au type de tuyau donné en argument
@@ -85,6 +93,68 @@ public class Cell {
     }
     
     
+    public boolean[] getCon() {
+    	return this.con;
+    }
+    
+    public boolean isChecked() {
+    	return checked;
+    }
+    
+    public void setChecked() {
+    	this.checked = true;
+    }
+    
+    private void initCon() {
+    	this.con = new boolean[4];
+    	switch(pipeType) {
+    		case 1:
+    			con[0] = true;
+    			con[1] = false;
+    			con[2] = true;
+    			con[3] = false;
+    			break;
+    		case 2:
+    			con[0] = false;
+    			con[1] = false;
+    			con[2] = true;
+    			con[3] = true;
+    			break;
+    		case 3:
+    			con[0] = true;
+    			con[1] = false;
+    			con[2] = true;
+    			con[3] = true;
+    			break;
+    		case 4:
+    			con[0] = false;
+    			con[1] = false;
+    			con[2] = true;
+    			con[3] = false;
+    			break;
+    	}
+    }
+    
+    
+    /**
+     * Met à jour le tableau de diffusion de la cellule (décalage de toutes les valeurs à droite)
+     */
+    private void rotateCon() {
+    	boolean last = con[3];
+    	
+    	for (int i = 3 ; i > 0 ; i--) {
+    		con[i] = con[i-1];
+    	}
+    	
+    	con[0] = last;
+    }
+    
+    
+    public void reset() {
+    	this.checked = false;
+    }
+    
+    
     /**
      * Fait tourner un tuyau de 90 degré dans le sens horaire, et met a jour son attribut orientation.
      */
@@ -94,7 +164,11 @@ public class Cell {
         if (pipeType<=5){
             orientation = (orientation + 1) % 4;
         }
+        
+        rotateCon();
+
         if(GamePanel.sound)playSound("res/pipes/pipe_rotate.wav");
+
         int width = image.getWidth();
 	    int height = image.getHeight();
 
@@ -122,6 +196,8 @@ public class Cell {
     		g2.drawImage(image,x,y,tileSize,tileSize,null);
     	}
     }
+    
+    
      public static void playSound(String soundFilePath) {
         try {
             File soundFile = new File(soundFilePath);
@@ -133,4 +209,9 @@ public class Cell {
             e.printStackTrace();
         }
     }
+     
+     @Override
+     public String toString() {
+    	 return Integer.toString(pipeType) + " : " + Arrays.toString(con);
+     }
 }
