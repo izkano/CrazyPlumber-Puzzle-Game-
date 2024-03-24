@@ -56,7 +56,7 @@ public class Play {
                 gp.repaint();
 	                gp.unlockNextLvl(gp.getLevel());
 	                gp.setLevel(gp.getLevel());
-	                Cell.playSound("res/pipes/win.wav");
+	                if(gp.sound) Cell.playSound("res/pipes/win.wav");
 	                try {
 						gp.getGameThread().sleep(300);
 					} catch (InterruptedException e) {
@@ -77,7 +77,7 @@ public class Play {
                 gp.repaint();
 	                gp.unlockNextLvl(gp.getLevel());
 	                gp.setLevel(gp.getLevel());
-	                Cell.playSound("res/pipes/win.wav");
+	                if(gp.sound) Cell.playSound("res/pipes/win.wav");
 	                try {
 						gp.getGameThread().sleep(300);
 					} catch (InterruptedException e) {

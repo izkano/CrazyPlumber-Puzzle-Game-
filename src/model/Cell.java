@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import view.GamePanel;
 
 
 public class Cell {
@@ -93,7 +94,7 @@ public class Cell {
         if (pipeType<=5){
             orientation = (orientation + 1) % 4;
         }
-        playSound("res/pipes/pipe_rotate.wav");
+        if(GamePanel.sound)playSound("res/pipes/pipe_rotate.wav");
         int width = image.getWidth();
 	    int height = image.getHeight();
 
