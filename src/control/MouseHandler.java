@@ -117,6 +117,7 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 		else if (gp.gameState == State.GAMEOVER) {
 			if (isIn(e, sl.getRetryButton2())) {
 				gp.setLevel(gp.getLevel());
+				gp.gameState = State.PLAYING;
 			} else if (isIn(e, sl.getMainMenuButton2())) {
 				gp.gameState = State.MENU;
 			}
