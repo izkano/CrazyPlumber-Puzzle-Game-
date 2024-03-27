@@ -59,12 +59,12 @@ public class Play {
 	        if (gp.map.parcoursProfondeurRec()) {
 	        	gp.repaint();
 	            gp.unlockNextLvl(gp.getLevel());
-	            if(gp.sound) Cell.playSound("res/pipes/win.wav");
 	            try {
 					gp.getGameThread().sleep(300);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				if(gp.sound) Cell.playSound("res/pipes/win.wav");
 	            gp.gameState = State.TRANSITION;
 	        }
 	        gp.map.resetCells();
@@ -81,20 +81,21 @@ public class Play {
 		if (gp.map != null) {
 	        if (gp.map.parcoursProfondeurRec()) {
                 gp.repaint();
-	                gp.unlockNextLvl(gp.getLevel());
-	                gp.setLevel(gp.getLevel());
-	                if(gp.sound) Cell.playSound("res/pipes/win.wav");
-	                try {
-						gp.getGameThread().sleep(300);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-	                gp.gameState = State.TRANSITION;
+	            gp.unlockNextLvl(gp.getLevel());
+	            try {
+					gp.getGameThread().sleep(300);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				if(gp.sound) Cell.playSound("res/pipes/win.wav");
+	            gp.gameState = State.TRANSITION;
 	        }
+			
 	        else if (gp.map.getMove() <= 0) {
 				gp.gameState = State.GAMEOVER;
 				gp.repaint(); 
 	    	}
+			//gp.map.resetCells();
 		}
 	}
 	

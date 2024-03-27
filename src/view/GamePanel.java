@@ -1,11 +1,11 @@
 package view;
 
-import java.util.LinkedList;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import javax.imageio.ImageIO;
+import java.io.InputStream;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import control.KeyHandler;
 import control.MouseHandler;
 import exception.MapException;
+import main.Main;
 import model.*;
 
 
@@ -31,7 +32,7 @@ public class GamePanel extends JPanel implements Runnable {
 	final int screenWidth = tileSize * maxScreenCol;
 	final int screenHeight = tileSize * maxScreenRow; 
 	public final int mapOffset = tileSize;
-    public static boolean sound=false;
+    public static boolean sound=true;
 	private  JButton helpButton;
 	private JLabel aideLabel;
     
@@ -48,6 +49,9 @@ public class GamePanel extends JPanel implements Runnable {
     
     private int lvl = 1;
     private boolean[][] unlocked;
+
+    public GraphicsEnvironment ge;
+    public Font retro;
 
     private int difficulty;
     private int gamemode;
@@ -81,6 +85,15 @@ public class GamePanel extends JPanel implements Runnable {
         unlocked = createUnlock();
         
         setLevel(1);
+        
+
+        try {
+            ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            retro = Font.createFont(Font.TRUETYPE_FONT, Main.class.getResourceAsStream("/menu/Retro_Gaming.ttf"));
+            ge.registerFont(retro);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
         this.play = new Play(this);
     }
@@ -211,10 +224,10 @@ public class GamePanel extends JPanel implements Runnable {
                 helpButton.setVisible(true);
             }
             g2.setColor(Color.BLACK);
-            g2.setFont(new Font("Arial", Font.BOLD, 50));
-            g2.drawString("Niveau "+lvl, 375, 75);
+            g2.setFont(new Font("Retro Gaming", Font.PLAIN, 50));
+            g2.drawString("Niveau "+lvl, 340, 75);
             if (gamemode == 2){
-                g2.drawString("Coups restants : "+map.getMove(), 375, 125);
+                g2.drawString("Coups restants : "+map.getMove(), 250, 125);
             }
         }
         
@@ -233,6 +246,9 @@ public class GamePanel extends JPanel implements Runnable {
             sl.draw(g2);
         }
         else if (gameState == State.GAMEOVER){
+            sl.draw(g2);
+        }
+        else if (gameState == State.SETTINGS){
             sl.draw(g2);
         }
         helpButton.setVisible(true);

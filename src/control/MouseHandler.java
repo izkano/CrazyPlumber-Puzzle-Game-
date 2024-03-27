@@ -46,9 +46,7 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 			} else if ( isIn(e, ui.getSelectBtn()) ) {
 				gp.gameState = State.SELECT;
 			} else if ( isIn(e, ui.getSettingsBtn()) ) {
-				if(gp.sound) {gp.sound=false;}
-				else {gp.sound=true;}
-				gp.gameState = State.PLAYING;
+				gp.gameState = State.SETTINGS;
 			} else if ( isIn(e, ui.getMenuBtn()) ) {
 				gp.gameState = State.MENU;
 			}
@@ -61,6 +59,9 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 					gp.setLevel(i+1);
 					gp.gameState = State.PLAYING;
 				}
+			}
+			if (isIn(e, sl.getBackButton())) {
+				gp.gameState = State.GAMEMODE;
 			}
 		}
 		
@@ -108,6 +109,9 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 				gp.play.setGameMode(GameMode.BUILDER);
 				gp.gameState = State.SELECT;
 			}
+			else if (isIn(e, sl.getBackButton())) {
+				gp.gameState = State.MENU;
+			}
 		}
 
 		else if (gp.gameState == State.GAMEOVER) {
@@ -115,6 +119,14 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 				gp.setLevel(gp.getLevel());
 			} else if (isIn(e, sl.getMainMenuButton2())) {
 				gp.gameState = State.MENU;
+			}
+		}
+
+		else if (gp.gameState == State.SETTINGS) {
+			if (isIn(e, sl.getSoundButton()) || isIn(e, sl.getNoSoundButton())){
+				gp.sound = !gp.sound;
+			} else if (isIn(e, sl.getBackButton())) {
+				gp.gameState = State.PAUSE;
 			}
 		}
 	}
@@ -158,6 +170,19 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 			gp.repaint(); 
 		}
 
+		else if (gp.gameState == State.GAMEMODE){
+			if (isIn(e, sl.getClassicButton())) {
+				sl.getClassicButton().setMouseOver(true);
+			} else if (isIn(e, sl.getTimerButton())) {
+				sl.getTimerButton().setMouseOver(true);
+			} else if (isIn(e, sl.getLimitedButton())) {
+				sl.getLimitedButton().setMouseOver(true);
+			} else if (isIn(e, sl.getBuilderButton())) {
+				sl.getBuilderButton().setMouseOver(true);
+			} else if (isIn(e, sl.getBackButton())) {
+				sl.getBackButton().setMouseOver(true);
+			}
+		}
 	}
 
 	@Override
@@ -179,6 +204,10 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 			ui.getMainMenuButton().setMouseOver(false);
 			ui.getRetryButton().setMouseOver(false);
 			gp.repaint(); 
+		}
+
+		else if (gp.gameState == State.GAMEMODE){
+			sl.resetButtons();
 		}
 	}
 
