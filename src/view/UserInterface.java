@@ -35,7 +35,6 @@ public class UserInterface {
 	private Button menuBtn;
 	private Button selectBtn;
 	private Button settingsBtn;
-
 	
     public Object getNextLevelButton;
 	

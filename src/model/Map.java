@@ -265,7 +265,7 @@ public class Map {
 				res += f;
 			}
 		}
-		return res+20;
+		return (int) Math.round(res*1.5);
 	}
 
 }
