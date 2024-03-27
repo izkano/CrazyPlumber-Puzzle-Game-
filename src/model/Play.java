@@ -95,7 +95,7 @@ public class Play {
 				gp.gameState = State.GAMEOVER;
 				gp.repaint(); 
 	    	}
-			//gp.map.resetCells();
+			gp.map.resetCells();
 		}
 	}
 	
