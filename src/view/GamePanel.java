@@ -228,7 +228,7 @@ public class GamePanel extends JPanel implements Runnable {
         
         else if (gameState == State.PLAYING) {
             loadGridBackground();
-            int gridX = (this.getWidth() - gridBackground.getWidth()) / 2 -50;
+            int gridX = (this.getWidth() - gridBackground.getWidth()) / 2 -65;
             int gridY = (this.getHeight() - gridBackground.getHeight()) / 2 -50;
             int newWidth = this.getWidth() -300;
             int newHeight = this.getHeight() -300;
@@ -245,10 +245,10 @@ public class GamePanel extends JPanel implements Runnable {
                 helpButton.setVisible(true);
             }
             g2.setColor(Color.BLACK);
-            g2.setFont(new Font("Retro Gaming", Font.PLAIN, 50));
-            g2.drawString("Niveau "+lvl, 340, 75);
+            g2.setFont(new Font("Retro Gaming", Font.PLAIN, 45));
+            g2.drawString("Niveau "+lvl, 345, 50);
             if (gamemode == 2){
-                g2.drawString("Coups restants : "+map.getMove(), 250, 125);
+                g2.drawString("Coups restants : "+map.getMove(), 200, 95);
             }
             
         }

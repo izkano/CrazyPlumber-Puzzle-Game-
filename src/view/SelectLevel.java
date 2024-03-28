@@ -78,7 +78,7 @@ public class SelectLevel {
         builderButton = new Button("/menu/gamemode/buttons/builder_", buttonCenterXGamemode, startYGamemode+3*gapYGamemode);
 
         // Ajustement de la position des boutons : GAME OVER
-        int buttonCenterXtransition = (gp.screenWidth / 2) - 300;
+        int buttonCenterXtransition = (gp.screenWidth / 2) - 246;
         int startYtransition = gp.screenHeight / 4;
         int gapYtransition = 200;
 
