@@ -172,7 +172,7 @@ public class GamePanel extends JPanel implements Runnable {
             lastTime = currentTime;
             
             if (delta>=1) {
-                update();
+                update();   
                 repaint();
                 delta--;
             }
@@ -247,7 +247,11 @@ public class GamePanel extends JPanel implements Runnable {
             g2.setColor(Color.BLACK);
             g2.setFont(new Font("Retro Gaming", Font.PLAIN, 45));
             g2.drawString("Niveau "+lvl, 345, 50);
-            if (gamemode == 2){
+            if (gamemode == 1) {
+            	g2.drawString("Temps restant : "+map.getRemainnig_time(),200, 95);
+            }
+
+            else if (gamemode == 2){
                 g2.drawString("Coups restants : "+map.getMove(), 200, 95);
             }
             

@@ -70,7 +70,7 @@ public class UserInterface {
 
 		int buttonCenterXtransition = (gp.screenWidth / 2) - 246;
 		int startYtransition = gp.screenHeight / 2; // Ajuste selon le besoin
-		int gapYtransition = 200; // Ajuste l'espacement selon le besoin
+		int gapYtransition = 100; // Ajuste l'espacement selon le besoin
 		
 		// initialisation avec les images pour la transition
 		this.nextLevelBtn = new Button(basePath + "nextLevel", buttonCenterXtransition, startYtransition);

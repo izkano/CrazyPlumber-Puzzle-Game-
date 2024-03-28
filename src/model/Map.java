@@ -14,6 +14,10 @@ public class Map {
 
 	private Cell[][] start;
 	private int[][] solution;
+
+	private int Time_start=0;
+	private int Time_level;
+
 	
 	private String mode;
 	private int move;
@@ -49,6 +53,7 @@ public class Map {
 			throw new MapException("Unable to load map : " + e.getMessage());
 		}
 		move = countMove();
+		Time_level = 14 + level;
 	}
 	
 	public int getHeight() {
@@ -276,5 +281,34 @@ public class Map {
 		return moveCount;
 	}
 	
-
+	public void setTimer_fiel() {
+		Time_start=0;
+	}
+	
+	public void setTimer() {
+		this.Time_start=(int) (System.currentTimeMillis()/1000);
+	}
+	
+	public int getTime_start() {
+		return this.Time_start;
+	}
+	
+	public int getTime_now() {
+		return (int) (System.currentTimeMillis()/1000);
+	}
+	
+	public void  setTime_level() {
+		 Time_level++;
+	}
+	public int  getTime_level() {
+		 return Time_level;
+	}
+	
+	public boolean level_Fail() {
+		return this.getTime_now()-this.getTime_start()>=getTime_level();
+	}
+	
+	public int getRemainnig_time() {
+		return getTime_level()-(this.getTime_now()-this.getTime_start());
+	}
 }

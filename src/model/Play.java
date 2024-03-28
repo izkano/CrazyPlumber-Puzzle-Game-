@@ -80,7 +80,28 @@ public class Play {
 	
 	
 	private void timer() {
-		System.out.println(System.currentTimeMillis()/1000);
+		if (gp.map != null) {
+			if(gp.map.getTime_start()==0) {
+				gp.map.setTimer();
+			}
+			if(gp.map.level_Fail()) {
+				gp.gameState=State.GAMEOVER;
+				gp.map.setTimer_fiel();
+			}
+	        if (gp.map.parcoursProfondeurRec()) {
+					gp.repaint();
+	                gp.unlockNextLvl(gp.getLevel());
+	                if(gp.sound) Cell.playSound("res/pipes/win.wav");
+	                try {
+                       gp.getGameThread().sleep(300);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+	                gp.gameState = State.TRANSITION;
+	        }
+			gp.map.resetCells();
+	    }
+
 	}
 	
 	
