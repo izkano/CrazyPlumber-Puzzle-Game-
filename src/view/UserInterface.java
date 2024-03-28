@@ -210,7 +210,8 @@ public class UserInterface {
 		return resizedImage;
 	}
 	private void drawMessage(Graphics2D g2, int numStars) {
-		String message;
+		String message1;
+		String message2;
 		try {
 			Font retroFont = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/menu/Retro_Gaming.ttf"));
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -220,16 +221,21 @@ public class UserInterface {
 		}
 		switch (numStars) {
 			case 1:
-				message = "Bien joué ! Vous avez obtenu 1 étoile !\n Vous pouvez faire mieux !";
+				message1 = "Vous avez obtenu 1 étoile !";
+				message2 = "Vous pouvez faire mieux !";
 				break;
 			case 2:
-				message = "Bravo ! Vous avez obtenu 2 étoiles !";
+				message1 = "Vous avez obtenu 2 étoile !";
+				message2 = "Pas mal du tout !";
 				break;
 			case 3:
-				message = "Félicitations ! Vous avez obtenu 3 étoiles !";
+				message1 = "Vous avez obtenu 3 étoile !";
+				message2 = "Impressionant !";
 				break;
 			default:
-				message = "Meilleure chance la prochaine fois !";
+				message1 = "Meilleure chance la prochaine fois !";
+				message2 = "Meilleure chance la prochaine fois !";
+
 				break;
 		}
 	
@@ -240,10 +246,13 @@ public class UserInterface {
 	
 		// Dessiner le message centré en dessous des étoiles
 		FontMetrics metrics = g2.getFontMetrics(font);
-		int messageWidth = metrics.stringWidth(message);
+		int messageWidth = metrics.stringWidth(message1);
 		int messageX = (gp.screenWidth - messageWidth) / 2;
 		int messageY = gp.screenHeight / 2 - 100; // Adjust vertically to a position visible on the screen
-		g2.drawString(message, messageX, messageY);
+		int message2Width = metrics.stringWidth(message2);
+		int message2X = (gp.screenWidth - message2Width) / 2;
+		g2.drawString(message1, messageX, messageY);
+		g2.drawString(message2, message2X, messageY+50);
 	}
 	
 
