@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -16,12 +17,14 @@ public class UserInterface {
 	private BufferedImage pauseWindow;
 	private BufferedImage victoryWindow;
 	private BufferedImage mainBackground;
+	private BufferedImage starImage;
 
 
 	// BUTTONS : TRANSITION
 	private Button nextLevelBtn;
 	private Button retryBtn;
 	private Button mainMenuBtn;
+	
 
 
 	// BUTTONS : MAIN MENU
@@ -69,6 +72,7 @@ public class UserInterface {
 		this.nextLevelBtn = new Button(basePath + "nextLevel", buttonCenterXtransition, startYtransition);
 		this.retryBtn = new Button(basePath + "replay", buttonCenterXtransition,startYtransition + gapYtransition);
 		this.mainMenuBtn = new Button(basePath + "mainMenu", buttonCenterXtransition, startYtransition + 2*gapYtransition);
+		
 
 
 
@@ -143,12 +147,63 @@ public class UserInterface {
 	private void drawTransitionMenu(Graphics2D g2) {
 		// Utiliser le même arrière-plan que le menu de pause
 		g2.drawImage(victoryWindow, gp.screenWidth/2 -261, gp.screenHeight/2-400, null);
+
+
+		int stars = calculateStars(); // Méthode à implémenter pour déterminer le nombre d'étoiles
+    	drawStars(g2, stars);
 		
 		// Utiliser les mêmes coordonnées et logique pour dessiner les boutons spécifiques à la transition
 		nextLevelBtn.draw(g2);
 		retryBtn.draw(g2);
 		mainMenuBtn.draw(g2);
 	}
+
+	private int calculateStars() {
+		// Comparer le nombre de coups réalisés par le joueur avec le nombre de coups minimum
+		int movesMade = gp.map.getMove();
+		int minMoves = gp.map.countMove();
+	
+		// Logique pour déterminer le nombre d'étoiles en fonction des performances du joueur
+		if (movesMade <= minMoves) {
+			return 3; // Le joueur a complété le niveau avec le nombre de coups minimum
+		} else if (movesMade < minMoves * 2) {
+			return 2; // Le joueur a utilisé moins de 50% de coups supplémentaires
+		} else {
+			return 1; // Le joueur a utilisé moins de 100% de coups supplémentaires
+		}
+	}
+	
+	public void drawStars(Graphics2D g2, int numStars) {
+		try {
+			starImage = ImageIO.read(getClass().getResourceAsStream("/menu/transition/starsss.png"));
+		} catch (IOException e) {
+			e.printStackTrace(); // ou tout autre traitement d'erreur approprié
+		}	
+
+		starImage = resizeImage(starImage, 150, 150);
+		// Taille de l'étoile redimensionnée
+		int starWidth = starImage.getWidth();
+		int starHeight = starImage.getHeight();
+		
+		// Coordonnées de départ pour dessiner les étoiles
+		int startX = (gp.screenWidth - (numStars * starWidth)) / 2; // Pour centrer les étoiles horizontalement
+		int startY = (gp.screenHeight - starHeight) / 2 - 230; // Pour aligner les étoiles verticalement
+		
+		// Dessiner les étoiles
+		for (int i = 0; i < numStars; i++) {
+			g2.drawImage(starImage, startX + i * starWidth, startY, null);
+		}
+	}
+	private BufferedImage resizeImage(BufferedImage originalImage, int width, int height) {
+		BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = resizedImage.createGraphics();
+		g.drawImage(originalImage, 0, 0, width, height, null);
+		g.dispose();
+		return resizedImage;
+	}
+	
+
+
 
 	public void drawMainMenu(Graphics2D g2) {
 		g2.drawImage(mainBackground, 0, 0, null);		
