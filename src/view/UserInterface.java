@@ -62,8 +62,8 @@ public class UserInterface {
 		String basePath = "/menu/transition/buttons/"; // Chemin de base pour accéder au dossier des images des boutons
 
 		int buttonCenterXtransition = (gp.screenWidth / 2) - 300;
-		int startYtransition = gp.screenHeight / 4; // Ajuste selon le besoin
-		int gapYtransition = 200; // Ajuste l'espacement selon le besoin
+		int startYtransition = gp.screenHeight / 2; // Ajuste selon le besoin
+		int gapYtransition = 100; // Ajuste l'espacement selon le besoin
 		
 		// initialisation avec les images pour la transition
 		this.nextLevelBtn = new Button(basePath + "nextLevel", buttonCenterXtransition, startYtransition);
