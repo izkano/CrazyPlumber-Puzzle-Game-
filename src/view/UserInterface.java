@@ -1,11 +1,15 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import java.awt.FontMetrics;
 
 import model.State;
 
@@ -151,11 +155,15 @@ public class UserInterface {
 
 		int stars = calculateStars(); // Méthode à implémenter pour déterminer le nombre d'étoiles
     	drawStars(g2, stars);
+
+		
+
 		
 		// Utiliser les mêmes coordonnées et logique pour dessiner les boutons spécifiques à la transition
 		nextLevelBtn.draw(g2);
 		retryBtn.draw(g2);
 		mainMenuBtn.draw(g2);
+		drawMessage(g2, stars);
 	}
 
 	private int calculateStars() {
@@ -200,6 +208,42 @@ public class UserInterface {
 		g.drawImage(originalImage, 0, 0, width, height, null);
 		g.dispose();
 		return resizedImage;
+	}
+	private void drawMessage(Graphics2D g2, int numStars) {
+		String message;
+		try {
+			Font retroFont = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/menu/Retro_Gaming.ttf"));
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			ge.registerFont(retroFont);
+		} catch (IOException | FontFormatException e) {
+			e.printStackTrace();
+		}
+		switch (numStars) {
+			case 1:
+				message = "Bien joué ! Vous avez obtenu 1 étoile !\n Vous pouvez faire mieux !";
+				break;
+			case 2:
+				message = "Bravo ! Vous avez obtenu 2 étoiles !";
+				break;
+			case 3:
+				message = "Félicitations ! Vous avez obtenu 3 étoiles !";
+				break;
+			default:
+				message = "Meilleure chance la prochaine fois !";
+				break;
+		}
+	
+		// Définir la police et la couleur du message
+		Font font = new Font("Retro Gaming", Font.BOLD, 23);
+		g2.setFont(font);
+		g2.setColor(Color.BLACK);
+	
+		// Dessiner le message centré en dessous des étoiles
+		FontMetrics metrics = g2.getFontMetrics(font);
+		int messageWidth = metrics.stringWidth(message);
+		int messageX = (gp.screenWidth - messageWidth) / 2;
+		int messageY = gp.screenHeight / 2 - 100; // Adjust vertically to a position visible on the screen
+		g2.drawString(message, messageX, messageY);
 	}
 	
 
