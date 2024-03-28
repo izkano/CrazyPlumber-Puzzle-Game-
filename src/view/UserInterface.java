@@ -154,7 +154,7 @@ public class UserInterface {
 
 
 		int stars = calculateStars(); // Méthode à implémenter pour déterminer le nombre d'étoiles
-    	drawStars(g2, stars);
+    	drawStars(g2, stars,3);
 
 		
 
@@ -181,27 +181,36 @@ public class UserInterface {
 		}
 	}
 	
-	public void drawStars(Graphics2D g2, int numStars) {
+	public void drawStars(Graphics2D g2, int numStarsGained, int totalStars) {
 		try {
-			starImage = ImageIO.read(getClass().getResourceAsStream("/menu/transition/starsss.png"));
+			BufferedImage starImage = ImageIO.read(getClass().getResourceAsStream("/menu/transition/starsss.png"));
+			BufferedImage emptyStarImage = ImageIO.read(getClass().getResourceAsStream("/menu/transition/emptyStar.png"));
+			// Redimensionner les images si nécessaire
+			starImage = resizeImage(starImage, 150, 150);
+			emptyStarImage = resizeImage(emptyStarImage, 150, 150);
+	
+			// Taille de l'étoile redimensionnée
+			int starWidth = starImage.getWidth();
+			int starHeight = starImage.getHeight();
+	
+			// Coordonnées de départ pour dessiner les étoiles
+			int startX = (gp.screenWidth - (totalStars * starWidth)) / 2; // Pour centrer les étoiles horizontalement
+			int startY = (gp.screenHeight - starHeight) / 2 - 230; // Pour aligner les étoiles verticalement
+	
+			// Dessiner les étoiles gagnées avec l'image starsss.png
+			for (int i = 0; i < numStarsGained; i++) {
+				g2.drawImage(starImage, startX + i * starWidth, startY, null);
+			}
+	
+			// Dessiner les étoiles manquantes avec l'image emptyStar.png
+			for (int i = numStarsGained; i < totalStars; i++) {
+				g2.drawImage(emptyStarImage, startX + i * starWidth, startY, null);
+			}
 		} catch (IOException e) {
 			e.printStackTrace(); // ou tout autre traitement d'erreur approprié
-		}	
-
-		starImage = resizeImage(starImage, 150, 150);
-		// Taille de l'étoile redimensionnée
-		int starWidth = starImage.getWidth();
-		int starHeight = starImage.getHeight();
-		
-		// Coordonnées de départ pour dessiner les étoiles
-		int startX = (gp.screenWidth - (numStars * starWidth)) / 2; // Pour centrer les étoiles horizontalement
-		int startY = (gp.screenHeight - starHeight) / 2 - 230; // Pour aligner les étoiles verticalement
-		
-		// Dessiner les étoiles
-		for (int i = 0; i < numStars; i++) {
-			g2.drawImage(starImage, startX + i * starWidth, startY, null);
 		}
 	}
+	
 	private BufferedImage resizeImage(BufferedImage originalImage, int width, int height) {
 		BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = resizedImage.createGraphics();
