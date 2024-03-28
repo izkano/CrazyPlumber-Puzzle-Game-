@@ -297,8 +297,8 @@ public class Map {
 		return (int) (System.currentTimeMillis()/1000);
 	}
 	
-	public void  setTime_level() {
-		 Time_level++;
+	public void  setTime_level(int time) {
+		 this.Time_level = time;
 	}
 	public int  getTime_level() {
 		 return Time_level;
@@ -310,5 +310,9 @@ public class Map {
 	
 	public int getRemainnig_time() {
 		return getTime_level()-(this.getTime_now()-this.getTime_start());
+	}
+
+	public int getStartTime() {
+		return Time_start;
 	}
 }

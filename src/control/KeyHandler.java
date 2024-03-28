@@ -23,9 +23,11 @@ public class KeyHandler implements KeyListener {
 		if (code == KeyEvent.VK_ESCAPE) {
 			switch (gp.gameState) {
 				case PLAYING:
+					gp.map.setTime_level(gp.map.getRemainnig_time());
 					gp.gameState = State.PAUSE;
 					break;
 				case PAUSE:
+					gp.map.setTimer();
 					gp.gameState = State.PLAYING;
 					break;
 				default:

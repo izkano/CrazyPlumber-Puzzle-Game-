@@ -42,6 +42,7 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 		// GAME STATE : PAUSE
 		else if (gp.gameState == State.PAUSE) {
 			if ( isIn(e, ui.getCloseBtnPause()) || isIn(e, ui.getContinueBtn()) ) {
+				gp.map.setTimer();
 				gp.gameState = State.PLAYING;
 			} else if ( isIn(e, ui.getSelectBtn()) ) {
 				gp.gameState = State.SELECT;
