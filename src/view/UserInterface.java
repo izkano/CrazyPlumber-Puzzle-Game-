@@ -160,7 +160,7 @@ public class UserInterface {
 
 	private int calculateStars() {
 		// Comparer le nombre de coups réalisés par le joueur avec le nombre de coups minimum
-		int movesMade = gp.map.getMove();
+		int movesMade = gp.map.getMoveCount();
 		int minMoves = gp.map.countMove();
 	
 		// Logique pour déterminer le nombre d'étoiles en fonction des performances du joueur

@@ -147,6 +147,7 @@ public class Map {
         	start[row][col].rotate();
 			move--;
 			moveCount++;
+			
         }
     }
 	
@@ -268,7 +269,7 @@ public class Map {
 				res += f;
 			}
 		}
-		return (int) Math.round(res*1.5);
+		return res;
 	}
 
 	public int getMoveCount() {
