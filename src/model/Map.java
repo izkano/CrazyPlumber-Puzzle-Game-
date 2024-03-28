@@ -17,6 +17,8 @@ public class Map {
 	
 	private String mode;
 	private int move;
+	private int moveCount = 0;
+	
 
 	/**
 	 * Permet de stocker les informations sur la partie en cours
@@ -144,6 +146,8 @@ public class Map {
         if (row >= 0 && row < start.length && col >= 0 && col < start[0].length && start[row][col] != null) {
         	start[row][col].rotate();
 			move--;
+			moveCount++;
+			
         }
     }
 	
@@ -265,7 +269,12 @@ public class Map {
 				res += f;
 			}
 		}
-		return (int) Math.round(res*1.5);
+		return res;
 	}
+
+	public int getMoveCount() {
+		return moveCount;
+	}
+	
 
 }
