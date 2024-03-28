@@ -58,6 +58,8 @@ public class GamePanel extends JPanel implements Runnable {
     private int move;
 
     private BufferedImage playingBackground;
+    private BufferedImage gridBackground;
+
     
 
     public GamePanel() {
@@ -109,6 +111,14 @@ public class GamePanel extends JPanel implements Runnable {
     private void loadBackgroundImages() {
         try {
             playingBackground = ImageIO.read(getClass().getResourceAsStream("/menu/bgMain.jpg"));
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void loadGridBackground() {
+        try {
+            gridBackground = ImageIO.read(getClass().getResourceAsStream("/menu/grilleMain.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -217,6 +227,17 @@ public class GamePanel extends JPanel implements Runnable {
         }
         
         else if (gameState == State.PLAYING) {
+            loadGridBackground();
+            int gridX = (this.getWidth() - gridBackground.getWidth()) / 2 -50;
+            int gridY = (this.getHeight() - gridBackground.getHeight()) / 2 -50;
+            int newWidth = this.getWidth() -300;
+            int newHeight = this.getHeight() -300;
+            Composite originalComposite = g2.getComposite();
+            AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.85f);
+            g2.setComposite(alphaComposite);
+            g2.drawImage(gridBackground, gridX, gridY,newWidth, newHeight,  null);
+            g2.setComposite(originalComposite);
+            
         	if (map != null) {
                 for (int i = 0 ; i < map.getHeight() ; i++)
                     for (int j = 0 ; j < map.getWidth() ; j++)
@@ -229,6 +250,7 @@ public class GamePanel extends JPanel implements Runnable {
             if (gamemode == 2){
                 g2.drawString("Coups restants : "+map.getMove(), 250, 125);
             }
+            
         }
         
         else if (gameState == State.PAUSE) {
