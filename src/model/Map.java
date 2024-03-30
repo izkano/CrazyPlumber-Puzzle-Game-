@@ -120,7 +120,6 @@ public class Map {
         	start[row][col].rotate();
 			move--;
 			moveCount++;
-			System.out.print(start[row][col].isConnected());
 			updateConnections();
 			start[row][col].loadImage(start[row][col].getPipeType());
 			

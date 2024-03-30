@@ -50,19 +50,23 @@ public class Cell {
             case 1 :
             	path = "res/pipes/horizontal.png";
                 if (connected) {
-                    path = "res/pipes/horizontalBLUE.png";
+                    path = "res/pipes/horizontalBlue.png";
                     }
             	break;
             case 2 :
                 path = "res/pipes/curve.png";
                 if (connected) {
+<<<<<<< HEAD
                     path = "res/pipes/curveBLUE.png";
+=======
+                path = "res/pipes/curveBlue.png";
+>>>>>>> 28d0c38 (Quickfix)
                 }
                 break;
             case 3 :
                 path = "res/pipes/cross.png";
                 if (connected) {
-                    path = "res/pipes/crossBLUE.png";
+                    path = "res/pipes/crossBlue.png";
                     }
                 break;
             case 4:
