@@ -3,6 +3,7 @@ package model;
 import java.util.Random;
 
 import exception.MapException;
+import view.GamePanel;
 
 import java.awt.Graphics2D;
 import java.io.BufferedReader;
@@ -152,11 +153,103 @@ public class Map {
         	start[row][col].rotate();
 			move--;
 			moveCount++;
+			System.out.print(start[row][col].isConnected());
+			updateConnections();
+			start[row][col].loadImage(start[row][col].getPipeType());
+			
+			
 			
         }
     }
+	public void updateConnections() {
+		for (int i = 0; i < start.length; i++) {
+			for (int j = 0; j < start[i].length; j++) {
+				if (start[i][j] != null) {
+					
+					updateCellConnection(start[i][j], i, j);
+					
+
+					start[i][j].loadImage(start[i][j].getPipeType());
+				}
+			}
+		}
+	}
 	
 	
+	private void updateCellConnection(Cell cell, int x, int y) {
+		boolean[] ouvertPrinci = cell.getCon();
+		boolean nord,est,sud,ouest =false;
+		if (cell.getPipeType()!=4) {
+			cell.setConnected(false);
+		}
+		// Direction Nord
+		if (ouvertPrinci[0]) {
+			if (isValidCoordinate(x - 1, y) && start[x - 1][y] != null) {
+				boolean[] ouvertSecond = start[x - 1][y].getCon();
+				if (ouvertSecond[2]) {
+					if (start[x - 1][y].isConnected()) {
+						cell.setConnected(true);
+					}
+					if (cell.isConnected()) {
+						start[x - 1][y].setConnected(true);
+					}
+				}
+			}
+		}
+	
+		// Direction Est
+		if (ouvertPrinci[1]) {
+			if (isValidCoordinate(x, y + 1) && start[x][y + 1] != null) {
+				boolean[] ouvertSecond = start[x][y + 1].getCon();
+				if (ouvertSecond[3]) {
+					if (start[x][y + 1].isConnected()) {
+						cell.setConnected(true);
+					}
+					if (cell.isConnected()) {
+						start[x][y + 1].setConnected(true);
+					}
+				}
+			}
+		}
+	
+		// Direction Sud
+		if (ouvertPrinci[2]) {
+			if (isValidCoordinate(x + 1, y) && start[x + 1][y] != null) {
+				boolean[] ouvertSecond = start[x + 1][y].getCon();
+				if (ouvertSecond[0]) {
+					if (start[x + 1][y].isConnected()) {
+						cell.setConnected(true);
+					}
+					if (cell.isConnected()) {
+						start[x + 1][y].setConnected(true);
+					}
+				}
+			}
+		}
+	
+		// Direction Ouest
+		if (ouvertPrinci[3]) {
+			if (isValidCoordinate(x, y - 1) && start[x][y - 1] != null) {
+				boolean[] ouvertSecond = start[x][y - 1].getCon();
+				if (ouvertSecond[1]) {
+					if (start[x][y - 1].isConnected()) {
+						cell.setConnected(true);
+					}
+					if (cell.isConnected()) {
+						start[x][y - 1].setConnected(true);
+					}
+				}
+			}
+		}
+	}
+	
+	
+	
+	
+	private boolean isValidCoordinate(int x, int y) {
+		return x >= 0 && x < start.length && y >= 0 && y < start[0].length;
+	}
+		
 	/**
 	 * Permet de dessiner une cellule en appellant la méthode draw() de la classe Cellule
 	 * @param i : indice de la ligne de la cellule dans le tableau start
