@@ -126,7 +126,7 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 
 		else if (gp.gameState == State.SETTINGS) {
 			if (isIn(e, sl.getSoundButton()) || isIn(e, sl.getNoSoundButton())){
-				gp.sound = !gp.sound;
+				GamePanel.sound = !GamePanel.sound;
 			} else if (isIn(e, sl.getBackButton())) {
 				gp.gameState = State.PAUSE;
 			}
