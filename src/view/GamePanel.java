@@ -67,6 +67,7 @@ public class GamePanel extends JPanel implements Runnable {
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
         loadBackgroundImages();
+        
         setCursor();
 		
 		ImageIcon aideIcon = new ImageIcon("res/pipes/help_button.png");
@@ -249,6 +250,7 @@ public class GamePanel extends JPanel implements Runnable {
                     	map.drawCell(i, j, g2, j*tileSize+mapOffset, i*tileSize+mapOffset, tileSize);
                 helpButton.setVisible(true);
             }
+            map.updateConnections();
             g2.setColor(Color.BLACK);
             g2.setFont(new Font("Retro Gaming", Font.PLAIN, 45));
             g2.drawString("Niveau "+lvl, 345, 50);
