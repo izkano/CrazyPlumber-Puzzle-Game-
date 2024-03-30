@@ -56,11 +56,8 @@ public class Cell {
             case 2 :
                 path = "res/pipes/curve.png";
                 if (connected) {
-<<<<<<< HEAD
                     path = "res/pipes/curveBLUE.png";
-=======
                 path = "res/pipes/curveBlue.png";
->>>>>>> 28d0c38 (Quickfix)
                 }
                 break;
             case 3 :

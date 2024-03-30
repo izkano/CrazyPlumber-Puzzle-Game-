@@ -86,7 +86,7 @@ public class Play {
 	        if (gp.map.parcoursProfondeurRec()) {
 					gp.repaint();
 	                gp.unlockNextLvl(gp.getLevel());
-	                if(gp.sound) Cell.playSound("res/pipes/win.wav");
+	                if(GamePanel.sound) Cell.playSound("res/pipes/win.wav");
 	                try {
                        gp.getGameThread().sleep(300);
 					} catch (InterruptedException e) {

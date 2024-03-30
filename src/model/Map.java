@@ -144,7 +144,6 @@ public class Map {
 	
 	private void updateCellConnection(Cell cell, int x, int y) {
 		boolean[] ouvertPrinci = cell.getCon();
-		boolean nord,est,sud,ouest =false;
 		if (cell.getPipeType()!=4) {
 			cell.setConnected(false);
 		}
