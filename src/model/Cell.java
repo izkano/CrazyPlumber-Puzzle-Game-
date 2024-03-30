@@ -20,11 +20,17 @@ public class Cell {
     
     private boolean[] con;
     private boolean checked;
+
+    private boolean connected;
     
     
     public Cell (int pipeType,int orientation){
         this.pipeType = pipeType;
         this.orientation = orientation;
+        if (pipeType!=4) {
+            this.connected = false;
+        }
+        else this.connected = true;
         loadImage(pipeType);
         initCon();
     }
@@ -34,33 +40,63 @@ public class Cell {
      * Charge dans l'attribut image, l'image correspondant au type de tuyau donné en argument
      * @param pipeType : 0-case vide, 1-tuyau horizontal, 2-tuyau courbé, 3-tuyau jonction, 4-tuyau de départ/arrivée
      */
-    private void loadImage(int pipeType) {
-    	String path = null;
-        switch(pipeType){
-        	case 0 :
+   
+    public void loadImage(int pipeType) {
+        String path = null;
+        switch (pipeType) {
+            case 0 :
         		path = "res/pipes/none.png";
         		break;
             case 1,6:
             	path = "res/pipes/horizontal.png";
+                if (connected) {
+                    path = "res/pipes/horizontalBLUE.png";
+                    }
             	break;
             case 2,7:
-                path = "res/pipes/curve.png";
+            path = "res/pipes/curve.png";
+                if (connected) {
+                path = "res/pipes/curveBLUE.png";
+                }
                 break;
             case 3,8:
                 path = "res/pipes/cross.png";
+                if (connected) {
+                    path = "res/pipes/crossBLUE.png";
+                    }
                 break;
             case 4:
             	path = "res/pipes/start.png";
-            default :
-            	break;	
+            default:
+                break;
         }
-        
+    
         try {
-            this.image = ImageIO.read(new File(path));
+            BufferedImage originalImage = ImageIO.read(new File(path));
+            // Rotate the image based on the orientation
+            for (int i = 0; i < orientation; i++) {
+                originalImage = rotateImage(originalImage);
+            }
+            this.image = originalImage;
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    
+    private BufferedImage rotateImage(BufferedImage originalImage) {
+        int width = originalImage.getWidth();
+        int height = originalImage.getHeight();
+        BufferedImage rotatedImage = new BufferedImage(height, width, originalImage.getType());
+    
+        Graphics2D g2d = rotatedImage.createGraphics();
+        g2d.rotate(Math.PI / 2, height / 2, width / 2);
+        g2d.translate((height - width) / 2, (height - width) / 2);
+        g2d.drawImage(originalImage, 0, 0, null);
+        g2d.dispose();
+    
+        return rotatedImage;
+    }
+    
 
 
     public int getOrientation() {
@@ -103,6 +139,14 @@ public class Cell {
     
     public void setChecked() {
     	this.checked = true;
+    }
+
+    public boolean isConnected() {
+        return connected;
+    }
+
+    public void setConnected(boolean connected) {
+        this.connected = connected;
     }
     
     private void initCon() {
@@ -166,6 +210,7 @@ public class Cell {
         }
         
         rotateCon();
+        
 
         if(GamePanel.sound)playSound("res/pipes/pipe_rotate.wav");
 
