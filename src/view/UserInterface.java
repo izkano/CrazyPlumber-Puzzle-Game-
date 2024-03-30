@@ -21,7 +21,6 @@ public class UserInterface {
 	private BufferedImage pauseWindow;
 	private BufferedImage victoryWindow;
 	private BufferedImage mainBackground;
-	private BufferedImage starImage;
 
 
 	// BUTTONS : TRANSITION
@@ -156,20 +155,18 @@ public class UserInterface {
 		int stars = calculateStars(); // Méthode à implémenter pour déterminer le nombre d'étoiles
     	drawStars(g2, stars,3);
 
-		
-
-		
 		// Utiliser les mêmes coordonnées et logique pour dessiner les boutons spécifiques à la transition
 		nextLevelBtn.draw(g2);
 		retryBtn.draw(g2);
 		mainMenuBtn.draw(g2);
 		drawMessage(g2, stars);
 	}
+	
 
 	private int calculateStars() {
 		// Comparer le nombre de coups réalisés par le joueur avec le nombre de coups minimum
 		int movesMade = gp.map.getMoveCount();
-		int minMoves = gp.map.countMove();
+		int minMoves = 4;
 	
 		// Logique pour déterminer le nombre d'étoiles en fonction des performances du joueur
 		if (movesMade <= minMoves) {
@@ -180,6 +177,7 @@ public class UserInterface {
 			return 1; // Le joueur a utilisé moins de 100% de coups supplémentaires
 		}
 	}
+	
 	
 	public void drawStars(Graphics2D g2, int numStarsGained, int totalStars) {
 		try {
@@ -211,6 +209,7 @@ public class UserInterface {
 		}
 	}
 	
+	
 	private BufferedImage resizeImage(BufferedImage originalImage, int width, int height) {
 		BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = resizedImage.createGraphics();
@@ -218,6 +217,8 @@ public class UserInterface {
 		g.dispose();
 		return resizedImage;
 	}
+	
+	
 	private void drawMessage(Graphics2D g2, int numStars) {
 		String message1;
 		String message2;
@@ -263,8 +264,6 @@ public class UserInterface {
 		g2.drawString(message1, messageX, messageY);
 		g2.drawString(message2, message2X, messageY+50);
 	}
-	
-
 
 
 	public void drawMainMenu(Graphics2D g2) {
@@ -286,12 +285,15 @@ public class UserInterface {
     public Button getMainMenuButton() {
         return mainMenuBtn;
     }
+    
 	public Button getExitGameBtn() {
 		return exitGameBtn;
 	}
+	
 	public Button getStartGameBtn() {
 		return startGameBtn;
 	}
+	
 	public Button getCreditsBtn() {
 		return creditsBtn;
 	}

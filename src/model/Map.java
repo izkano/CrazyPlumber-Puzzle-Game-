@@ -14,11 +14,9 @@ import java.io.IOException;
 public class Map {
 
 	private Cell[][] start;
-	private int[][] solution;
 
 	private int Time_start=0;
 	private int Time_level;
-
 	
 	private String mode;
 	private int move;
@@ -46,14 +44,12 @@ public class Map {
 				break;
 		}
 		String path = "res/level/" + mode + level + ".txt";		
-		String sol = "res/solution/solution"+level+".txt";
 		try {
 			this.start = readMatrixFromFile(path);
-			this.solution = readEndFile(sol);
 		} catch (IOException e) {
 			throw new MapException("Unable to load map : " + e.getMessage());
 		}
-		move = countMove();
+
 		Time_level = 14 + level;
 	}
 	
@@ -109,35 +105,6 @@ public class Map {
 	    reader.close();
 	    return matrix;
 	}
-	
-	
-	public static int[][] readEndFile(String filePath) throws IOException {
-		BufferedReader reader = new BufferedReader(new FileReader(filePath));
-		String line;
-		int rows = 0;
-		int columns = 0;
-	
-		while ((line = reader.readLine()) != null) {
-			rows++;
-			columns = Math.max(columns, line.length());
-		}
-	
-		reader.close();
-		reader = new BufferedReader(new FileReader(filePath));
-	
-		int[][] matrix = new int[rows][columns];
-	
-		for (int i = 0; i < rows; i++) {
-			line = reader.readLine();
-			for (int j = 0; j < line.length(); j++) {
-				matrix[i][j] = Character.getNumericValue(line.charAt(j));
-			}
-		}
-	
-		reader.close();
-		return matrix;
-	}
-	
 	
 	/**
 	 * Permet de determiner sur quelle cellule le joueur a cliqué, et appelle rotate sur celle ci
@@ -330,49 +297,16 @@ public class Map {
 		}
 	}
 
-	
-	/**
-	 * @debug Fonctions de deboguage
-	 */
-	public void printOrientation(){
-		System.out.println("Orientation:");
-		for (int i = 0; i<start.length;i++){
-			for (Cell j : start[i]){
-				System.out.print(j.getOrientation());
-			}
-			System.out.println("");
-		}
-		System.out.println("");
-	}
-
-	public void printSolution(){
-		System.out.println("Solution:");
-		for (int i = 0; i<solution.length;i++){
-			for (int j : solution[i]){
-				System.out.print(j);
-			}
-			System.out.println("");
-		}
-		System.out.println("");
-	}
 
 	public int getMove() {
 		return move;
 	}
 
-	public int countMove(){
-		int res = 0;
-		for (int e[] : solution){
-			for (int f : e){
-				res += f;
-			}
-		}
-		return res;
-	}
 
 	public int getMoveCount() {
 		return moveCount;
 	}
+	
 	
 	public void setTimer_fiel() {
 		Time_start=0;

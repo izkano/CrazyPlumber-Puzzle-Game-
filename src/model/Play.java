@@ -1,7 +1,5 @@
 package model;
 
-import javax.swing.JOptionPane;
-
 import view.GamePanel;
 
 public class Play {
@@ -66,11 +64,8 @@ public class Play {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				if(gp.sound) Cell.playSound("res/pipes/win.wav");
-				int movesUsed = gp.map.getMoveCount(); // Récupérer le nombre de coups effectués
-            	int minMoves = gp.map.countMove(); // Récupérer le nombre de coups minimum
-            	String message;
-    
+	            
+				if(GamePanel.sound) Cell.playSound("res/pipes/win.wav");	
 				
 	            gp.gameState = State.TRANSITION;
 	        }
@@ -115,7 +110,7 @@ public class Play {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				if(gp.sound) Cell.playSound("res/pipes/win.wav");
+				if(GamePanel.sound) Cell.playSound("res/pipes/win.wav");
 	            gp.gameState = State.TRANSITION;
 	        }
 			

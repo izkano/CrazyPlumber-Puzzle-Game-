@@ -45,9 +45,9 @@ public class SelectLevel {
 			e.printStackTrace();
 		}
 
-		int startYSelectLevel = gp.screenHeight / 4; // Ajuste selon le besoin
-		int gapYLevel = 125; // Ajuste l'espacement selon le besoin
-        int gapXtransition = 100; // Ajuste l'espacement selon le besoin
+		int startYSelectLevel = gp.screenHeight / 4; 
+		int gapYLevel = 125; 
+        int gapXtransition = 100; 
 
         int startYGamemode = gp.screenHeight / 6;
         int buttonCenterXGamemode = (gp.screenWidth / 2) - 275;
@@ -109,12 +109,6 @@ public class SelectLevel {
 	public void draw(Graphics2D g2) {
 		if (gp.gameState == State.SELECT) {
 			drawSelectLevel(g2);
-            /*for (int i = 0; i<level.length; i++){
-                for (int j = 0; j<level[i].length; j++){
-                    System.out.print(level[i][j]==null);
-                }
-                System.out.println("");
-            }*/
 		}
         if(gp.gameState == State.GAMEMODE){
             drawSelectMode(g2);
@@ -132,7 +126,6 @@ public class SelectLevel {
     }
 
 	private void drawSelectLevel(Graphics2D g2) {	
-        //g2.drawImage(background, pauseBackGroundXcoord, pauseBackGroundYcoord, null);
         g2.setColor(Color.BLACK);
         g2.setFont(new Font("Retro Gaming", Font.PLAIN, 50));
         for (int i = 0; i<level[gp.getGamemode()].length;i++){
@@ -159,7 +152,6 @@ public class SelectLevel {
 	}
 
     private void drawSelectMode(Graphics2D g2){
-        //g2.drawImage(background, 0, 0, null);
         classicButton.draw(g2);
         timerButton.draw(g2);
         limitedButton.draw(g2);
@@ -174,7 +166,7 @@ public class SelectLevel {
     }
 
     private void drawSetting(Graphics2D g2){
-        if (gp.sound){
+        if (GamePanel.sound){
             soundButton.draw(g2);
         }
         else {

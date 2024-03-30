@@ -3,7 +3,6 @@ package view;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -32,11 +31,9 @@ public class GamePanel extends JPanel implements Runnable {
 	final int screenWidth = tileSize * maxScreenCol;
 	final int screenHeight = tileSize * maxScreenRow; 
 	public final int mapOffset = tileSize;
-    public static boolean sound=true;
-	private  JButton helpButton;
-	private JLabel aideLabel;
     
     private int[] amountLevel = countLevel();
+    
 	// SYSTEM
 	public Map map;
 	public Play play;
@@ -53,9 +50,11 @@ public class GamePanel extends JPanel implements Runnable {
     public GraphicsEnvironment ge;
     public Font retro;
 
-    private int difficulty;
     private int gamemode;
-    private int move;
+    
+    public static boolean sound = true;
+    
+    private  JButton helpButton;
 
     private BufferedImage playingBackground;
     private BufferedImage gridBackground;
@@ -108,6 +107,7 @@ public class GamePanel extends JPanel implements Runnable {
         setCursor (c);
     }
     
+    
     private void loadBackgroundImages() {
         try {
             playingBackground = ImageIO.read(getClass().getResourceAsStream("/menu/bgMain.jpg"));
@@ -116,6 +116,8 @@ public class GamePanel extends JPanel implements Runnable {
             e.printStackTrace();
         }
     }
+    
+    
     private void loadGridBackground() {
         try {
             gridBackground = ImageIO.read(getClass().getResourceAsStream("/menu/grilleMain.png"));
@@ -124,22 +126,27 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
     
+    
     public Thread getGameThread() {
     	return this.gameThread;
     }
+    
     
     public SelectLevel getSelectLevel() {
     	return sl;
     }
 
+    
     public UserInterface getUserInterface() {
     	return this.ui;
     }
+    
     
     public int getLevel() {
     	return this.lvl;
     }
 
+    
     private void showRulesGame() {   
         ImageIcon reglesIcon = new ImageIcon("res/pipes/help_button.png");
         JOptionPane.showMessageDialog(this, "Pour gagner rien de plus simple : Il suffit de relier les tuyaux afin de former un circuit fermé reliant la base à la fin. Bonne chance !", "Règles du jeu", JOptionPane.PLAIN_MESSAGE, reglesIcon);
@@ -199,7 +206,6 @@ public class GamePanel extends JPanel implements Runnable {
         this.lvl = level;
     	try {
     		map = new Map(gamemode,level);
-            move = map.countMove();
     	} catch (MapException e) {
     		System.out.println(e.getMessage());
     	}
@@ -207,7 +213,6 @@ public class GamePanel extends JPanel implements Runnable {
     
 
     public void setDifficulty(int difficulty){
-        this.difficulty = difficulty;
         gameState = State.SELECT;
     }
     
