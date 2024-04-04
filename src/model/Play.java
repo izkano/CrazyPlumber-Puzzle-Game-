@@ -56,7 +56,7 @@ public class Play {
 	
 	private void classic() {
 		if (gp.map != null) {
-	        if (gp.map.parcoursProfondeurRec()) {
+	        if (gp.map.won) {
 	        	gp.repaint();
 	            gp.unlockNextLvl(gp.getLevel());
 	            try {
@@ -83,7 +83,7 @@ public class Play {
 				gp.gameState=State.GAMEOVER;
 				gp.map.setTimer_fiel();
 			}
-	        if (gp.map.parcoursProfondeurRec()) {
+	        if (gp.map.won) {
 					gp.repaint();
 	                gp.unlockNextLvl(gp.getLevel());
 	                if(GamePanel.sound) Cell.playSound("res/pipes/win.wav");
@@ -102,7 +102,7 @@ public class Play {
 	
 	private void limited() {
 		if (gp.map != null) {
-	        if (gp.map.parcoursProfondeurRec()) {
+	        if (gp.map.won) {
                 gp.repaint();
 	            gp.unlockNextLvl(gp.getLevel());
 	            try {

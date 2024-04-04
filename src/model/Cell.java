@@ -74,7 +74,6 @@ public class Cell {
     
         try {
             BufferedImage originalImage = ImageIO.read(new File(path));
-            // Rotate the image based on the orientation
             for (int i = 0; i < orientation; i++) {
                 originalImage = rotateImage(originalImage);
             }

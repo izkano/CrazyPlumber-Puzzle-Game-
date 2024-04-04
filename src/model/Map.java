@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import exception.MapException;
@@ -14,6 +15,8 @@ import java.io.IOException;
 public class Map {
 
 	private Cell[][] start;
+	
+	private ArrayList<int[]> first;
 
 	private int Time_start=0;
 	private int Time_level;
@@ -22,6 +25,7 @@ public class Map {
 	private int move;
 	private int moveCount = 0;
 	
+	public boolean won;
 
 	/**
 	 * Permet de stocker les informations sur la partie en cours
@@ -45,11 +49,12 @@ public class Map {
 		}
 		String path = "res/level/" + mode + level + ".txt";		
 		try {
+			this.first = new ArrayList<int[]>();
 			this.start = readMatrixFromFile(path);
 		} catch (IOException e) {
 			throw new MapException("Unable to load map : " + e.getMessage());
 		}
-
+		parcoursProfondeurRec();
 		Time_level = 14 + level;
 	}
 	
@@ -94,6 +99,11 @@ public class Map {
 	        for (int j = 0; j < line.length(); j++) {
 	            rdm = random.nextInt(4);
 	            int c = Character.getNumericValue(line.charAt(j));
+	            
+	            if (c == 4) {
+	            	first.add(new int[]{i,j});
+	            }
+	            
 	            if (c != 0 ) {
 	            	matrix[i][j] = new Cell(c,0);
 	            } else {
@@ -120,100 +130,14 @@ public class Map {
         	start[row][col].rotate();
 			move--;
 			moveCount++;
-			updateConnections();
-			start[row][col].loadImage(start[row][col].getPipeType());
 			
-			
-			
+			boolean b = parcoursProfondeurRec();
+			//start[row][col].loadImage(start[row][col].getPipeType());
+			if (b)
+				won = true;			
         }
     }
-	public void updateConnections() {
-		for (int i = 0; i < start.length; i++) {
-			for (int j = 0; j < start[i].length; j++) {
-				if (start[i][j] != null) {
-					
-					updateCellConnection(start[i][j], i, j);
-					
-
-					start[i][j].loadImage(start[i][j].getPipeType());
-				}
-			}
-		}
-	}
 	
-	
-	private void updateCellConnection(Cell cell, int x, int y) {
-		boolean[] ouvertPrinci = cell.getCon();
-		if (cell.getPipeType()!=4) {
-			cell.setConnected(false);
-		}
-		// Direction Nord
-		if (ouvertPrinci[0]) {
-			if (isValidCoordinate(x - 1, y) && start[x - 1][y] != null) {
-				boolean[] ouvertSecond = start[x - 1][y].getCon();
-				if (ouvertSecond[2]) {
-					if (start[x - 1][y].isConnected()) {
-						cell.setConnected(true);
-					}
-					if (cell.isConnected()) {
-						start[x - 1][y].setConnected(true);
-					}
-				}
-			}
-		}
-	
-		// Direction Est
-		if (ouvertPrinci[1]) {
-			if (isValidCoordinate(x, y + 1) && start[x][y + 1] != null) {
-				boolean[] ouvertSecond = start[x][y + 1].getCon();
-				if (ouvertSecond[3]) {
-					if (start[x][y + 1].isConnected()) {
-						cell.setConnected(true);
-					}
-					if (cell.isConnected()) {
-						start[x][y + 1].setConnected(true);
-					}
-				}
-			}
-		}
-	
-		// Direction Sud
-		if (ouvertPrinci[2]) {
-			if (isValidCoordinate(x + 1, y) && start[x + 1][y] != null) {
-				boolean[] ouvertSecond = start[x + 1][y].getCon();
-				if (ouvertSecond[0]) {
-					if (start[x + 1][y].isConnected()) {
-						cell.setConnected(true);
-					}
-					if (cell.isConnected()) {
-						start[x + 1][y].setConnected(true);
-					}
-				}
-			}
-		}
-	
-		// Direction Ouest
-		if (ouvertPrinci[3]) {
-			if (isValidCoordinate(x, y - 1) && start[x][y - 1] != null) {
-				boolean[] ouvertSecond = start[x][y - 1].getCon();
-				if (ouvertSecond[1]) {
-					if (start[x][y - 1].isConnected()) {
-						cell.setConnected(true);
-					}
-					if (cell.isConnected()) {
-						start[x][y - 1].setConnected(true);
-					}
-				}
-			}
-		}
-	}
-	
-	
-	
-	
-	private boolean isValidCoordinate(int x, int y) {
-		return x >= 0 && x < start.length && y >= 0 && y < start[0].length;
-	}
 		
 	/**
 	 * Permet de dessiner une cellule en appellant la méthode draw() de la classe Cellule
@@ -234,10 +158,18 @@ public class Map {
 	public boolean parcoursProfondeurRec() {
 		boolean res = true;
 		
-		for (int i = 0 ; i < start.length ; i++) {
-			for (int j = 0 ; j < start[i].length ; j++) {
-				if (start[i][j] != null && !start[i][j].isChecked()) {
-					res &= explorer(start[i][j],i,j);
+		for (int[] t:first) {
+			start[t[0]][t[1]].loadImage(start[t[0]][t[1]].getPipeType());
+			res &= explorer(start[t[0]][t[1]],t[0],t[1]);
+		}
+		
+		if (res == false) {
+			for (int i = 0 ; i < start.length ; i++) {
+				for (int j = 0 ; j < start[i].length ; j++) {
+					if (start[i][j] != null && !start[i][j].isChecked()) {
+						start[i][j].setConnected(false);
+						start[i][j].loadImage(start[i][j].getPipeType());
+					}
 				}
 			}
 		}
@@ -252,8 +184,13 @@ public class Map {
 		
 		s.setChecked();
 		
+		if (s.getPipeType()!=4) {
+			s.setConnected(true);
+			s.loadImage(s.getPipeType());
+		}
+			
 		for (int i = 0 ; i < 4 ; i++) {
-			if (con[i] && b) {
+			if (con[i] ) {
 				if (i == 0) {
 						if (x <= 0 || start[x-1][y] == null || !start[x-1][y].getCon()[2])
 							b = false;
