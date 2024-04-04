@@ -55,6 +55,7 @@ public class Map {
 			throw new MapException("Unable to load map : " + e.getMessage());
 		}
 		parcoursProfondeurRec();
+		resetCells();
 		Time_level = 14 + level;
 	}
 	
@@ -193,27 +194,27 @@ public class Map {
 			if (con[i] ) {
 				if (i == 0) {
 						if (x <= 0 || start[x-1][y] == null || !start[x-1][y].getCon()[2])
-							b = false;
+							b &= false;
 						else if (!start[x-1][y].isChecked())
-							b = explorer(start[x-1][y], x-1,y);
+							b &= explorer(start[x-1][y], x-1,y);
 				}
 				else if (i == 1) {
 						if (y >= start[x].length-1 || start[x][y+1] == null || !start[x][y+1].getCon()[3])
-							b = false;
+							b &= false;
 						else if (!start[x][y+1].isChecked())
-							b = explorer(start[x][y+1], x,y+1);
+							b &= explorer(start[x][y+1], x,y+1);
 				}
 				else if (i == 2) {
 						if (x >= start.length-1 || start[x+1][y] == null || !start[x+1][y].getCon()[0]) 
-							b = false;
+							b &= false;
 						else if (!start[x+1][y].isChecked())
-							b = explorer(start[x+1][y], x+1,y);
+							b &= explorer(start[x+1][y], x+1,y);
 				}
 				else if (i == 3) {
 						if (y <= 0  || start[x][y-1] == null || !start[x][y-1].getCon()[1])
-							b = false;
+							b &= false;
 						else if (!start[x][y-1].isChecked()) 
-							b = explorer(start[x][y-1], x,y-1);
+							b &= explorer(start[x][y-1], x,y-1);
 				}
 			}
 		}
