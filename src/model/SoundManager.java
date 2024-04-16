@@ -5,6 +5,9 @@ import java.io.File;
 import java.net.URL;
 
 public class SoundManager {
+
+    private static SoundManager instance = null;
+
     private Clip backgroundMusic;
     private Clip clickSound;
     private Clip winSound;
@@ -14,6 +17,12 @@ public class SoundManager {
 
     public SoundManager() {
         loadSounds();
+    }
+    public static SoundManager getInstance() {
+        if (instance == null) {
+            instance = new SoundManager();
+        }
+        return instance;
     }
 
     private void loadSounds() {
@@ -46,26 +55,31 @@ public class SoundManager {
     }
 
     public void playBackgroundMusic() {
-        if (backgroundMusic != null) {
+        if (backgroundMusic != null && backgroundMusic.isActive() == false) {
             backgroundMusic.loop(Clip.LOOP_CONTINUOUSLY);
+            System.out.println("BGON");
         }
     }
 
     public void stopBackgroundMusic() {
-        if (backgroundMusic != null) {
+        if (backgroundMusic != null ) {
             backgroundMusic.stop();
+            System.out.println("backSTOP");
         }
     }
 
     public void playLevelMusic(){
-        if (levelMusic != null) {
+        if (levelMusic != null && levelMusic.isActive() == false) {
             levelMusic.loop(Clip.LOOP_CONTINUOUSLY);
+            System.out.println("levelON");
         }
     }
 
     public void stopLevelMusic(){
-        if (levelMusic != null) {
+        if (levelMusic != null ) {
             levelMusic.stop();
+            System.out.println("levelSTOP");
+
         }
     }
 

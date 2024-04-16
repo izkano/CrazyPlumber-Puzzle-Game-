@@ -45,12 +45,12 @@ public class UserInterface {
 	
     public Object getNextLevelButton;
 
-	private SoundManager soundManager;
+	private static SoundManager soundManager = SoundManager.getInstance();
 	
 	
 	public UserInterface(GamePanel gp) {
 		this.gp = gp;
-		this.soundManager = new SoundManager();
+		
 		
 		loadAssets();
 	}

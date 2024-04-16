@@ -5,6 +5,8 @@ import view.GamePanel;
 public class Play {
 	private GamePanel gp;
 	private GameMode gameMode = GameMode.CLASSIC;
+	private static SoundManager soundManager = SoundManager.getInstance();
+
 	
 	
 	public Play(GamePanel gp) {
@@ -37,6 +39,9 @@ public class Play {
 	
 	
 	public void play() {
+		soundManager.stopBackgroundMusic();
+		soundManager.playLevelMusic();
+		soundManager.stopBackgroundMusic();
 		switch (gameMode) {
 			case CLASSIC : 
 				classic();

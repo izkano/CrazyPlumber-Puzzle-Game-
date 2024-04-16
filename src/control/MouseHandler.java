@@ -24,14 +24,14 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 	private GamePanel gp;
 	private UserInterface ui;
 	private SelectLevel sl;
-	private SoundManager soundManager;
+	private static SoundManager soundManager = SoundManager.getInstance();
 
 	
 	public MouseHandler(GamePanel gp) {
 		this.gp = gp;
 		this.ui = gp.getUserInterface();
 		this.sl = gp.getSelectLevel();
-		this.soundManager = new SoundManager();
+		
 
 	}
 
