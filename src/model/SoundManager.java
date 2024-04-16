@@ -15,6 +15,7 @@ public class SoundManager {
     private Clip timerSound;
     private Clip levelMusic;
     private Clip pauseMenu;
+    private Clip lostBoom;
 
 
     public SoundManager() {
@@ -36,8 +37,8 @@ public class SoundManager {
             rotateSound = loadSound("res/audio/pipe_rotate.wav");
             levelMusic = loadSound("res/audio/levelPlaying.wav");
             pauseMenu = loadSound("res/audio/pauseMenu.wav");
-
-            //timerSound = loadSound("res/audio/timer.wav");
+            timerSound = loadSound("res/audio/timerSound.wav"); 
+            lostBoom = loadSound("res/audio/lostBoom.wav");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -61,31 +62,41 @@ public class SoundManager {
     public void playBackgroundMusic() {
         if (backgroundMusic != null && backgroundMusic.isActive() == false) {
             backgroundMusic.loop(Clip.LOOP_CONTINUOUSLY);
-            System.out.println("BGON");
         }
     }
 
     public void stopBackgroundMusic() {
         if (backgroundMusic != null && backgroundMusic.isActive() == true) {
             backgroundMusic.stop();
-            System.out.println("backSTOP");
         }
     }
 
     public void playLevelMusic(){
         if (levelMusic != null && levelMusic.isActive() == false) {
             levelMusic.loop(Clip.LOOP_CONTINUOUSLY);
-            System.out.println("levelON");
         }
     }
 
     public void stopLevelMusic(){
         if (levelMusic != null && levelMusic.isActive()) {
             levelMusic.stop();
-            System.out.println("levelSTOP");
 
         }
     }
+
+    public void playTimerMusic() {
+        if (timerSound != null && timerSound.isActive() == false) {
+            playSound(timerSound);
+        }
+    }
+
+    public void stopTimerMusic(){
+        if (timerSound != null && timerSound.isActive()) {
+            timerSound.stop();
+
+        }
+    }
+
 
     public void playClickSound() {
         playSound(clickSound);
@@ -101,6 +112,10 @@ public class SoundManager {
 
     public void playPauseSound(){
         playSound(pauseMenu);
+    }
+
+    public void playLostBoom(){
+        playSound(lostBoom);
     }
 
     private void playSound(Clip clip) {

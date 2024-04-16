@@ -39,21 +39,31 @@ public class Play {
 	
 	
 	public void play() {
-		soundManager.stopBackgroundMusic();
-		soundManager.playLevelMusic();
-		soundManager.stopBackgroundMusic();
+		
+		
 		switch (gameMode) {
 			case CLASSIC : 
 				classic();
+				soundManager.stopBackgroundMusic();
+				soundManager.playLevelMusic();
 				break;
 			case TIMER:
 				timer();
+				soundManager.stopBackgroundMusic();
+				
+				if (gp.gameState == State.PLAYING) {
+					soundManager.playTimerMusic();
+				}
 				break;
 			case LIMITED:
 				limited();
+				soundManager.stopBackgroundMusic();
+				soundManager.playLevelMusic();
 				break;
 			case BUILDER:
 				builder();
+				soundManager.stopBackgroundMusic();
+				soundManager.playLevelMusic();
 				break;
 		}
 	}
@@ -70,7 +80,7 @@ public class Play {
 					e.printStackTrace();
 				}
 	            
-				if(GamePanel.sound) Cell.playSound("res/pipes/win.wav");	
+				soundManager.playWinSound();	
 				
 	            gp.gameState = State.TRANSITION;
 	        }
@@ -85,13 +95,16 @@ public class Play {
 				gp.map.setTimer();
 			}
 			if(gp.map.level_Fail()) {
+				soundManager.stopTimerMusic();
+				soundManager.playLostBoom();
 				gp.gameState=State.GAMEOVER;
 				gp.map.setTimer_fiel();
 			}
 	        if (gp.map.won) {
+					soundManager.stopTimerMusic();
 					gp.repaint();
 	                gp.unlockNextLvl(gp.getLevel());
-	                if(GamePanel.sound) Cell.playSound("res/pipes/win.wav");
+	                soundManager.playWinSound();
 	                try {
                        gp.getGameThread().sleep(300);
 					} catch (InterruptedException e) {
@@ -115,7 +128,7 @@ public class Play {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				if(GamePanel.sound) Cell.playSound("res/pipes/win.wav");
+				soundManager.playWinSound();
 	            gp.gameState = State.TRANSITION;
 	        }
 			
