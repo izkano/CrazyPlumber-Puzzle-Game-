@@ -35,10 +35,15 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 
 	}
 
+	
+	
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		soundManager.playClickSound();
+		if (isInAnyButton(e)) {
+            soundManager.playClickSound();
+        }
+		
 		
 		// GAME STATE : PLAYING
 		if (gp.gameState == State.PLAYING) {
@@ -231,5 +236,29 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 	
 	private boolean isIn(MouseEvent e, Button b) {
 		return b.getBounds().contains(e.getX(), e.getY());
+	}
+
+	private boolean isInAnyButton(MouseEvent e) {
+		UserInterface ui = gp.getUserInterface();
+		SelectLevel sl = gp.getSelectLevel();
+	
+		switch (gp.gameState) {
+			case PAUSE:
+				return isIn(e, ui.getCloseBtnPause()) || isIn(e, ui.getContinueBtn()) ||
+					   isIn(e, ui.getSelectBtn()) || isIn(e, ui.getSettingsBtn()) ||
+					   isIn(e, ui.getMenuBtn());
+			case MENU:
+				return isIn(e, ui.getStartGameBtn()) || isIn(e, ui.getCreditsBtn()) ||
+					   isIn(e, ui.getExitGameBtn());
+			case TRANSITION:
+				return isIn(e, ui.getNextLevelButton()) || isIn(e, ui.getRetryButton()) ||
+					   isIn(e, ui.getMainMenuButton());
+			case GAMEMODE:
+				return isIn(e, sl.getClassicButton()) || isIn(e, sl.getTimerButton()) ||
+					   isIn(e, sl.getLimitedButton()) || isIn(e, sl.getBuilderButton()) ||
+					   isIn(e, sl.getBackButton());
+			default:
+				return false;
+		}
 	}
 }
