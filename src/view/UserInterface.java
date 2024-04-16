@@ -141,6 +141,7 @@ public class UserInterface {
 	 * @param g2
 	 */
 	private void drawPauseMenu(Graphics2D g2) {	
+		
 	
 		g2.drawImage(pauseWindow,0,0,null);
 		closeBtnPause.draw(g2);

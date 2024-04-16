@@ -14,6 +14,8 @@ public class SoundManager {
     private Clip rotateSound;
     private Clip timerSound;
     private Clip levelMusic;
+    private Clip pauseMenu;
+
 
     public SoundManager() {
         loadSounds();
@@ -33,6 +35,8 @@ public class SoundManager {
             winSound = loadSound("res/audio/win.wav");
             rotateSound = loadSound("res/audio/pipe_rotate.wav");
             levelMusic = loadSound("res/audio/levelPlaying.wav");
+            pauseMenu = loadSound("res/audio/pauseMenu.wav");
+
             //timerSound = loadSound("res/audio/timer.wav");
 
         } catch (Exception e) {
@@ -62,7 +66,7 @@ public class SoundManager {
     }
 
     public void stopBackgroundMusic() {
-        if (backgroundMusic != null ) {
+        if (backgroundMusic != null && backgroundMusic.isActive() == true) {
             backgroundMusic.stop();
             System.out.println("backSTOP");
         }
@@ -76,7 +80,7 @@ public class SoundManager {
     }
 
     public void stopLevelMusic(){
-        if (levelMusic != null ) {
+        if (levelMusic != null && levelMusic.isActive()) {
             levelMusic.stop();
             System.out.println("levelSTOP");
 
@@ -93,6 +97,10 @@ public class SoundManager {
 
     public void playRotateSound() {
         playSound(rotateSound);
+    }
+
+    public void playPauseSound(){
+        playSound(pauseMenu);
     }
 
     private void playSound(Clip clip) {

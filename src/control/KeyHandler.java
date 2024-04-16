@@ -3,6 +3,7 @@ package control;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import model.SoundManager;
 import model.State;
 import view.GamePanel;
 
@@ -11,6 +12,8 @@ import view.GamePanel;
  */
 public class KeyHandler implements KeyListener {
 	private GamePanel gp;
+	private static SoundManager soundManager = SoundManager.getInstance();
+
 	
 	public KeyHandler(GamePanel gp) {
 		this.gp = gp;
@@ -21,6 +24,12 @@ public class KeyHandler implements KeyListener {
 		int code = e.getKeyCode();
 		
 		if (code == KeyEvent.VK_ESCAPE) {
+			if (gp.gameState == State.PLAYING) {
+				soundManager.stopLevelMusic();
+				soundManager.playPauseSound();
+				
+			}
+			
 			switch (gp.gameState) {
 				case PLAYING:
 					gp.map.setTime_level(gp.map.getRemainnig_time());
