@@ -4,12 +4,16 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import model.Cell;
 import model.GameMode;
+import model.SoundManager;
 import model.State;
 import view.Button;
 import view.GamePanel;
 import view.SelectLevel;
 import view.UserInterface;
+
+
 
 
 /**
@@ -20,16 +24,25 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 	private GamePanel gp;
 	private UserInterface ui;
 	private SelectLevel sl;
+	private SoundManager soundManager;
+
 	
 	public MouseHandler(GamePanel gp) {
 		this.gp = gp;
 		this.ui = gp.getUserInterface();
 		this.sl = gp.getSelectLevel();
+		this.soundManager = new SoundManager();
+
 	}
 
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		Object source = e.getSource();
+    	if (source instanceof Button) {
+        soundManager.playClickSound();
+    	}
+
 		
 		// GAME STATE : PLAYING
 		if (gp.gameState == State.PLAYING) {

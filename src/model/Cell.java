@@ -243,7 +243,7 @@ public class Cell {
     }
     
     
-     public static void playSound(String soundFilePath) {
+    public static void playSound(String soundFilePath) {
         try {
             File soundFile = new File(soundFilePath);
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
@@ -255,8 +255,8 @@ public class Cell {
         }
     }
      
-     @Override
-     public String toString() {
+    @Override
+    public String toString() {
     	 return Integer.toString(pipeType) + " : " + Arrays.toString(con);
      }
 }
