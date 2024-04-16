@@ -1,5 +1,9 @@
 package control;
 
+import java.awt.Cursor;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -26,13 +30,22 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 	private SelectLevel sl;
 	private static SoundManager soundManager = SoundManager.getInstance();
 
+	private Cursor normalCursor;
+    private Cursor pressedCursor;
+
 	
 	public MouseHandler(GamePanel gp) {
 		this.gp = gp;
 		this.ui = gp.getUserInterface();
 		this.sl = gp.getSelectLevel();
 		
+		// Load normal cursor
+        Image normalImage = Toolkit.getDefaultToolkit().getImage("res/images/cursor_shiny.png");
+        this.normalCursor = Toolkit.getDefaultToolkit().createCustomCursor(normalImage, new Point(0, 0), "NormalCursor");
 
+        // Load pressed cursor (inclined)
+        Image pressedImage = Toolkit.getDefaultToolkit().getImage("res/images/cursor_shinyON.png");
+        this.pressedCursor = Toolkit.getDefaultToolkit().createCustomCursor(pressedImage, new Point(0, 0), "PressedCursor");
 	}
 
 	
@@ -43,6 +56,7 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 		if (isInAnyButton(e)) {
             soundManager.playClickSound();
         }
+		
 		
 		
 		// GAME STATE : PLAYING
@@ -150,6 +164,9 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		if (e.getButton() == MouseEvent.BUTTON1) {
+            gp.setCursor(pressedCursor);
+        }
 		if (gp.gameState == State.PAUSE) {
 			if ( isIn(e, ui.getCloseBtnPause()) ) {
 				ui.getCloseBtnPause().setMouseOver(true);
@@ -203,6 +220,10 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+
+		if (e.getButton() == MouseEvent.BUTTON1) {
+            gp.setCursor(normalCursor);
+        }
 		
 		if (gp.gameState == State.PAUSE) {
 			ui.resetButtons();
