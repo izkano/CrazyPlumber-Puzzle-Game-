@@ -11,6 +11,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.awt.FontMetrics;
 
+import model.SoundManager;
 import model.State;
 
 
@@ -43,10 +44,13 @@ public class UserInterface {
 	private Button settingsBtn;
 	
     public Object getNextLevelButton;
+
+	private SoundManager soundManager;
 	
 	
 	public UserInterface(GamePanel gp) {
 		this.gp = gp;
+		this.soundManager = new SoundManager();
 		
 		loadAssets();
 	}
@@ -267,6 +271,8 @@ public class UserInterface {
 
 
 	public void drawMainMenu(Graphics2D g2) {
+		soundManager.stopLevelMusic();
+		soundManager.playBackgroundMusic();
 		g2.drawImage(mainBackground, 0, 0, null);		
 		startGameBtn.draw(g2);
 		creditsBtn.draw(g2);

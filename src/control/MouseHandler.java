@@ -38,11 +38,7 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		Object source = e.getSource();
-    	if (source instanceof Button) {
-        soundManager.playClickSound();
-    	}
-
+		soundManager.playClickSound();
 		
 		// GAME STATE : PLAYING
 		if (gp.gameState == State.PLAYING) {
