@@ -59,6 +59,11 @@ public class GamePanel extends JPanel implements Runnable {
     private BufferedImage playingBackground;
     private BufferedImage gridBackground;
 
+    private static SoundManager soundManager = SoundManager.getInstance();
+
+
+
+
     
 
     public GamePanel() {
@@ -67,6 +72,7 @@ public class GamePanel extends JPanel implements Runnable {
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
         loadBackgroundImages();
+
         
         setCursor();
 		

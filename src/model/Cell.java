@@ -23,7 +23,8 @@ public class Cell {
 
     private boolean connected;
     
-    
+    private static SoundManager soundManager = SoundManager.getInstance();
+
     public Cell (int pipeType,int orientation){
         this.pipeType = pipeType;
         this.orientation = orientation;
@@ -212,7 +213,7 @@ public class Cell {
         rotateCon();
         
 
-        if(GamePanel.sound)playSound("res/pipes/pipe_rotate.wav");
+        soundManager.playRotateSound();
 
         int width = image.getWidth();
 	    int height = image.getHeight();
@@ -243,20 +244,10 @@ public class Cell {
     }
     
     
-     public static void playSound(String soundFilePath) {
-        try {
-            File soundFile = new File(soundFilePath);
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioIn);
-            clip.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    
      
-     @Override
-     public String toString() {
+    @Override
+    public String toString() {
     	 return Integer.toString(pipeType) + " : " + Arrays.toString(con);
      }
 }
