@@ -1,9 +1,15 @@
 package main;
 
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.UIManager;
 
 import view.GamePanel;
 
@@ -14,6 +20,15 @@ public class Main {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         GamePanel gamePanel = new GamePanel();
+
+        try {
+            BufferedImage image = ImageIO.read(Main.class.getResourceAsStream("/images/plumber.png"));
+            frame.setIconImage(image);
+            frame.setTitle("CRAZY PLUMBER ED3A");
+        } catch (Exception e) {
+            // Handle any errors that occur during setting look and feel
+            e.printStackTrace();
+        }
         
         frame.setLocationRelativeTo(null);
         
