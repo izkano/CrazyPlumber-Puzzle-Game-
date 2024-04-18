@@ -71,7 +71,9 @@ public class Cell {
             	path = "res/pipes/start.png";
             default:
                 break;
+            
         }
+        
     
         try {
             BufferedImage originalImage = ImageIO.read(new File(path));

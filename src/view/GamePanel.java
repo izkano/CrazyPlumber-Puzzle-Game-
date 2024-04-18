@@ -338,6 +338,9 @@ public class GamePanel extends JPanel implements Runnable {
                         case 3:
                             BufferedReader reader3 = new BufferedReader(new FileReader("res/level/builder/" + i + ".txt"));
                             break;
+                        case 4:
+                            BufferedReader reader4 = new BufferedReader(new FileReader("res/level/online/" + i + ".txt"));
+                            break;
                     }
                 }
                 catch (IOException e){

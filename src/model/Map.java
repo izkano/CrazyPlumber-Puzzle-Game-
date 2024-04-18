@@ -46,6 +46,9 @@ public class Map {
 			case 3:
 				mode = "builder/";
 				break;
+			case 4 :
+				mode = "online/";
+				break;
 		}
 		String path = "res/level/" + mode + level + ".txt";		
 		try {
@@ -175,6 +178,8 @@ public class Map {
 			}
 		}
 		
+		
+		
 		return res;
 	}
 	
@@ -188,6 +193,7 @@ public class Map {
 		if (s.getPipeType()!=4) {
 			s.setConnected(true);
 			s.loadImage(s.getPipeType());
+			
 		}
 			
 		for (int i = 0 ; i < 4 ; i++) {
