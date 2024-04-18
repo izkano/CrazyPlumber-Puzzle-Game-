@@ -137,6 +137,10 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 				gp.setGameMode(3);
 				gp.play.setGameMode(GameMode.BUILDER);
 				gp.gameState = State.SELECT;
+			} else if (isIn(e,sl.getOnlineButton())){
+				gp.setGameMode(4);
+				gp.play.setGameMode(GameMode.ONLINE);
+				gp.gameState=State.SELECT;
 			}
 			else if (isIn(e, sl.getBackButton())) {
 				gp.gameState = State.MENU;
@@ -212,11 +216,13 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 				sl.getLimitedButton().setMouseOver(true);
 			} else if (isIn(e, sl.getBuilderButton())) {
 				sl.getBuilderButton().setMouseOver(true);
+			}} else if (isIn(e, sl.getOnlineButton())) {
+				sl.getOnlineButton().setMouseOver(true);
 			} else if (isIn(e, sl.getBackButton())) {
 				sl.getBackButton().setMouseOver(true);
 			}
 		}
-	}
+	
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
@@ -275,7 +281,7 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 				return isIn(e, ui.getNextLevelButton()) || isIn(e, ui.getRetryButton()) ||
 					   isIn(e, ui.getMainMenuButton());
 			case GAMEMODE:
-				return isIn(e, sl.getClassicButton()) || isIn(e, sl.getTimerButton()) ||
+				return isIn(e, sl.getClassicButton()) || isIn(e, sl.getTimerButton()) || isIn(e, sl.getOnlineButton()) ||
 					   isIn(e, sl.getLimitedButton()) || isIn(e, sl.getBuilderButton()) ||
 					   isIn(e, sl.getBackButton());
 			default:

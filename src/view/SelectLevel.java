@@ -20,6 +20,7 @@ public class SelectLevel {
     private Button timerButton;
     private Button limitedButton;
     private Button builderButton;
+    private Button onlineButton;
 
     // BUTTONS : GAME OVER
     private Button retryButton;
@@ -49,7 +50,7 @@ public class SelectLevel {
 		int gapYLevel = 125; 
         int gapXtransition = 100; 
 
-        int startYGamemode = gp.screenHeight / 6;
+        int startYGamemode = gp.screenHeight / 8;
         int buttonCenterXGamemode = (gp.screenWidth / 2) - 275;
         int gapYGamemode = 150;
 
@@ -76,6 +77,10 @@ public class SelectLevel {
         timerButton = new Button("/menu/gamemode/buttons/timer_", buttonCenterXGamemode, startYGamemode+gapYGamemode);
         limitedButton = new Button("/menu/gamemode/buttons/limited_", buttonCenterXGamemode, startYGamemode+2*gapYGamemode);
         builderButton = new Button("/menu/gamemode/buttons/builder_", buttonCenterXGamemode, startYGamemode+3*gapYGamemode);
+        onlineButton = new Button("/menu/gamemode/buttons/online_", buttonCenterXGamemode, startYGamemode+4*gapYGamemode);
+        
+
+
 
         // Ajustement de la position des boutons : GAME OVER
         int buttonCenterXtransition = (gp.screenWidth / 2) - 246;
@@ -103,6 +108,7 @@ public class SelectLevel {
             timerButton.setMouseOver(false);
             limitedButton.setMouseOver(false);
             builderButton.setMouseOver(false);
+            onlineButton.setMouseOver(false);
         }
 	}
 	
@@ -156,6 +162,7 @@ public class SelectLevel {
         timerButton.draw(g2);
         limitedButton.draw(g2);
         builderButton.draw(g2);
+        onlineButton.draw(g2);
         backBtn.draw(g2);
     }
 
@@ -189,6 +196,10 @@ public class SelectLevel {
 
     public Button getBuilderButton(){
         return builderButton;
+    }
+    
+    public Button getOnlineButton(){
+        return onlineButton;
     }
 
     public Button getRetryButton2() {

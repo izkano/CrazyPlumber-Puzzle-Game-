@@ -24,6 +24,9 @@ public class Play {
 			case 3:
 				this.gameMode = GameMode.BUILDER;
 				break;
+			case 4:
+				this.gameMode = GameMode.ONLINE;
+				break;
 		}
 	}
 	
@@ -62,6 +65,11 @@ public class Play {
 				break;
 			case BUILDER:
 				builder();
+				soundManager.stopBackgroundMusic();
+				soundManager.playLevelMusic();
+				break;
+			case ONLINE:
+				online();
 				soundManager.stopBackgroundMusic();
 				soundManager.playLevelMusic();
 				break;
@@ -142,6 +150,10 @@ public class Play {
 	
 	
 	private void builder() {
+	
+	}
+	
+	private void online() {
 	
 	}
 

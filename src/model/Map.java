@@ -46,6 +46,9 @@ public class Map {
 			case 3:
 				mode = "builder/";
 				break;
+			case 4 :
+				mode = "online/";
+				break;
 		}
 		String path = "res/level/" + mode + level + ".txt";		
 		try {

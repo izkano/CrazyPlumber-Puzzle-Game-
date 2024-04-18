@@ -4,5 +4,6 @@ public enum GameMode {
 	CLASSIC,
 	TIMER,
 	LIMITED,
-	BUILDER
+	BUILDER,
+	ONLINE,
 }
