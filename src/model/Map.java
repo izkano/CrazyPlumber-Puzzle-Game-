@@ -178,6 +178,8 @@ public class Map {
 			}
 		}
 		
+		
+		
 		return res;
 	}
 	
@@ -191,6 +193,7 @@ public class Map {
 		if (s.getPipeType()!=4) {
 			s.setConnected(true);
 			s.loadImage(s.getPipeType());
+			
 		}
 			
 		for (int i = 0 ; i < 4 ; i++) {
