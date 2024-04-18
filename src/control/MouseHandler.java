@@ -210,17 +210,23 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 		else if (gp.gameState == State.GAMEMODE){
 			if (isIn(e, sl.getClassicButton())) {
 				sl.getClassicButton().setMouseOver(true);
-			} else if (isIn(e, sl.getTimerButton())) {
+			} 
+			else if (isIn(e, sl.getTimerButton())) {
 				sl.getTimerButton().setMouseOver(true);
-			} else if (isIn(e, sl.getLimitedButton())) {
+			} 
+			else if (isIn(e, sl.getLimitedButton())) {
 				sl.getLimitedButton().setMouseOver(true);
-			} else if (isIn(e, sl.getBuilderButton())) {
+			} 
+			else if (isIn(e, sl.getBuilderButton())) {
 				sl.getBuilderButton().setMouseOver(true);
-			}} else if (isIn(e, sl.getOnlineButton())) {
+			} 
+			else if (isIn(e, sl.getOnlineButton())) {
 				sl.getOnlineButton().setMouseOver(true);
-			} else if (isIn(e, sl.getBackButton())) {
+			} 
+			else if (isIn(e, sl.getBackButton())) {
 				sl.getBackButton().setMouseOver(true);
 			}
+		}
 		}
 	
 
