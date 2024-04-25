@@ -1,49 +1,34 @@
 package model;
 
+import exception.MapException;
 import view.GamePanel;
 
-public class Play {
-	private GamePanel gp;
-	private GameMode gameMode = GameMode.CLASSIC;
-	private static SoundManager soundManager = SoundManager.getInstance();
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
+public class Play {
+	private final GamePanel gp;
+	private final SoundManager soundManager;
+	private GameMode gameMode = GameMode.CLASSIC;
+
+	private int lvl = 1;
+
+	private int[] amountLevel = countLevel();
+	private boolean[][] unlocked;
 	
 	
 	public Play(GamePanel gp) {
 		this.gp = gp;
-		switch (gp.getGamemode()){
-			case 0:
-				this.gameMode = GameMode.CLASSIC;
-				break;
-			case 1:
-				this.gameMode = GameMode.TIMER;
-				break;
-			case 2:
-				this.gameMode = GameMode.LIMITED;
-				break;
-			case 3:
-				this.gameMode = GameMode.BUILDER;
-				break;
-			case 4:
-				this.gameMode = GameMode.ONLINE;
-				break;
-		}
-	}
-	
-	
-	public GameMode getGameMode() {
-		return this.gameMode;
-	}
-	
-	
-	public void setGameMode(GameMode gm) {
-		this.gameMode = gm;
+		this.soundManager = gp.soundManager;
+
+		setLevel(1);
+
+		unlocked = createUnlock();
 	}
 	
 	
 	public void play() {
-		
-		
 		switch (gameMode) {
 			case CLASSIC : 
 				classic();
@@ -81,7 +66,7 @@ public class Play {
 		if (gp.map != null) {
 	        if (gp.map.won) {
 	        	gp.repaint();
-	            gp.unlockNextLvl(gp.getLevel());
+	            unlockNextLvl(lvl);
 	            try {
 					gp.getGameThread().sleep(300);
 				} catch (InterruptedException e) {
@@ -111,7 +96,7 @@ public class Play {
 	        if (gp.map.won) {
 					soundManager.stopTimerMusic();
 					gp.repaint();
-	                gp.unlockNextLvl(gp.getLevel());
+	                unlockNextLvl(lvl);
 	                soundManager.playWinSound();
 	                try {
                        gp.getGameThread().sleep(300);
@@ -130,7 +115,7 @@ public class Play {
 		if (gp.map != null) {
 	        if (gp.map.won) {
                 gp.repaint();
-	            gp.unlockNextLvl(gp.getLevel());
+	            unlockNextLvl(lvl);
 	            try {
 					gp.getGameThread().sleep(300);
 				} catch (InterruptedException e) {
@@ -157,4 +142,100 @@ public class Play {
 	
 	}
 
+
+	/**
+	 * Charge le niveau dans l'attribut Map
+	 */
+	public void setLevel(int level) {
+		this.lvl = level;
+
+		try {
+			gp.map = new Map(gameMode,level,soundManager,gp.getWidth(),gp.getHeight());
+		} catch (MapException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+
+	public void unlockNextLvl(int lvl) {
+		if (lvl<unlocked[gameMode.getValue()].length){
+			unlocked[gameMode.getValue()][lvl] = true;
+		}
+
+		updateSelectOverlay();
+	}
+
+
+	public boolean[][] createUnlock(){
+		boolean[][] unlock = new boolean[3][];
+		for (int i = 0 ; i<3 ; i++){
+			unlock[i] = new boolean[amountLevel[i]];
+			for (int j = 1; j<amountLevel[i];j++){
+				unlock[i][j] = false;
+			}
+			unlock[i][0] = true;
+		}
+		return unlock;
+	}
+
+
+	public int[] countLevel(){
+		int[] res = new int[4];
+		for (int j =0;j<4;j++){
+			int i = 1;
+			while (true){
+				try{
+					switch(j){
+						case 0:
+							BufferedReader reader = new BufferedReader(new FileReader("res/level/classic/" + i + ".txt"));
+							break;
+						case 1:
+							BufferedReader reader1 = new BufferedReader(new FileReader("res/level/timer/" + i + ".txt"));
+							break;
+						case 2:
+							BufferedReader reader2 = new BufferedReader(new FileReader("res/level/limited/" + i + ".txt"));
+							break;
+						case 3:
+							BufferedReader reader3 = new BufferedReader(new FileReader("res/level/builder/" + i + ".txt"));
+							break;
+						case 4:
+							BufferedReader reader4 = new BufferedReader(new FileReader("res/level/online/" + i + ".txt"));
+							break;
+					}
+				}
+				catch (IOException e){
+					break;
+				}
+				i++;
+			}
+			res[j] = i-1;
+		}
+		return res;
+	}
+
+
+	private void updateSelectOverlay() {
+		gp.ui.selectOverlay.update(amountLevel,unlocked);
+	}
+
+
+	public int[] getAmountLevel(){
+		return amountLevel;
+	}
+
+	public int getLevel() {
+		return this.lvl;
+	}
+
+	public GameMode getGameMode() {
+		return this.gameMode;
+	}
+
+	public void setGameMode(GameMode gm) {
+		this.gameMode = gm;
+	}
+
+	public boolean[][] getUnlocked(){
+		return unlocked;
+	}
 }

@@ -11,12 +11,13 @@ import view.GamePanel;
  * Gestion des entrées au clavier de l'utilisateur
  */
 public class KeyHandler implements KeyListener {
-	private GamePanel gp;
-	private static SoundManager soundManager = SoundManager.getInstance();
+	private final GamePanel gp;
+	private final SoundManager soundManager;
 
 	
 	public KeyHandler(GamePanel gp) {
 		this.gp = gp;
+		this.soundManager = gp.soundManager;
 	}
 	
 	@Override

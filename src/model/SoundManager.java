@@ -21,16 +21,19 @@ public class SoundManager {
     public SoundManager() {
         loadSounds();
     }
+
+    /*
     public static SoundManager getInstance() {
         if (instance == null) {
             instance = new SoundManager();
         }
+
         return instance;
-    }
+    }*/
+
 
     private void loadSounds() {
         try {
-            // Load sounds
             backgroundMusic = loadSound("res/audio/main_theme.wav");
             clickSound = loadSound("res/audio/button_click.wav");
             winSound = loadSound("res/audio/win.wav");
@@ -39,11 +42,11 @@ public class SoundManager {
             pauseMenu = loadSound("res/audio/pauseMenu.wav");
             timerSound = loadSound("res/audio/timerSound.wav"); 
             lostBoom = loadSound("res/audio/lostBoom.wav");
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     private Clip loadSound(String filePath) {
         try {
@@ -59,11 +62,13 @@ public class SoundManager {
         }
     }
 
+
     public void playBackgroundMusic() {
         if (backgroundMusic != null && backgroundMusic.isActive() == false) {
             backgroundMusic.loop(Clip.LOOP_CONTINUOUSLY);
         }
     }
+
 
     public void stopBackgroundMusic() {
         if (backgroundMusic != null && backgroundMusic.isActive() == true) {
@@ -71,11 +76,13 @@ public class SoundManager {
         }
     }
 
+
     public void playLevelMusic(){
         if (levelMusic != null && levelMusic.isActive() == false) {
             levelMusic.loop(Clip.LOOP_CONTINUOUSLY);
         }
     }
+
 
     public void stopLevelMusic(){
         if (levelMusic != null && levelMusic.isActive()) {
@@ -84,11 +91,13 @@ public class SoundManager {
         }
     }
 
+
     public void playTimerMusic() {
         if (timerSound != null && timerSound.isActive() == false) {
             playSound(timerSound);
         }
     }
+
 
     public void stopTimerMusic(){
         if (timerSound != null && timerSound.isActive()) {
@@ -117,6 +126,7 @@ public class SoundManager {
     public void playLostBoom(){
         playSound(lostBoom);
     }
+
 
     private void playSound(Clip clip) {
         if (clip != null) {
