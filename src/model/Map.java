@@ -1,12 +1,12 @@
 package model;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Random;
 
 import exception.MapException;
-import view.GamePanel;
 
-import java.awt.Graphics2D;
+import javax.imageio.ImageIO;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -14,57 +14,84 @@ import java.io.IOException;
 
 public class Map {
 
-	private Cell[][] start;
-	
-	private ArrayList<int[]> first;
+	private int level;
+
+	private final Cell[][] start;
+	private final ArrayList<int[]> first;
 
 	private int Time_start=0;
 	private int Time_level;
-	
-	private String mode;
+
 	private int move;
 	private int moveCount = 0;
 	
 	public boolean won;
+
+	private final SoundManager soundManager;
+
+	private BufferedImage gridBackground;
+	private int screenWidth;
+	private int screenHeight;
+	private int gridX;
+	private int gridY;
+	private int newWidth;
+	private int newHeight;
+
 
 	/**
 	 * Permet de stocker les informations sur la partie en cours
 	 * @param level : niveau représenter par un entier
 	 * @throws MapException : si le fichier texte ne se charge pas
 	 */
-	public Map(int gamemode, int level) throws MapException {
-		switch(gamemode){
-			case 0:
-				mode = "classic/";
-				break;
-			case 1:
-				mode = "timer/";
-				break;
-			case 2:
-				mode = "limited/";
-				break;
-			case 3:
-				mode = "builder/";
-				break;
-			case 4 :
-				mode = "online/";
-				break;
-		}
-		String path = "res/level/" + mode + level + ".txt";		
+	public Map(GameMode gameMode, int level, SoundManager soundManager, int screenWidth, int screenHeight) throws MapException {
+		this.level = level;
+		this.soundManager = soundManager;
+		this.screenWidth = screenWidth;
+		this.screenHeight = screenHeight;
+
+		String modePath = switch (gameMode) {
+            case CLASSIC -> "classic/";
+            case TIMER -> "timer/";
+            case LIMITED -> "limited/";
+            case BUILDER -> "builder/";
+            case ONLINE -> "online/";
+        };
+
+        modePath = "res/level/" + modePath + level + ".txt";
+
 		try {
-			this.first = new ArrayList<int[]>();
-			this.start = readMatrixFromFile(path);
+			this.first = new ArrayList<>();
+			this.start = readMatrixFromFile(modePath);
 		} catch (IOException e) {
 			throw new MapException("Unable to load map : " + e.getMessage());
 		}
+
+		loadAssets();
+
 		parcoursProfondeurRec();
 		resetCells();
 		Time_level = 14 + level;
 	}
+
+
+	private void loadAssets() {
+		try {
+			gridBackground = ImageIO.read(getClass().getResourceAsStream("/menu/grilleMain.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		gridX = (screenWidth - gridBackground.getWidth()) / 2 - 65;
+		gridY = (screenHeight - gridBackground.getHeight()) / 2 - 50;
+		newWidth = screenWidth - 300;
+		newHeight = screenHeight - 300;
+	}
+	
 	
 	public int getHeight() {
 		return start.length;
 	}
+	
 	
 	public int getWidth() {
 		return start[0].length;
@@ -82,26 +109,20 @@ public class Map {
 		String line;
 		int rows = 0;
 	    int columns = 0;
-	    Random random = new Random();
-	    int rdm;
-	
-	    // Compte le nombre de lignes et détermine le nombre maximum de colonnes
+	    
 	    while ((line = reader.readLine()) != null) {
 	        rows++;
 	        columns = Math.max(columns, line.length());
 	    }
 	
-	    // Réinitialise le lecteur pour recommencer la lecture depuis le début
 	    reader.close();
 	    reader = new BufferedReader(new FileReader(filePath));
 	
 	    Cell[][] matrix = new Cell[rows][columns];
 	
-	    // Remplit la matrice à partir du fichier
 	    for (int i = 0; i < rows; i++) {
 	        line = reader.readLine();
 	        for (int j = 0; j < line.length(); j++) {
-	            rdm = random.nextInt(4);
 	            int c = Character.getNumericValue(line.charAt(j));
 	            
 	            if (c == 4) {
@@ -120,6 +141,7 @@ public class Map {
 	    return matrix;
 	}
 	
+	
 	/**
 	 * Permet de determiner sur quelle cellule le joueur a cliqué, et appelle rotate sur celle ci
 	 * @param mouseX : coordonnées X du clic de la souris
@@ -131,12 +153,11 @@ public class Map {
         int col = mouseX / tileSize;
 
         if (row >= 0 && row < start.length && col >= 0 && col < start[0].length && start[row][col] != null) {
-        	start[row][col].rotate();
+        	start[row][col].rotate(soundManager);
 			move--;
 			moveCount++;
 			
 			boolean b = parcoursProfondeurRec();
-			//start[row][col].loadImage(start[row][col].getPipeType());
 			if (b)
 				won = true;			
         }
@@ -167,18 +188,16 @@ public class Map {
 			res &= explorer(start[t[0]][t[1]],t[0],t[1]);
 		}
 		
-		if (res == false) {
-			for (int i = 0 ; i < start.length ; i++) {
-				for (int j = 0 ; j < start[i].length ; j++) {
-					if (start[i][j] != null && !start[i][j].isChecked()) {
-						start[i][j].setConnected(false);
-						start[i][j].loadImage(start[i][j].getPipeType());
-					}
-				}
-			}
+		if (!res) {
+            for (Cell[] cells : start) {
+                for (Cell cell : cells) {
+                    if (cell != null && !cell.isChecked()) {
+                        cell.setConnected(false);
+                        cell.loadImage(cell.getPipeType());
+                    }
+                }
+            }
 		}
-		
-		
 		
 		return res;
 	}
@@ -216,7 +235,7 @@ public class Map {
 						else if (!start[x+1][y].isChecked())
 							b &= explorer(start[x+1][y], x+1,y);
 				}
-				else if (i == 3) {
+				else {
 						if (y <= 0  || start[x][y-1] == null || !start[x][y-1].getCon()[1])
 							b &= false;
 						else if (!start[x][y-1].isChecked()) 
@@ -230,13 +249,27 @@ public class Map {
 	
 	
 	public void resetCells() {
-		for (int i = 0 ; i < start.length ; i++) {
-			for (int j = 0 ; j < start[i].length ; j++) {
-				if (start[i][j] != null) {
-					start[i][j].reset();
-				}
-			}
-		}
+        for (Cell[] cells : start) {
+            for (Cell cell : cells) {
+                if (cell != null) {
+                    cell.reset();
+                }
+            }
+        }
+	}
+
+
+	public void draw(Graphics2D g2,int tileSize, int mapOffset)  {
+
+		g2.drawImage(gridBackground, gridX, gridY,newWidth, newHeight,  null);
+
+		for (int i = 0 ; i < getHeight() ; i++)
+			for (int j = 0 ; j < getWidth() ; j++)
+				drawCell(i, j, g2, j*tileSize+mapOffset, i*tileSize+mapOffset, tileSize);
+
+		g2.setColor(Color.BLACK);
+		g2.setFont(new Font("Retro Gaming", Font.PLAIN, 45));
+		g2.drawString("Niveau "+level, 345, 50);
 	}
 
 
@@ -244,11 +277,9 @@ public class Map {
 		return move;
 	}
 
-
 	public int getMoveCount() {
 		return moveCount;
 	}
-	
 	
 	public void setTimer_fiel() {
 		Time_start=0;
@@ -269,6 +300,7 @@ public class Map {
 	public void  setTime_level(int time) {
 		 this.Time_level = time;
 	}
+
 	public int  getTime_level() {
 		 return Time_level;
 	}

@@ -4,13 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import view.GamePanel;
 
 
 public class Cell {
@@ -22,8 +16,7 @@ public class Cell {
     private boolean checked;
 
     private boolean connected;
-    
-    private static SoundManager soundManager = SoundManager.getInstance();
+
 
     public Cell (int pipeType,int orientation){
         this.pipeType = pipeType;
@@ -41,7 +34,6 @@ public class Cell {
      * Charge dans l'attribut image, l'image correspondant au type de tuyau donné en argument
      * @param pipeType : 0-case vide, 1-tuyau horizontal, 2-tuyau courbé, 3-tuyau jonction, 4-tuyau de départ/arrivée
      */
-   
     public void loadImage(int pipeType) {
         String path = null;
         switch (pipeType) {
@@ -86,6 +78,7 @@ public class Cell {
         }
     }
     
+    
     private BufferedImage rotateImage(BufferedImage originalImage) {
         int width = originalImage.getWidth();
         int height = originalImage.getHeight();
@@ -99,7 +92,6 @@ public class Cell {
     
         return rotatedImage;
     }
-    
 
 
     public int getOrientation() {
@@ -151,6 +143,7 @@ public class Cell {
     public void setConnected(boolean connected) {
         this.connected = connected;
     }
+    
     
     private void initCon() {
     	this.con = new boolean[4];
@@ -205,7 +198,7 @@ public class Cell {
     /**
      * Fait tourner un tuyau de 90 degré dans le sens horaire, et met a jour son attribut orientation.
      */
-    public void rotate() {
+    public void rotate(SoundManager soundManager) {
         
     	if (pipeType == 0) return;
         if (pipeType<=5){
@@ -213,7 +206,6 @@ public class Cell {
         }
         
         rotateCon();
-        
 
         soundManager.playRotateSound();
 
@@ -244,12 +236,4 @@ public class Cell {
     		g2.drawImage(image,x,y,tileSize,tileSize,null);
     	}
     }
-    
-    
-    
-     
-    @Override
-    public String toString() {
-    	 return Integer.toString(pipeType) + " : " + Arrays.toString(con);
-     }
 }
