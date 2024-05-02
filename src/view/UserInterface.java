@@ -18,13 +18,11 @@ public class UserInterface {
 	public LoseOverlay loseOverlay;
 	public SettingsOverlay settingsOverlay;
 
-	private final SoundManager soundManager;
+	private static SoundManager soundManager = SoundManager.getInstance();
 
 
 	public UserInterface(GamePanel gp) {
 		this.gp = gp;
-		this.soundManager = gp.soundManager;
-
 		this.pauseOverlay = new PauseOverlay();
 		this.mainOverlay = new MainOverlay(gp.screenWidth, gp.screenHeight);
 		this.transitionOverlay = new TransitionOverlay(gp.screenWidth, gp.screenHeight);

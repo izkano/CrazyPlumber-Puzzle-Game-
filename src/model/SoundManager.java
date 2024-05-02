@@ -21,15 +21,15 @@ public class SoundManager {
     public SoundManager() {
         loadSounds();
     }
-
-    /*
+    
+    
     public static SoundManager getInstance() {
         if (instance == null) {
             instance = new SoundManager();
         }
 
         return instance;
-    }*/
+    }
 
 
     private void loadSounds() {

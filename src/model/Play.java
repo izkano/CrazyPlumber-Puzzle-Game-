@@ -9,9 +9,8 @@ import java.io.IOException;
 
 public class Play {
 	private final GamePanel gp;
-	private final SoundManager soundManager;
+	private static SoundManager soundManager = SoundManager.getInstance();
 	private GameMode gameMode = GameMode.CLASSIC;
-
 	private int lvl = 1;
 
 	private int[] amountLevel = countLevel();
@@ -20,7 +19,6 @@ public class Play {
 	
 	public Play(GamePanel gp) {
 		this.gp = gp;
-		this.soundManager = gp.soundManager;
 
 		setLevel(1);
 

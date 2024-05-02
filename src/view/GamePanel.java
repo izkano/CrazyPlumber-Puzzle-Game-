@@ -34,7 +34,7 @@ public class GamePanel extends JPanel implements Runnable {
 	// SYSTEM
 	public Map map;
 	public State gameState;
-    public final SoundManager soundManager = new SoundManager();
+    private static SoundManager soundManager = SoundManager.getInstance();
     public final Play play = new Play(this);
 	public UserInterface ui = new UserInterface(this);
     private final MouseHandler mouseHandler = new MouseHandler(this);

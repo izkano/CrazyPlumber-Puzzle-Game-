@@ -20,7 +20,7 @@ import view.*;
 public class MouseHandler extends MouseAdapter implements MouseListener {
 	private final GamePanel gp;
 	private final UserInterface ui;
-	private final SoundManager soundManager;
+	private static SoundManager soundManager = SoundManager.getInstance();
 
 	private final Cursor normalCursor;
     private final Cursor pressedCursor;
@@ -28,7 +28,6 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 	
 	public MouseHandler(GamePanel gp) {
 		this.gp = gp;
-		this.soundManager = gp.soundManager;
 		this.ui = gp.ui;
 
         Image normalImage = Toolkit.getDefaultToolkit().getImage("res/images/cursor_shiny.png");

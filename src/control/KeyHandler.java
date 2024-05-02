@@ -12,12 +12,12 @@ import view.GamePanel;
  */
 public class KeyHandler implements KeyListener {
 	private final GamePanel gp;
-	private final SoundManager soundManager;
+	private static SoundManager soundManager = SoundManager.getInstance();
 
 	
 	public KeyHandler(GamePanel gp) {
 		this.gp = gp;
-		this.soundManager = gp.soundManager;
+		
 	}
 	
 	@Override
