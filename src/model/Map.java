@@ -9,6 +9,7 @@ import exception.MapException;
 import javax.imageio.ImageIO;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.RandomAccessFile;
 import java.io.IOException;
 
 
