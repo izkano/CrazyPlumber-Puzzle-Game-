@@ -64,6 +64,7 @@ public class Play {
 		if (gp.map != null) {
 	        if (gp.map.won) {
 	        	gp.repaint();
+				gp.map.sauvgarde("res/sauvgarde/sauvgarde.txt","classique",lvl);
 	            unlockNextLvl(lvl);
 	            try {
 					gp.getGameThread().sleep(300);
@@ -94,6 +95,7 @@ public class Play {
 	        if (gp.map.won) {
 					soundManager.stopTimerMusic();
 					gp.repaint();
+					gp.map.sauvgarde("res/sauvgarde/sauvgarde.txt","timer",lvl);
 	                unlockNextLvl(lvl);
 	                soundManager.playWinSound();
 	                try {
@@ -113,6 +115,7 @@ public class Play {
 		if (gp.map != null) {
 	        if (gp.map.won) {
                 gp.repaint();
+				gp.map.sauvgarde("res/sauvgarde/sauvgarde.txt","limited",lvl);
 	            unlockNextLvl(lvl);
 	            try {
 					gp.getGameThread().sleep(300);
@@ -166,13 +169,38 @@ public class Play {
 
 	public boolean[][] createUnlock(){
 		boolean[][] unlock = new boolean[3][];
-		for (int i = 0 ; i<3 ; i++){
-			unlock[i] = new boolean[amountLevel[i]];
-			for (int j = 1; j<amountLevel[i];j++){
-				unlock[i][j] = false;
-			}
-			unlock[i][0] = true;
-		}
+		 try (BufferedReader reader = new BufferedReader(new FileReader("res/sauvgarde/sauvgarde.txt"))) {
+	            String line;
+	            String gamemode1="classique";
+	            String gamemode2="timer";
+	            String gamemode3="limited";
+	            for (int i =0 ; i<3 ; i++){
+	            	String gamemode;
+	            	if(i==0)gamemode=gamemode1;
+	            	else if (i==1)gamemode=gamemode2;
+	            	else gamemode=gamemode3;
+	            	 boolean foundClassique = false;
+	            while( (line=reader.readLine())!=null) {
+	   			 if (line.equals(gamemode)) {
+	                    foundClassique = true;
+	                    continue;
+	                }
+	   			if(foundClassique) {
+	   				unlock[i] = new boolean[amountLevel[i]];
+	   				String[] values = line.split("");
+	   				for (int j = 0; j<amountLevel[i];j++){
+	   					unlock[i][j] =values[j].equals("1");
+	   					System.out.print(unlock[i][j]+" ");
+	   				}
+	   				System.out.println();
+	   				System.out.println(i);
+	   			}
+	   			break;
+	            }
+	            }
+		 } catch (IOException e) {
+	            e.printStackTrace();
+	     }
 		return unlock;
 	}
 

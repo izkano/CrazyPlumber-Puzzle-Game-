@@ -257,6 +257,38 @@ public class Map {
             }
         }
 	}
+	public void sauvgarde(String fileName, String gamemode, int positionToChange) {
+	    try (RandomAccessFile file = new RandomAccessFile(fileName, "rw")) {
+	        String line;
+	        boolean foundGamemode = false;
+	        long currentPosition = file.getFilePointer();
+	        while ((line = file.readLine()) != null) {
+	            if (foundGamemode) {
+	            	 currentPosition += positionToChange;
+	                 file.seek(currentPosition);
+	                char c = (char) file.read(); 
+	                System.out.println("!!!!!!!!!!!!!!!!!!!!!!!"+c);
+	                if (c == '0') {
+	                	file.seek(currentPosition);
+	                    file.write('1');
+	                    System.out.println("Le fichier a été modifié avec succès : '0' à la position " +   positionToChange + " modifié en '1'.");
+	                    return; 
+	                } else {
+	                    System.out.println("Aucun changement effectué : La position " + positionToChange   + " contient déjà un '1'.");
+	                    return; 
+	                }
+	            } else {
+	                if (line.equals(gamemode)) {
+	                    foundGamemode = true;
+	                    currentPosition = file.getFilePointer();
+	                }
+	            }
+	        }
+	        System.out.println("Le fichier n'a pas été modifié : le mode de jeu recherché '" + gamemode +  "' n'a pas été trouvé.");
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
 
 
 	public void draw(Graphics2D g2,int tileSize, int mapOffset)  {
