@@ -5,7 +5,7 @@ import view.GamePanel;
 import java.awt.*;
 import view.Button;
 
-public class SettingsOverlay extends Overlay{
+public class SettingsOverlay extends Overlay {
 
     private Button backBtn;
 
@@ -23,10 +23,30 @@ public class SettingsOverlay extends Overlay{
     }
 
 
+    public Button getSoundButton() {
+        return soundButton;
+    }
+
+    public Button getNoSoundButton(){
+        return noSoundButton;
+    }
+
+    public Button getBackButton() {
+        return backBtn;
+    }
+
+
     public void loadAssets() {
         backBtn = new Button("/menu/previous", 15,15);
         soundButton= new Button("/menu/setting/sound_", (screenWidth/2)-72, (screenHeight/2)-72);
         noSoundButton = new Button("/menu/setting/nosound_", (screenWidth/2)-72, (screenHeight/2)-72);
+    }
+
+
+    public void resetButtons() {
+        soundButton.setMouseOver(false);
+        noSoundButton.setMouseOver(false);
+        backBtn.setMouseOver(false);
     }
 
 
@@ -38,18 +58,5 @@ public class SettingsOverlay extends Overlay{
             noSoundButton.draw(g2);
         }
         backBtn.draw(g2);
-    }
-
-
-    public Button getSoundButton() {
-        return soundButton;
-    }
-
-    public Button getNoSoundButton(){
-        return noSoundButton;
-    }
-
-    public Button getBackButton() {
-        return backBtn;
     }
 }
