@@ -2,10 +2,11 @@ package model;
 
 public enum GameMode {
 	CLASSIC (0),
-	TIMER (1),
-	LIMITED (2),
-	BUILDER (3),
-	ONLINE (4);
+	RANDOM(1),
+	TIMER (2),
+	LIMITED (3),
+	BUILDER (4),
+	ONLINE (5);
 
 	private final int value;
 

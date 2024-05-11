@@ -11,6 +11,7 @@ import view.GamePanel;
  * Gestion des entrées au clavier de l'utilisateur
  */
 public class KeyHandler implements KeyListener {
+
 	private final GamePanel gp;
 	private static SoundManager soundManager = SoundManager.getInstance();
 
@@ -19,7 +20,8 @@ public class KeyHandler implements KeyListener {
 		this.gp = gp;
 		
 	}
-	
+
+
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
@@ -58,9 +60,11 @@ public class KeyHandler implements KeyListener {
 		}
 	}
 
+
 	@Override
 	public void keyTyped(KeyEvent e) { }
-	
+
+
 	@Override
 	public void keyReleased(KeyEvent e) { }
 }

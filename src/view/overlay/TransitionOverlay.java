@@ -26,6 +26,19 @@ public class TransitionOverlay extends Overlay {
     }
 
 
+    public view.Button getNextLevelButton() {
+        return nextLevelBtn;
+    }
+
+    public view.Button getRetryButton() {
+        return retryBtn;
+    }
+
+    public Button getMainMenuButton() {
+        return mainMenuBtn;
+    }
+
+
     public void loadAssets() {
         try {
             victoryWindow = ImageIO.read(getClass().getResourceAsStream("/menu/transition/victory_window.png"));;
@@ -41,6 +54,13 @@ public class TransitionOverlay extends Overlay {
         this.nextLevelBtn = new view.Button("/menu/transition/buttons/nextLevel", buttonCenterXtransition, startYtransition);
         this.retryBtn = new view.Button("/menu/transition/buttons/replay", buttonCenterXtransition,startYtransition + gapYtransition);
         this.mainMenuBtn = new view.Button("/menu/transition/buttons/mainMenu", buttonCenterXtransition, startYtransition + 2*gapYtransition);
+    }
+
+
+    public void resetButtons() {
+        nextLevelBtn.setMouseOver(false);
+        mainMenuBtn.setMouseOver(false);
+        retryBtn.setMouseOver(false);
     }
 
 
@@ -132,7 +152,7 @@ public class TransitionOverlay extends Overlay {
         FontMetrics metrics = g2.getFontMetrics(font);
         int messageWidth = metrics.stringWidth(message1);
         int messageX = (screenWidth - messageWidth) / 2;
-        int messageY = screenHeight / 2 - 100; // Adjust vertically to a position visible on the screen
+        int messageY = screenHeight / 2 - 100;
         int message2Width = metrics.stringWidth(message2);
         int message2X = (screenWidth - message2Width) / 2;
         g2.drawString(message1, messageX, messageY);
@@ -150,25 +170,5 @@ public class TransitionOverlay extends Overlay {
         retryBtn.draw(g2);
         mainMenuBtn.draw(g2);
         drawMessage(g2, stars);
-    }
-
-
-    public void resetButtons() {
-        nextLevelBtn.setMouseOver(false);
-        mainMenuBtn.setMouseOver(false);
-        retryBtn.setMouseOver(false);
-    }
-
-
-    public view.Button getNextLevelButton() {
-        return nextLevelBtn;
-    }
-
-    public view.Button getRetryButton() {
-        return retryBtn;
-    }
-
-    public Button getMainMenuButton() {
-        return mainMenuBtn;
     }
 }

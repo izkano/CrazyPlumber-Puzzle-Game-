@@ -8,6 +8,7 @@ import view.overlay.*;
 
 
 public class UserInterface {
+
 	private final GamePanel gp;
 
 	public MainOverlay mainOverlay;
@@ -27,7 +28,7 @@ public class UserInterface {
 		this.mainOverlay = new MainOverlay(gp.screenWidth, gp.screenHeight);
 		this.transitionOverlay = new TransitionOverlay(gp.screenWidth, gp.screenHeight);
 		this.modeOverlay = new ModeOverlay(gp.screenWidth, gp.screenHeight);
-		this.selectOverlay = new SelectOverlay(gp.screenWidth, gp.screenHeight,gp.play.getAmountLevel(),gp.play.getUnlocked());
+		this.selectOverlay = new SelectOverlay(gp.screenWidth, gp.screenHeight,gp.play.getAmountLevel(),gp.play.getUnlocked(),gp.play.getGameMode());
 		this.loseOverlay = new LoseOverlay(gp.screenWidth, gp.screenHeight);
 		this.settingsOverlay = new SettingsOverlay(gp.screenWidth, gp.screenHeight);
 	}

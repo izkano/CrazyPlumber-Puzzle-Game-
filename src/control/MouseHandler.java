@@ -18,9 +18,10 @@ import view.*;
  * Gestion des actions de la souris de l'utilisateur
  */
 public class MouseHandler extends MouseAdapter implements MouseListener {
+
 	private final GamePanel gp;
 	private final UserInterface ui;
-	private static SoundManager soundManager = SoundManager.getInstance();
+	private final static SoundManager soundManager = SoundManager.getInstance();
 
 	private final Cursor normalCursor;
     private final Cursor pressedCursor;
@@ -107,6 +108,9 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 			if (isIn(e, ui.modeOverlay.getClassicButton())) {
 				gp.play.setGameMode(GameMode.CLASSIC);
 				gp.gameState = State.SELECT;
+			} else if (isIn(e, ui.modeOverlay.getRandomButton())) {
+				gp.play.setGameMode(GameMode.RANDOM);
+				gp.gameState = State.SELECT;
 			} else if (isIn(e, ui.modeOverlay.getTimerButton())) {
 				gp.play.setGameMode(GameMode.TIMER);
 				gp.gameState = State.SELECT;
@@ -125,6 +129,7 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 			}
 		}
 
+		// GAME STATE : GAMEOVER
 		else if (gp.gameState == State.GAMEOVER) {
 			if (isIn(e, ui.loseOverlay.getRetryButton())) {
 				gp.play.setLevel(gp.play.getLevel());
@@ -134,6 +139,7 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 			}
 		}
 
+		// GAME STATE : SETTINGS
 		else if (gp.gameState == State.SETTINGS) {
 			if (isIn(e, ui.settingsOverlay.getSoundButton()) || isIn(e, ui.settingsOverlay.getNoSoundButton())){
 				GamePanel.sound = !GamePanel.sound;
@@ -189,7 +195,10 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 		else if (gp.gameState == State.GAMEMODE){
 			if (isIn(e, ui.modeOverlay.getClassicButton())) {
 				ui.modeOverlay.getClassicButton().setMouseOver(true);
-			} 
+			}
+			else if (isIn(e,ui.modeOverlay.getRandomButton())) {
+				ui.modeOverlay.getRandomButton().setMouseOver(true);
+			}
 			else if (isIn(e, ui.modeOverlay.getTimerButton())) {
 				ui.modeOverlay.getTimerButton().setMouseOver(true);
 			} 
@@ -239,6 +248,7 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 		}
 	}
 
+
 	@Override
 	public void mouseEntered(MouseEvent e) { }
 
@@ -249,6 +259,7 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 	private boolean isIn(MouseEvent e, Button b) {
 		return b.getBounds().contains(e.getX(), e.getY());
 	}
+
 
 	private boolean isInAnyButton(MouseEvent e) {
 		UserInterface ui = gp.ui;

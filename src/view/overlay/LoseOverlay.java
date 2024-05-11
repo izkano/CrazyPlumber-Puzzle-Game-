@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class LoseOverlay extends Overlay{
+public class LoseOverlay extends Overlay {
 
     private BufferedImage loseWindow;
 
@@ -16,10 +16,20 @@ public class LoseOverlay extends Overlay{
     int screenWidth;
     int screenHeight;
 
+
     public LoseOverlay(int screenWidth, int screenHeight) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         loadAssets();
+    }
+
+
+    public Button getRetryButton() {
+        return retryButton;
+    }
+
+    public Button getMainMenuButton() {
+        return mainMenuButton;
     }
 
 
@@ -39,24 +49,15 @@ public class LoseOverlay extends Overlay{
     }
 
 
-    public void draw(Graphics2D g2){
-        g2.drawImage(loseWindow, screenWidth/2 -261, screenHeight/2-400, null);
-        retryButton.draw(g2);
-        mainMenuButton.draw(g2);
-    }
-
-
     public void resetButtons() {
         retryButton.setMouseOver(false);
         mainMenuButton.setMouseOver(false);
     }
 
 
-    public Button getRetryButton() {
-        return retryButton;
-    }
-
-    public Button getMainMenuButton() {
-        return mainMenuButton;
+    public void draw(Graphics2D g2){
+        g2.drawImage(loseWindow, screenWidth/2 -261, screenHeight/2-400, null);
+        retryButton.draw(g2);
+        mainMenuButton.draw(g2);
     }
 }
