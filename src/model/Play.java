@@ -134,26 +134,7 @@ public class Play {
 	
 	
 	private void limited() {
-		if (gp.map != null) {
-	        if (gp.map.won) {
-                gp.repaint();
-				gp.map.sauvgarde("res/sauvgarde/sauvgarde.txt","limited",lvl);
-	            unlockNextLvl(lvl);
-	            try {
-					gp.getGameThread().sleep(300);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				soundManager.playWinSound();
-	            gp.gameState = State.TRANSITION;
-	        }
-			
-	        else if (gp.map.getMove() <= 0) {
-				gp.gameState = State.GAMEOVER;
-				gp.repaint(); 
-	    	}
-			gp.map.resetCells();
-		}
+
 	}
 	
 	
@@ -190,7 +171,7 @@ public class Play {
 
 
 	public boolean[][] createUnlock(){
-		bboolean[][] unlock = new boolean[4][];
+		boolean[][] unlock = new boolean[4][];
 		 try (BufferedReader reader = new BufferedReader(new FileReader("res/sauvgarde/sauvgarde.txt"))) {
 	            String line;
 	            String gamemode1="classique";
