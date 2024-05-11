@@ -28,7 +28,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int maxScreenRow = 10;
 	final int screenWidth = tileSize * maxScreenCol;
 	final int screenHeight = tileSize * maxScreenRow; 
-	public final int mapOffset = tileSize;
+	public final int mapOffset = tileSize*2;
 
 
 	// SYSTEM
@@ -71,7 +71,15 @@ public class GamePanel extends JPanel implements Runnable {
             e.printStackTrace();
         }
     }
-    
+
+
+    private void setCursor() {
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Image image = toolkit.getImage("res/images/cursor_shiny.png");
+        Cursor c = toolkit.createCustomCursor(image , new Point(0,0), "c");
+        setCursor (c);
+    }
+
     
     private void loadBackgroundImages() {
         try {
@@ -121,7 +129,7 @@ public class GamePanel extends JPanel implements Runnable {
      * Méthode appelé tous les tours de boucles, met à jour la partie méchanique du jeu
      */
 	public void update() {
-	    if (gameState == State.PLAYING && map != null) {
+	    if (gameState == State.PLAYING) {
 	    	play.play();
 	    }
 	}
@@ -143,18 +151,5 @@ public class GamePanel extends JPanel implements Runnable {
         else {
             ui.draw(g2);
         }
-    }
-
-
-    private void setCursor() {
-        Toolkit toolkit = Toolkit.getDefaultToolkit();
-        Image image = toolkit.getImage("res/images/cursor_shiny.png");
-        Cursor c = toolkit.createCustomCursor(image , new Point(0,0), "c");
-        setCursor (c);
-    }
-
-
-    public Thread getGameThread() {
-        return this.gameThread;
     }
 }

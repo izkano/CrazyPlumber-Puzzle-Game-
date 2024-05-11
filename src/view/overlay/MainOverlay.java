@@ -27,6 +27,19 @@ public class MainOverlay extends Overlay {
     }
 
 
+    public Button getStartBtn() {
+        return startBtn;
+    }
+
+    public Button getCreditsBtn() {
+        return creditsBtn;
+    }
+
+    public Button getExitBtn() {
+        return exitBtn;
+    }
+
+
     public void loadAssets() {
         try {
             mainBackground = ImageIO.read(getClass().getResourceAsStream("/menu/bgMain.jpg"));;
@@ -44,14 +57,6 @@ public class MainOverlay extends Overlay {
     }
 
 
-    public void draw(Graphics2D g2) {
-        g2.drawImage(mainBackground, 0, 0, null);
-        startBtn.draw(g2);
-        creditsBtn.draw(g2);
-        exitBtn.draw(g2);
-    }
-
-
     public void resetButtons() {
         startBtn.setMouseOver(false);
         creditsBtn.setMouseOver(false);
@@ -59,15 +64,10 @@ public class MainOverlay extends Overlay {
     }
 
 
-    public Button getStartBtn() {
-        return startBtn;
-    }
-
-    public Button getCreditsBtn() {
-        return creditsBtn;
-    }
-
-    public Button getExitBtn() {
-        return exitBtn;
+    public void draw(Graphics2D g2) {
+        g2.drawImage(mainBackground, 0, 0, null);
+        startBtn.draw(g2);
+        creditsBtn.draw(g2);
+        exitBtn.draw(g2);
     }
 }

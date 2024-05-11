@@ -8,27 +8,49 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class Play {
+
 	private final GamePanel gp;
-	private static SoundManager soundManager = SoundManager.getInstance();
+	private final static SoundManager soundManager = SoundManager.getInstance();
 	private GameMode gameMode = GameMode.CLASSIC;
+
 	private int lvl = 1;
 
-	private int[] amountLevel = countLevel();
-	private boolean[][] unlocked;
+	private final int[] amountLevel = countLevel();
+	private final boolean[][] unlocked;
 	
 	
 	public Play(GamePanel gp) {
 		this.gp = gp;
 
-		setLevel(1);
-
 		unlocked = createUnlock();
 	}
-	
+
+
+	public int[] getAmountLevel(){
+		return amountLevel;
+	}
+
+	public int getLevel() {
+		return this.lvl;
+	}
+
+	public GameMode getGameMode() {
+		return this.gameMode;
+	}
+
+	public boolean[][] getUnlocked(){
+		return unlocked;
+	}
+
+	public void setGameMode(GameMode gm) {
+		this.gameMode = gm;
+		gp.ui.selectOverlay.setGameMode(gm);
+	}
+
 	
 	public void play() {
 		switch (gameMode) {
-			case CLASSIC : 
+			case CLASSIC, RANDOM:
 				classic();
 				soundManager.stopBackgroundMusic();
 				soundManager.playLevelMusic();
@@ -67,7 +89,7 @@ public class Play {
 				gp.map.sauvgarde("res/sauvgarde/sauvgarde.txt","classique",lvl);
 	            unlockNextLvl(lvl);
 	            try {
-					gp.getGameThread().sleep(300);
+					Thread.sleep(300);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -76,7 +98,6 @@ public class Play {
 				
 	            gp.gameState = State.TRANSITION;
 	        }
-	        gp.map.resetCells();
 	    }
 	}
 	
@@ -99,7 +120,7 @@ public class Play {
 	                unlockNextLvl(lvl);
 	                soundManager.playWinSound();
 	                try {
-                       gp.getGameThread().sleep(300);
+                       Thread.sleep(300);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -224,9 +245,6 @@ public class Play {
 						case 3:
 							BufferedReader reader3 = new BufferedReader(new FileReader("res/level/builder/" + i + ".txt"));
 							break;
-						case 4:
-							BufferedReader reader4 = new BufferedReader(new FileReader("res/level/online/" + i + ".txt"));
-							break;
 					}
 				}
 				catch (IOException e){
@@ -242,26 +260,5 @@ public class Play {
 
 	private void updateSelectOverlay() {
 		gp.ui.selectOverlay.update(amountLevel,unlocked);
-	}
-
-
-	public int[] getAmountLevel(){
-		return amountLevel;
-	}
-
-	public int getLevel() {
-		return this.lvl;
-	}
-
-	public GameMode getGameMode() {
-		return this.gameMode;
-	}
-
-	public void setGameMode(GameMode gm) {
-		this.gameMode = gm;
-	}
-
-	public boolean[][] getUnlocked(){
-		return unlocked;
 	}
 }

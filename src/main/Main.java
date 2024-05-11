@@ -12,6 +12,7 @@ import view.GamePanel;
  * Point d'entrée du programme
  */
 public class Main {
+
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         GamePanel gamePanel = new GamePanel();
@@ -39,4 +40,5 @@ public class Main {
         
         gamePanel.startGameThread();
     }
+
 }
