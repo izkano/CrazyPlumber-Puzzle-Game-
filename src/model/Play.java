@@ -86,7 +86,8 @@ public class Play {
 		if (gp.map != null) {
 	        if (gp.map.won) {
 	        	gp.repaint();
-				gp.map.sauvgarde("res/sauvgarde/sauvgarde.txt","classique",lvl);
+				if(this.gameMode.getValue()==0) gp.map.sauvgarde("res/sauvgarde/sauvgarde.txt","classique",lvl);
+				if(this.gameMode.getValue()==1) gp.map.sauvgarde("res/sauvgarde/sauvgarde.txt","random",lvl);
 	            unlockNextLvl(lvl);
 	            try {
 					Thread.sleep(300);
@@ -189,24 +190,26 @@ public class Play {
 
 
 	public boolean[][] createUnlock(){
-		boolean[][] unlock = new boolean[3][];
+		bboolean[][] unlock = new boolean[4][];
 		 try (BufferedReader reader = new BufferedReader(new FileReader("res/sauvgarde/sauvgarde.txt"))) {
 	            String line;
 	            String gamemode1="classique";
-	            String gamemode2="timer";
-	            String gamemode3="limited";
-	            for (int i =0 ; i<3 ; i++){
+	            String gamemode2="random";
+	            String gamemode3="timer";
+	            String gamemode4="limited";
+	            for (int i =0 ; i<4 ; i++){
 	            	String gamemode;
-	            	if(i==0)gamemode=gamemode1;
+	            	if(i==0 )gamemode=gamemode1;
 	            	else if (i==1)gamemode=gamemode2;
-	            	else gamemode=gamemode3;
-	            	 boolean foundClassique = false;
+	            	else if (i==2)gamemode=gamemode3;
+	            	else  gamemode=gamemode4;
+	            	boolean foundGamemode = false;
 	            while( (line=reader.readLine())!=null) {
 	   			 if (line.equals(gamemode)) {
-	                    foundClassique = true;
+	   				foundGamemode = true;
 	                    continue;
 	                }
-	   			if(foundClassique) {
+	   			if(foundGamemode) {
 	   				unlock[i] = new boolean[amountLevel[i]];
 	   				String[] values = line.split("");
 	   				for (int j = 0; j<amountLevel[i];j++){
