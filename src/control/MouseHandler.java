@@ -141,8 +141,12 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 
 		// GAME STATE : SETTINGS
 		else if (gp.gameState == State.SETTINGS) {
-			if (isIn(e, ui.settingsOverlay.getSoundButton()) || isIn(e, ui.settingsOverlay.getNoSoundButton())){
-				GamePanel.sound = !GamePanel.sound;
+			if (isIn(e, ui.settingsOverlay.getMusicButton())) {
+				gp.ui.settingsOverlay.getMusicButton().setMouseOver(soundManager.getSoundMusic());
+				soundManager.changeMusic();
+			} else if (isIn(e, ui.settingsOverlay.getSfxButton())) {
+				gp.ui.settingsOverlay.getSfxButton().setMouseOver(soundManager.getSoundSfx());
+				soundManager.changeSfx();
 			} else if (isIn(e, ui.settingsOverlay.getBackButton())) {
 				gp.gameState = State.PAUSE;
 			}
@@ -156,6 +160,7 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
             gp.setCursor(pressedCursor);
         }
 
+		// PAUSE MENU
 		if (gp.gameState == State.PAUSE) {
 			if ( isIn(e, ui.pauseOverlay.getCloseBtnPause()) ) {
 				ui.pauseOverlay.getCloseBtnPause().setMouseOver(true);
@@ -169,7 +174,8 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 				ui.pauseOverlay.getMenuBtn().setMouseOver(true);
 			}
 		}
-		
+
+		// MAIN MENU
 		else if (gp.gameState == State.MENU) {
 			if (isIn(e, ui.mainOverlay.getStartBtn())) {
 				ui.mainOverlay.getStartBtn().setMouseOver(true);
@@ -180,7 +186,8 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 			}
 			gp.repaint(); 
 		}
-		
+
+		// TRANSITION
 		else if (gp.gameState == State.TRANSITION) {
 			if (isIn(e, ui.transitionOverlay.getNextLevelButton())) {
 				ui.transitionOverlay.getNextLevelButton().setMouseOver(true);
@@ -192,6 +199,7 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 			gp.repaint(); 
 		}
 
+		// GAMEMODE
 		else if (gp.gameState == State.GAMEMODE){
 			if (isIn(e, ui.modeOverlay.getClassicButton())) {
 				ui.modeOverlay.getClassicButton().setMouseOver(true);

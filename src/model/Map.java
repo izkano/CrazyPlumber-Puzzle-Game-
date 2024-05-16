@@ -53,8 +53,7 @@ public class Map {
 
 		if (gameMode != GameMode.RANDOM) {
 			String modePath = switch (gameMode) {
-				case CLASSIC -> "classic/";
-				case TIMER -> "timer/";
+				case CLASSIC, TIMER -> "classic/";
 				case LIMITED -> "limited/";
 				case BUILDER -> "builder/";
 				case ONLINE -> "online/";
