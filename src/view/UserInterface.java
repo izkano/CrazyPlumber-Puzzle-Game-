@@ -18,6 +18,8 @@ public class UserInterface {
 	public ModeOverlay modeOverlay;
 	public LoseOverlay loseOverlay;
 	public SettingsOverlay settingsOverlay;
+	public CreditsOverlay creditsOverlay;
+
 
 	private static SoundManager soundManager = SoundManager.getInstance();
 
@@ -31,6 +33,7 @@ public class UserInterface {
 		this.selectOverlay = new SelectOverlay(gp.screenWidth, gp.screenHeight,gp.play.getAmountLevel(),gp.play.getUnlocked(),gp.play.getGameMode());
 		this.loseOverlay = new LoseOverlay(gp.screenWidth, gp.screenHeight);
 		this.settingsOverlay = new SettingsOverlay(gp.screenWidth, gp.screenHeight);
+		this.creditsOverlay = new CreditsOverlay(gp,gp.screenWidth, gp.screenHeight);
 	}
 	
 	
@@ -68,5 +71,9 @@ public class UserInterface {
 		else if (gp.gameState == State.SETTINGS) {
 			settingsOverlay.draw(g2);
 		}
+
+		else if (gp.gameState == State.CREDITS) {
+            creditsOverlay.draw(g2);
+        }
 	}
 }

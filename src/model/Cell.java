@@ -20,7 +20,7 @@ public class Cell {
     private BufferedImage image;
     private String imagePath;
     private String imageBluePath;
-
+    
 
     public Cell (int pipeType, int orientation, boolean isCurve){
         this.pipeType = pipeType;
