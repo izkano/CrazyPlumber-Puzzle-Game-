@@ -221,6 +221,12 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 				gp.repaint();
 			}
 		}
+
+		else if (gp.gameState == State.CREDITS) {
+			if (isIn(e, ui.creditsOverlay.getBackButton())) {
+				gp.gameState = State.MENU;
+			}
+		}
 	}
 	
 	

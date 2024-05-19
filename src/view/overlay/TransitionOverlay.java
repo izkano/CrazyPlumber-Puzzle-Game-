@@ -2,6 +2,8 @@ package view.overlay;
 
 import view.Button;
 import model.Map;
+import model.GameMode;
+import view.GamePanel;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -22,11 +24,13 @@ public class TransitionOverlay extends Overlay {
     private int minimumMoves;
     private int playerMoves;
     private int scale;
+    private GamePanel gp;
 
-    public TransitionOverlay(int screenWidth, int screenHeight, int scale) {
+    public TransitionOverlay(int screenWidth, int screenHeight, int scale, GamePanel gp) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.scale = scale;
+        this.gp = gp;
         
         loadAssets();
     }
@@ -60,14 +64,14 @@ public class TransitionOverlay extends Overlay {
         int gapYtransition = 100*scale/3;
 
         // initialisation avec les images pour la transition
-        this.nextLevelBtn = new view.Button("/menu/transition/buttons/nextLevel", buttonCenterXtransition, startYtransition);
-        this.retryBtn = new view.Button("/menu/transition/buttons/replay", buttonCenterXtransition,startYtransition + gapYtransition);
-        this.mainMenuBtn = new view.Button("/menu/transition/buttons/mainMenu", buttonCenterXtransition, startYtransition + 2*gapYtransition);
-        this.comingSoonBtn = new view.Button("/menu/transition/buttons/comingsoon", buttonCenterXtransition, startYtransition);
+        this.nextLevelBtn = new view.Button("/menu/transition/buttons/nextLevel", buttonCenterXtransition, startYtransition, scale);
+        this.retryBtn = new view.Button("/menu/transition/buttons/replay", buttonCenterXtransition,startYtransition + gapYtransition, scale);
+        this.mainMenuBtn = new view.Button("/menu/transition/buttons/mainMenu", buttonCenterXtransition, startYtransition + 2*gapYtransition, scale);
+        this.comingSoonBtn = new view.Button("/menu/transition/buttons/comingsoon", buttonCenterXtransition, startYtransition, scale);
 
     }
     public boolean isLastLevel(int level) {
-        return level == 12; 
+        return level == (gp.play.getAmountLevel()[gp.play.getGameMode().getValue()]); 
     }
 
 
@@ -177,14 +181,14 @@ public class TransitionOverlay extends Overlay {
     }
 
 
-    public void draw(Graphics2D g2) {
+    public void draw(Graphics2D g2, int currentLevel, GameMode gameMode) {
         g2.drawImage(victoryWindow, screenWidth/2 - 261*scale/3, screenHeight/2-400*scale/3,victoryWindow.getWidth()*scale/3,
         victoryWindow.getHeight()*scale/3, null);
 
         int stars = calculateStars();
         drawStars(g2, stars, 3);
 
-        if ((currentLevel)>=12) {
+        if ((currentLevel)>=12 || (gameMode == GameMode.PLAYBUILD && currentLevel>=gp.play.getAmountLevel()[4])) {
             comingSoonBtn.draw(g2);
         } else {
             nextLevelBtn.draw(g2);

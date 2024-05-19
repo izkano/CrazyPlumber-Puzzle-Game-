@@ -43,14 +43,14 @@ public class MainOverlay extends Overlay {
         try {
             mainBackground = ImageIO.read(getClass().getResourceAsStream("/menu/bgMain.jpg"));
             BufferedImage originalImage = ImageIO.read(getClass().getResourceAsStream("/menu/gameLogo.png")); // Chargez l'image supplémentaire
-            additionalImage = resizeImage(originalImage,900 , 470 ); // Redimensionnez l'image supplémentaire
+            additionalImage = resizeImage(originalImage,900*scale/3 , 470*scale/3 ); // Redimensionnez l'image supplémentaire
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         int buttonCenterXmainMenu = (screenWidth / 2) - 314*scale/3;
-        int startYmainMenu = screenHeight / 4;
-        int gapYmainMenu = 200*scale/3;
+        int startYmainMenu = screenHeight / 4 + 250*scale/3;
+        int gapYmainMenu = 160*scale/3;
 
         startBtn = new Button("/menu/main/buttons/newGame", buttonCenterXmainMenu, startYmainMenu, scale);
         creditsBtn = new Button("/menu/main/buttons/credits", buttonCenterXmainMenu, startYmainMenu + gapYmainMenu, scale);

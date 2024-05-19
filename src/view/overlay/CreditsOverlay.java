@@ -1,4 +1,5 @@
 package view.overlay;
+import view.Button;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -37,12 +38,15 @@ public class CreditsOverlay extends Overlay {
     
     private final int[] nameIndices = {0, 4, 8, 12}; // Indices of names in the credits array
     private GamePanel gamePanel;
+    private int scale;
+    private Button back;
 
-    public CreditsOverlay(GamePanel gamePanel, int screenWidth, int screenHeight) {
+    public CreditsOverlay(GamePanel gamePanel, int screenWidth, int screenHeight, int scale) {
         this.gamePanel = gamePanel;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.yOffset = screenHeight;
+        this.scale = scale;
         loadAssets();
     }
 
@@ -53,6 +57,7 @@ public class CreditsOverlay extends Overlay {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        back = new Button("/menu/previous", 15*scale/3,15*scale/3, scale);
     }
 
     @Override
@@ -67,7 +72,7 @@ public class CreditsOverlay extends Overlay {
     public void draw(Graphics2D g2) {
         // Draw the original background
         g2.drawImage(background, 0, 0, screenWidth, screenHeight, null);
-
+        back.draw(g2);
         // Apply fade-in and fade-out effect
         if (fadeIn) {
             alpha += 0.01f;
@@ -96,11 +101,11 @@ public class CreditsOverlay extends Overlay {
                 // Draw name with larger font
                 try {
                     Font font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/menu/Retro_Gaming.ttf"));
-                    font = font.deriveFont(Font.BOLD, 40);  // Larger font size for names
+                    font = font.deriveFont(Font.BOLD, 40*scale/3);  // Larger font size for names
                     g2.setFont(font);
                 } catch (FontFormatException | IOException e) {
                     e.printStackTrace();
-                    g2.setFont(new Font("Arial", Font.BOLD, 40));  // Fallback font
+                    g2.setFont(new Font("Arial", Font.BOLD, 40*scale/3));  // Fallback font
                 }
 
                 // Draw name without shadow in black
@@ -111,11 +116,11 @@ public class CreditsOverlay extends Overlay {
                 // Draw task with smaller font
                 try {
                     Font font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/menu/Retro_Gaming.ttf"));
-                    font = font.deriveFont(Font.PLAIN, 25);  // Smaller font size for tasks
+                    font = font.deriveFont(Font.PLAIN, 25*scale/3);  // Smaller font size for tasks
                     g2.setFont(font);
                 } catch (FontFormatException | IOException e) {
                     e.printStackTrace();
-                    g2.setFont(new Font("Arial", Font.PLAIN, 25));  // Fallback font
+                    g2.setFont(new Font("Arial", Font.PLAIN, 25*scale/3));  // Fallback font
                 }
 
                 // Draw shadow for task
@@ -160,5 +165,8 @@ public class CreditsOverlay extends Overlay {
             }
         }
         return false;
+    }
+    public Button getBackButton() {
+        return back;
     }
 }
