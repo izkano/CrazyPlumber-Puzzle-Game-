@@ -15,6 +15,7 @@ public class TransitionOverlay extends Overlay {
     private view.Button nextLevelBtn;
     private view.Button retryBtn;
     private view.Button mainMenuBtn;
+    private view.Button comingSoonBtn;
 
     private int screenWidth;
     private int screenHeight;
@@ -42,6 +43,9 @@ public class TransitionOverlay extends Overlay {
     public Button getMainMenuButton() {
         return mainMenuBtn;
     }
+    public Button getComingSoonBtn() {
+        return comingSoonBtn;
+    }
 
 
     public void loadAssets() {
@@ -56,9 +60,14 @@ public class TransitionOverlay extends Overlay {
         int gapYtransition = 100*scale/3;
 
         // initialisation avec les images pour la transition
-        this.nextLevelBtn = new view.Button("/menu/transition/buttons/nextLevel", buttonCenterXtransition, startYtransition, scale);
-        this.retryBtn = new view.Button("/menu/transition/buttons/replay", buttonCenterXtransition,startYtransition + gapYtransition, scale);
-        this.mainMenuBtn = new view.Button("/menu/transition/buttons/mainMenu", buttonCenterXtransition, startYtransition + 2*gapYtransition, scale);
+        this.nextLevelBtn = new view.Button("/menu/transition/buttons/nextLevel", buttonCenterXtransition, startYtransition);
+        this.retryBtn = new view.Button("/menu/transition/buttons/replay", buttonCenterXtransition,startYtransition + gapYtransition);
+        this.mainMenuBtn = new view.Button("/menu/transition/buttons/mainMenu", buttonCenterXtransition, startYtransition + 2*gapYtransition);
+        this.comingSoonBtn = new view.Button("/menu/transition/buttons/comingsoon", buttonCenterXtransition, startYtransition);
+
+    }
+    public boolean isLastLevel(int level) {
+        return level == 12; 
     }
 
 
@@ -173,11 +182,22 @@ public class TransitionOverlay extends Overlay {
         victoryWindow.getHeight()*scale/3, null);
 
         int stars = calculateStars();
-        drawStars(g2, stars,3);
+        drawStars(g2, stars, 3);
 
-        nextLevelBtn.draw(g2);
+        if ((currentLevel)>=12) {
+            comingSoonBtn.draw(g2);
+        } else {
+            nextLevelBtn.draw(g2);
+        }
         retryBtn.draw(g2);
         mainMenuBtn.draw(g2);
         drawMessage(g2, stars);
+    }
+
+
+    @Override
+    void draw(Graphics2D g2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'draw'");
     }
 }

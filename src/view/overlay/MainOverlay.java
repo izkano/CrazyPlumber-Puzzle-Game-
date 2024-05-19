@@ -7,10 +7,10 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-
 public class MainOverlay extends Overlay {
 
     private BufferedImage mainBackground;
+    private BufferedImage additionalImage; // Ajoutez cette ligne
 
     private Button startBtn;
     private Button creditsBtn;
@@ -27,7 +27,6 @@ public class MainOverlay extends Overlay {
         loadAssets();
     }
 
-
     public Button getStartBtn() {
         return startBtn;
     }
@@ -40,10 +39,11 @@ public class MainOverlay extends Overlay {
         return exitBtn;
     }
 
-
     public void loadAssets() {
         try {
-            mainBackground = ImageIO.read(getClass().getResourceAsStream("/menu/bgMain.jpg"));;
+            mainBackground = ImageIO.read(getClass().getResourceAsStream("/menu/bgMain.jpg"));
+            BufferedImage originalImage = ImageIO.read(getClass().getResourceAsStream("/menu/gameLogo.png")); // Chargez l'image supplémentaire
+            additionalImage = resizeImage(originalImage,900 , 470 ); // Redimensionnez l'image supplémentaire
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,6 +57,14 @@ public class MainOverlay extends Overlay {
         exitBtn = new Button("/menu/main/buttons/exit", buttonCenterXmainMenu, startYmainMenu + 2 * gapYmainMenu, scale);
     }
 
+    private BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) {
+        Image resultingImage = originalImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);
+        BufferedImage outputImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = outputImage.createGraphics();
+        g2d.drawImage(resultingImage, 0, 0, null);
+        g2d.dispose();
+        return outputImage;
+    }
 
     public void resetButtons() {
         startBtn.setMouseOver(false);
@@ -64,9 +72,14 @@ public class MainOverlay extends Overlay {
         exitBtn.setMouseOver(false);
     }
 
-
     public void draw(Graphics2D g2) {
         g2.drawImage(mainBackground, 0, 0, null);
+
+        // Dessinez l'image supplémentaire redimensionnée
+        int imageX = (screenWidth - additionalImage.getWidth()) / 2;
+        int imageY = 20; // Positionnez l'image en haut de l'écran
+        g2.drawImage(additionalImage, imageX, imageY, additionalImage.getWidth(), additionalImage.getHeight(), null);
+
         startBtn.draw(g2);
         creditsBtn.draw(g2);
         exitBtn.draw(g2);

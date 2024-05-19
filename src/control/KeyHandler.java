@@ -32,6 +32,10 @@ public class KeyHandler implements KeyListener {
 				soundManager.playPauseSound();
 				
 			}
+			if (gp.gameState == State.CREDITS) {
+				gp.gameState= State.MENU;
+				
+			}
 			
 			switch (gp.gameState) {
 				case PLAYING:

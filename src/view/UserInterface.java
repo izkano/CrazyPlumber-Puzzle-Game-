@@ -47,7 +47,7 @@ public class UserInterface {
 		}
 
 		else if (gp.gameState == State.TRANSITION) {
-			transitionOverlay.draw(g2);
+			transitionOverlay.draw(g2,gp.play.getLevel());
 		}
 
 		else if (gp.gameState == State.MENU) {
@@ -71,8 +71,9 @@ public class UserInterface {
 		else if (gp.gameState == State.SETTINGS) {
 			settingsOverlay.draw(g2);
 		}
-		else if (gp.gameState == State.BUILDSELECT) {
-			buildOverlay.draw(g2);
-		}
+
+		else if (gp.gameState == State.CREDITS) {
+            creditsOverlay.draw(g2);
+        }
 	}
 }
