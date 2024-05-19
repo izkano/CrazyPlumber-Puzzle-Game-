@@ -18,6 +18,8 @@ import java.util.Random;
 public class Map {
 
 	private int level;
+	public int minimumMoves;
+	public int playerMoves;
 
 	private Cell[][] start;
 	private final ArrayList<int[]> first;
@@ -45,6 +47,8 @@ public class Map {
 	 */
 	public Map(GameMode gameMode, int level, SoundManager soundManager, int screenWidth, int screenHeight) throws MapException {
 		this.level = level;
+		this.minimumMoves = calculateMinimumMoves(level);
+		this.playerMoves = 0;
 		this.soundManager = soundManager;
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
@@ -77,6 +81,17 @@ public class Map {
 		resetCells();
 
 		Time_level = 14 + level;
+	}
+
+	// Méthode pour calculer ou assigner le nombre minimum de coups
+    private int calculateMinimumMoves(int level) {
+        return 10; 
+    }
+	public int getMinimumMoves() {
+		return minimumMoves;
+	}
+	public int getPlayerMoves() {
+		return playerMoves;
 	}
 
 
@@ -190,8 +205,11 @@ public class Map {
 	public void rotatePipe(int mouseX, int mouseY, int tileSize) {
         int row = mouseY / tileSize;
         int col = mouseX / tileSize;
+		
 
         if (row >= 0 && row < start.length && col >= 0 && col < start[0].length && start[row][col] != null) {
+			playerMoves++;
+
         	start[row][col].rotate(soundManager);
 
 			boolean b = parcoursProfondeurRec();

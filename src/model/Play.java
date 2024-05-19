@@ -17,6 +17,9 @@ public class Play {
 
 	private final int[] amountLevel = countLevel();
 	private final boolean[][] unlocked;
+
+	private int lastMinimumMoves;
+    private int lastPlayerMoves;
 	
 	
 	public Play(GamePanel gp) {
@@ -85,6 +88,9 @@ public class Play {
 	private void classic() {
 		if (gp.map != null) {
 	        if (gp.map.won) {
+				lastMinimumMoves = gp.map.getMinimumMoves();
+                lastPlayerMoves = gp.map.getPlayerMoves();
+				gp.ui.transitionOverlay.setMoves(lastMinimumMoves, lastPlayerMoves);
 	        	gp.repaint();
 	            unlockNextLvl(lvl);
 	            try {
@@ -113,6 +119,9 @@ public class Play {
 				gp.map.setTimer_fiel();
 			}
 	        if (gp.map.won) {
+					lastMinimumMoves = gp.map.getMinimumMoves();
+					lastPlayerMoves = gp.map.getPlayerMoves();
+					gp.ui.transitionOverlay.setMoves(lastMinimumMoves, lastPlayerMoves);
 					soundManager.stopTimerMusic();
 					gp.repaint();
 	                unlockNextLvl(lvl);
