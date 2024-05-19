@@ -17,23 +17,24 @@ public class CreditsOverlay extends Overlay {
     private boolean fadeOut = false;
     private BufferedImage background;
     private final String[] credits = {
-            "Issac Semani",
-            "Algorithm Design",
-            "Gameplay Mechanics",
-            "Pathfinding Algorithm",
-            "Andrei Tachou",
-            "Level Design",
-            "Game Balancing",
-            "User Experience",
-            "Ludovic Zhou",
-            "Character Design",
-            "Environment Art",
-            "Animation",
-            "Abdessamed Khadir",
-            "Music Composition",
-            "Sound Effects",
-            "Audio Integration"
+        "Issac Semani",
+        "Gameplay Mechanics",
+        "Music",
+        "Overlays",
+        "Andrei Tachou",
+        "Algorithm Design",
+        "Pathfinding",
+        "Code Correction",
+        "Ludovic Zhou",
+        "Design",
+        "Builder Mode",
+        "Level Selection",
+        "Abdessamed Khadir",
+        "Classes",
+        "Timer Mode",
+        "Debugging"
     };
+    
     private final int[] nameIndices = {0, 4, 8, 12}; // Indices of names in the credits array
     private GamePanel gamePanel;
 
