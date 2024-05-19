@@ -9,6 +9,7 @@ import exception.MapException;
 import javax.imageio.ImageIO;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.RandomAccessFile;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -321,6 +322,41 @@ public class Map {
             for (Cell cell : c_row)
                 if (cell != null)
                     cell.reset();
+	}
+	/**
+	 * Permet de sauvgarder les niveaux débloquables aprés les avoir réussi
+	 * on modifiant le contenu du fichier sauvgarde.txt.
+	 * @param fileName : le chemain d'accés vers le fichier sauvgarde.txt.
+	 * @param gamemode : le mode de jeux.
+	 * @param positionToChange : la postion du changement.
+	 */
+	public void sauvgarde(String fileName, String gamemode, int positionToChange) {
+	    try (RandomAccessFile file = new RandomAccessFile(fileName, "rw")) {
+	        String line;
+	        boolean foundGamemode = false;
+	        long currentPosition = file.getFilePointer();
+	        while ((line = file.readLine()) != null) {
+	            if (foundGamemode) {
+	            	 currentPosition += positionToChange;
+	                 file.seek(currentPosition);
+	                char c = (char) file.read(); 
+	                if (c == '0') {
+	                	file.seek(currentPosition);
+	                    file.write('1');
+	                    return; 
+	                } else {
+	                    return; 
+	                }
+	            } else {
+	                if (line.equals(gamemode)) {
+	                    foundGamemode = true;
+	                    currentPosition = file.getFilePointer();
+	                }
+	            }
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 	}
 
 
