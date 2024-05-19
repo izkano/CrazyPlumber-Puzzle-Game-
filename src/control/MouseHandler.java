@@ -47,10 +47,22 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 		
 		// GAME STATE : PLAYING
 		if (gp.gameState == State.PLAYING && gp.play.getGameMode() != GameMode.BUILDER) {
-			System.out.println("CACA");
 			int mouseX = e.getX() - gp.mapOffset - gp.tileSize;
 	        int mouseY = e.getY() - gp.mapOffset - gp.tileSize;
+			if (gp.play.getGameMode() == GameMode.TESTING){
+				if (isIn(e, gp.map.getBuildButton(4))) {
+				gp.map.saveLevel();
+				gp.play.getAmountLevel()[3]++;
+				gp.gameState = State.BUILDSELECT;
+			}
+			else if (isIn(e, gp.map.getBuildButton(6))) {
+				gp.map.testBuild();
+				gp.play.setGameMode(GameMode.BUILDER);
+				gp.map.setGameMode(GameMode.BUILDER);
+				gp.repaint();
+			}
 	        gp.map.rotatePipe(mouseX, mouseY,gp.tileSize);
+			}
 		}
 		
 		// GAME STATE : PAUSE
@@ -120,9 +132,6 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 				gp.gameState = State.SELECT;
 			} else if (isIn(e, ui.modeOverlay.getBuilderButton())) {
 				gp.gameState = State.BUILDSELECT;
-			} else if (isIn(e,ui.modeOverlay.getOnlineButton())){
-				gp.play.setGameMode(GameMode.ONLINE);
-				gp.gameState=State.SELECT;
 			}
 			else if (isIn(e, ui.modeOverlay.getBackButton())) {
 				gp.gameState = State.MENU;
@@ -152,6 +161,7 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 			}
 		}
 
+		// GAME STATE : BUILDSELECT
 		else if (gp.gameState == State.BUILDSELECT){
 			if (isIn(e, ui.buildOverlay.getPlayBtn())) {
 				gp.play.setGameMode(GameMode.PLAYBUILD);
@@ -159,8 +169,11 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 			}
 			if (isIn(e, ui.buildOverlay.getCreateBtn())) {
 				gp.play.setGameMode(GameMode.BUILDER);
-				gp.play.setLevel(1);
+				gp.play.setLevel(gp.play.getAmountLevel()[3]+1);
 				gp.gameState = State.PLAYING;
+			}
+			if (isIn(e,ui.buildOverlay.getBackBtn())){
+				gp.gameState = State.GAMEMODE;
 			}
 		}
 
@@ -194,13 +207,13 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 				gp.repaint();
 			}
 			else{
-				System.out.println("PIPI");
 				gp.map.choseDeletePipe(mouseX, mouseY, gp.tileSize);
 				gp.map.placePipe(mouseX, mouseY,gp.tileSize);
 				gp.repaint();
 			}
 		}
 	}
+	
 	
 
 	@Override
@@ -265,14 +278,10 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 			else if (isIn(e, ui.modeOverlay.getBuilderButton())) {
 				ui.modeOverlay.getBuilderButton().setMouseOver(true);
 			} 
-			else if (isIn(e, ui.modeOverlay.getOnlineButton())) {
-				ui.modeOverlay.getOnlineButton().setMouseOver(true);
-			} 
 			else if (isIn(e, ui.modeOverlay.getBackButton())) {
 				ui.modeOverlay.getBackButton().setMouseOver(true);
 			}
-		}
-		else if (gp.gameState == State.BUILDSELECT){
+		}else if (gp.gameState == State.BUILDSELECT){
 			if (isIn(e, ui.buildOverlay.getPlayBtn())) {
 				ui.buildOverlay.getPlayBtn().setMouseOver(true);
 			}
@@ -345,7 +354,7 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 				return isIn(e, ui.transitionOverlay.getNextLevelButton()) || isIn(e, ui.transitionOverlay.getRetryButton()) ||
 					   isIn(e, ui.transitionOverlay.getMainMenuButton());
 			case GAMEMODE:
-				return isIn(e, ui.modeOverlay.getClassicButton()) || isIn(e, ui.modeOverlay.getTimerButton()) || isIn(e, ui.modeOverlay.getOnlineButton()) ||
+				return isIn(e, ui.modeOverlay.getClassicButton()) || isIn(e, ui.modeOverlay.getTimerButton())||
 					   isIn(e, ui.modeOverlay.getLimitedButton()) || isIn(e, ui.modeOverlay.getBuilderButton()) ||
 					   isIn(e, ui.modeOverlay.getBackButton());
 			default:

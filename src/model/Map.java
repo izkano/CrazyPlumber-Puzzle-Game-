@@ -25,7 +25,7 @@ public class Map {
 
 	private Cell[][] start;
 	private final ArrayList<int[]> first;
-	private final Button[] test = new Button[6];
+	private final Button[] test = new Button[7];
 	private Cell place;
 	private int delete = -1;
 
@@ -155,6 +155,15 @@ public class Map {
 				}
 			}
 		}
+		else if (gamemode == GameMode.TESTING) {
+			for (int i = 0; i<start.length; i++) {
+				for (int j = 0; j<start[0].length; j++) {
+					if (start[i][j].getPipeType() == 0) {
+						start[i][j] = new Cell(4,0,false);
+					}
+				}
+			}
+		}
 	}
 
 	public void loadTest() {
@@ -164,27 +173,23 @@ public class Map {
 		test[3] = new Button("/menu/build/building/cross",672*scale/3,800*scale/3,9*scale/3);
 		test[4] = new Button("/menu/build/building/save",850*scale/3,250*scale/3,3*scale/3);
 		test[5] = new Button("/menu/build/building/delete",850*scale/3,370*scale/3,3*scale/3);
+		test[6] = new Button("/menu/build/building/previous",850*scale/3,370*scale/3,3*scale/3);
+
 	}
 
 public void saveLevel() {
     String modePath = "builder";
-    String filePath = "res/level/" + modePath + level + ".txt";
+    String filePath = "res/level/" + modePath +"/"+ level + ".txt";
 
     try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 6; j++) {
-                if (start[i][j] == null) {
-                    writer.write("0 ");
-                } else {
-                    writer.write(String.valueOf(start[i][j].getPipeType()));
-                    if (start[i][j].isCurve()) {
-                        writer.write("+ ");
-                    } else {
-                        writer.write(" ");
-                    }
+        for (int i = 0; i <6; i++) {
+            for (int j = 0; j <6; j++) {
+                if(start[i][j].getPipeType()==2&&start[i][j].isCurve()) {writer.write("2+");}
+                else {
+                    writer.write(start[i][j].getPipeType()+" ");
                 }
             }
-            writer.newLine();
+            writer.write("\n");
         }
     } catch (IOException e) {
         e.printStackTrace(); 
@@ -500,14 +505,25 @@ public void saveLevel() {
 		g2.setFont(new Font("Retro Gaming", Font.PLAIN, 45*scale/3));
 		g2.drawString("Niveau " + level, 370*scale/3, 50*scale/3);
 		if (gamemode == GameMode.BUILDER) {
-			drawBuild(g2, tileSize);
+			drawBuild(g2);
+		}
+		if (gamemode == GameMode.TESTING) {
+			drawTest(g2);
+		}
+		if (gamemode == GameMode.TIMER) {
+			g2.drawString("Temps restant : " + getRemainnig_time(), 250*scale/3, 125*scale/3);
 		}
 	}
 
-	public void drawBuild(Graphics2D g2, int tileSize) {
+	public void drawBuild(Graphics2D g2) {
 		for (int i = 0; i<6; i++) {
 			test[i].draw(g2);
 		}
+	}
+
+	public void drawTest(Graphics2D g2){
+		test[4].draw(g2);
+		test[6].draw(g2);
 	}
 
 	public void setGameMode(GameMode gameMode) {

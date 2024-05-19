@@ -8,6 +8,7 @@ public class BuildOverlay extends Overlay{
 
     private Button play;
     private Button create;
+    private Button back;
 
     private int screenWidth;
     private int screenHeight;
@@ -27,6 +28,7 @@ public class BuildOverlay extends Overlay{
 
         play = new Button("/menu/build/buttons/play", buttonCenterXtransition, startYtransition, scale);
         create = new Button("/menu/build/buttons/create", buttonCenterXtransition, startYtransition+gapYtransition, scale);
+        back = new Button("/menu/previous", 15*scale/3,15*scale/3, scale);
     }
 
     public Button getPlayBtn() {
@@ -37,7 +39,12 @@ public class BuildOverlay extends Overlay{
         return create;
     }
 
+    public Button getBackBtn() {
+        return back;
+    }
+
     public void draw(Graphics2D g2) {
+        back.draw(g2);
         play.draw(g2);
         create.draw(g2);
     }

@@ -13,7 +13,6 @@ public class ModeOverlay extends Overlay {
     private Button timerButton;
     private Button limitedButton;
     private Button builderButton;
-    private Button onlineButton;
 
     int screenWidth;
     int screenHeight;
@@ -45,10 +44,6 @@ public class ModeOverlay extends Overlay {
         return builderButton;
     }
 
-    public Button getOnlineButton(){
-        return onlineButton;
-    }
-
     public Button getBackButton() { return backBtn; }
 
 
@@ -62,7 +57,6 @@ public class ModeOverlay extends Overlay {
         timerButton = new Button("/menu/gamemode/buttons/timer_", buttonCenterXGamemode, startYGamemode+2*gapYGamemode, scale);
         limitedButton = new Button("/menu/gamemode/buttons/limited_", buttonCenterXGamemode, startYGamemode+3*gapYGamemode, scale);
         builderButton = new Button("/menu/gamemode/buttons/builder_", buttonCenterXGamemode, startYGamemode+4*gapYGamemode, scale);
-        onlineButton = new Button("/menu/gamemode/buttons/online_", buttonCenterXGamemode, startYGamemode+5*gapYGamemode, scale);
         backBtn = new Button("/menu/previous", 15,15, scale);
     }
 
@@ -73,7 +67,6 @@ public class ModeOverlay extends Overlay {
         timerButton.setMouseOver(false);
         limitedButton.setMouseOver(false);
         builderButton.setMouseOver(false);
-        onlineButton.setMouseOver(false);
         backBtn.setMouseOver(false);
     }
 
@@ -84,7 +77,7 @@ public class ModeOverlay extends Overlay {
         timerButton.draw(g2);
         limitedButton.draw(g2);
         builderButton.draw(g2);
-        onlineButton.draw(g2);
+
         backBtn.draw(g2);
     }
 }
