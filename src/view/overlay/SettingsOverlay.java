@@ -1,16 +1,20 @@
 package view.overlay;
 
-import view.GamePanel;
-
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
 import view.Button;
+
+import javax.imageio.ImageIO;
 
 public class SettingsOverlay extends Overlay {
 
-    private Button backBtn;
+    private BufferedImage settingsWindow;
 
-    private Button soundButton;
-    private Button noSoundButton;
+    private Button backBtn;
+    private Button musicButton;
+    private Button sfxButton;
 
     int screenWidth;
     int screenHeight;
@@ -23,13 +27,11 @@ public class SettingsOverlay extends Overlay {
     }
 
 
-    public Button getSoundButton() {
-        return soundButton;
+    public Button getMusicButton() {
+        return musicButton;
     }
 
-    public Button getNoSoundButton(){
-        return noSoundButton;
-    }
+    public Button getSfxButton() { return sfxButton; }
 
     public Button getBackButton() {
         return backBtn;
@@ -37,26 +39,29 @@ public class SettingsOverlay extends Overlay {
 
 
     public void loadAssets() {
+        try {
+            settingsWindow = ImageIO.read(getClass().getResourceAsStream("/menu/setting/settingsWindow.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         backBtn = new Button("/menu/previous", 15,15);
-        soundButton= new Button("/menu/setting/sound_", (screenWidth/2)-72, (screenHeight/2)-72);
-        noSoundButton = new Button("/menu/setting/nosound_", (screenWidth/2)-72, (screenHeight/2)-72);
+        musicButton= new Button("/menu/setting/sound", (screenWidth/2)-120, (screenHeight/2)-92);
+        sfxButton= new Button("/menu/setting/sound", (screenWidth/2)+50, (screenHeight/2)-92);
     }
 
 
     public void resetButtons() {
-        soundButton.setMouseOver(false);
-        noSoundButton.setMouseOver(false);
+        musicButton.setMouseOver(false);
+        sfxButton.setMouseOver(false);
         backBtn.setMouseOver(false);
     }
 
 
     public void draw(Graphics2D g2){
-        if (GamePanel.sound){
-            soundButton.draw(g2);
-        }
-        else {
-            noSoundButton.draw(g2);
-        }
+        g2.drawImage(settingsWindow,0,0,null);
+        musicButton.draw(g2);
+        sfxButton.draw(g2);
         backBtn.draw(g2);
     }
 }

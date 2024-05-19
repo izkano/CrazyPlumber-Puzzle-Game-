@@ -19,6 +19,8 @@ import java.util.Random;
 public class Map {
 
 	private int level;
+	private int minimumMoves;
+	private int playerMoves;
 
 	private Cell[][] start;
 	private final ArrayList<int[]> first;
@@ -46,6 +48,8 @@ public class Map {
 	 */
 	public Map(GameMode gameMode, int level, SoundManager soundManager, int screenWidth, int screenHeight) throws MapException {
 		this.level = level;
+		this.minimumMoves = calculateMinimumMoves(level);
+		this.playerMoves = 0;
 		this.soundManager = soundManager;
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
@@ -54,8 +58,7 @@ public class Map {
 
 		if (gameMode != GameMode.RANDOM) {
 			String modePath = switch (gameMode) {
-				case CLASSIC -> "classic/";
-				case TIMER -> "timer/";
+				case CLASSIC, TIMER -> "classic/";
 				case LIMITED -> "limited/";
 				case BUILDER -> "builder/";
 				case ONLINE -> "online/";
@@ -79,6 +82,45 @@ public class Map {
 		resetCells();
 
 		Time_level = 14 + level;
+	}
+
+	// Méthode pour calculer ou assigner le nombre minimum de coups
+    private int calculateMinimumMoves(int level) {
+		switch (level) {
+			case 1:
+				return 9;
+			case 2:
+				return 2;
+			case 3:
+				return 3;
+			case 4:
+				return 4;
+			case 5:
+				return 5;
+			case 6:
+				return 6;
+			case 7:
+				return 7;
+			case 8:
+				return 8;
+			case 9:
+				return 9;
+			case 10:
+				return 10;
+			case 11:
+				return 11;
+			case 12:
+				return 12;
+			default:
+				throw new IllegalArgumentException("Invalid level: " + level);
+		}
+	}
+	
+	public int getMinimumMoves() {
+		return minimumMoves;
+	}
+	public int getPlayerMoves() {
+		return playerMoves;
 	}
 
 
@@ -192,8 +234,11 @@ public class Map {
 	public void rotatePipe(int mouseX, int mouseY, int tileSize) {
         int row = mouseY / tileSize;
         int col = mouseX / tileSize;
+		
 
         if (row >= 0 && row < start.length && col >= 0 && col < start[0].length && start[row][col] != null) {
+			playerMoves++;
+
         	start[row][col].rotate(soundManager);
 
 			boolean b = parcoursProfondeurRec();
