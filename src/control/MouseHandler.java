@@ -81,7 +81,7 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 		
 		// GAME STATE : TRANSITION
 		else if (gp.gameState == State.TRANSITION) {
-			if (isIn(e, ui.transitionOverlay.getNextLevelButton())) {
+			if (isIn(e, ui.transitionOverlay.getNextLevelButton())&& !ui.transitionOverlay.isLastLevel(gp.play.getLevel())) {
 				gp.play.setLevel(gp.play.getLevel()+1);
 				gp.gameState = State.PLAYING;
 			} else if (isIn(e, ui.transitionOverlay.getRetryButton())) {
@@ -90,6 +90,9 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 			} else if (isIn(e, ui.transitionOverlay.getMainMenuButton())) {
 				gp.gameState = State.MENU;
 			}
+			else if (isIn(e, ui.transitionOverlay.getComingSoonBtn()) && ui.transitionOverlay.isLastLevel(gp.play.getLevel())) {
+            // Rien à faire pour "Coming Soon", peut-être afficher un message ou juste ignorer
+        }
 		}
 
 		// GAME STATE : MENU
