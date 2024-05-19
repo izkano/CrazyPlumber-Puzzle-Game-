@@ -6,7 +6,9 @@ public enum GameMode {
 	TIMER (2),
 	LIMITED (3),
 	BUILDER (4),
-	ONLINE (5);
+	ONLINE (5),
+	TESTING(6),
+	PLAYBUILD(7);
 
 	private final int value;
 

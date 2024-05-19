@@ -18,8 +18,10 @@ public class PauseOverlay extends Overlay {
 	private Button selectBtn;
 	private Button settingsBtn;
 
+	private int scale;
 
-	public PauseOverlay() {
+	public PauseOverlay(int scale) {
+		this.scale = scale;
 		loadAssets();
 	}
 
@@ -53,12 +55,12 @@ public class PauseOverlay extends Overlay {
 		}
 		
 		int offy = 104;
-		closeBtnPause = new Button("/menu/pause/buttons/pause_menu_close_",673,187);
+		closeBtnPause = new Button("/menu/pause/buttons/pause_menu_close_",673*scale/3,187*scale/3, scale);
 		
-		continueBtn = new Button("/menu/pause/buttons/continue_pause_",300,320);
-		selectBtn = new Button("/menu/pause/buttons/select_pause_",300,320+offy);
-		settingsBtn = new Button("/menu/pause/buttons/settings_pause_",300,320+offy*2);
-		menuBtn = new Button("/menu/pause/buttons/menu_pause_",300,320+offy*3);
+		continueBtn = new Button("/menu/pause/buttons/continue_pause_",300*scale/3,320*scale/3, scale);
+		selectBtn = new Button("/menu/pause/buttons/select_pause_",300*scale/3,(320+offy)*scale/3, scale);
+		settingsBtn = new Button("/menu/pause/buttons/settings_pause_",300*scale/3,(320+offy*2)*scale/3, scale);
+		menuBtn = new Button("/menu/pause/buttons/menu_pause_",300*scale/3,(320+offy*3)*scale/3, scale);
 	}
 
 
@@ -72,7 +74,7 @@ public class PauseOverlay extends Overlay {
 
 
 	public void draw(Graphics2D g2) {
-		g2.drawImage(pauseWindow,0,0,null);
+		g2.drawImage(pauseWindow,0,0,pauseWindow.getWidth()*scale/3, pauseWindow.getHeight()*scale/3, null);
 		closeBtnPause.draw(g2);
 		continueBtn.draw(g2);
 		selectBtn.draw(g2);

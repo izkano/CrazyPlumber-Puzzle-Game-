@@ -71,7 +71,7 @@ public class Play {
 				soundManager.stopBackgroundMusic();
 				soundManager.playLevelMusic();
 				break;
-			case BUILDER:
+			case TESTING:
 				builder();
 				soundManager.stopBackgroundMusic();
 				soundManager.playLevelMusic();
@@ -170,7 +170,6 @@ public class Play {
 	
 	
 	private void builder() {
-	
 	}
 	
 	private void online() {
@@ -185,7 +184,7 @@ public class Play {
 		this.lvl = level;
 
 		try {
-			gp.map = new Map(gameMode,level,soundManager,gp.getWidth(),gp.getHeight());
+			gp.map = new Map(gameMode,level,soundManager,gp.getWidth(),gp.getHeight(), gp.getScale());
 		} catch (MapException e) {
 			System.out.println(e.getMessage());
 		}
