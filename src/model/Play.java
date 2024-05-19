@@ -71,13 +71,8 @@ public class Play {
 				soundManager.stopBackgroundMusic();
 				soundManager.playLevelMusic();
 				break;
-			case TESTING:
-				builder();
-				soundManager.stopBackgroundMusic();
-				soundManager.playLevelMusic();
-				break;
-			case ONLINE:
-				online();
+			case PLAYBUILD:
+				classic();
 				soundManager.stopBackgroundMusic();
 				soundManager.playLevelMusic();
 				break;
@@ -145,7 +140,7 @@ public class Play {
 			lastPlayerMoves = gp.map.getPlayerMoves();
 			gp.ui.transitionOverlay.setMoves(lastMinimumMoves, lastPlayerMoves);
 	        if (gp.map.won) {
-					
+				gp.map.sauvgarde("res/sauvgarde/sauvgarde.txt","limited",lvl);
 					gp.repaint();
 	                unlockNextLvl(lvl);
 	                soundManager.playWinSound();
@@ -165,16 +160,6 @@ public class Play {
 			gp.map.resetCells();
 	    }
 	}
-	
-	
-	
-	
-	private void builder() {
-	}
-	
-	private void online() {
-	
-	}
 
 
 	/**
@@ -182,7 +167,6 @@ public class Play {
 	 */
 	public void setLevel(int level) {
 		this.lvl = level;
-
 		try {
 			gp.map = new Map(gameMode,level,soundManager,gp.getWidth(),gp.getHeight(), gp.getScale());
 		} catch (MapException e) {
@@ -192,6 +176,7 @@ public class Play {
 
 
 	public void unlockNextLvl(int lvl) {
+		if (gameMode == gameMode.PLAYBUILD) return;
 		if (lvl<unlocked[gameMode.getValue()].length){
 			unlocked[gameMode.getValue()][lvl] = true;
 		}
@@ -228,10 +213,7 @@ public class Play {
 	   				String[] values = line.split("");
 	   				for (int j = 0; j<amountLevel[i];j++){
 	   					unlock[i][j] =values[j].equals("1");
-	   					System.out.print(unlock[i][j]+" ");
 	   				}
-	   				System.out.println();
-	   				System.out.println(i);
 	   			}
 	   			break;
 	            }

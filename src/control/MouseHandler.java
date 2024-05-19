@@ -52,7 +52,8 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 			if (gp.play.getGameMode() == GameMode.TESTING){
 				if (isIn(e, gp.map.getBuildButton(4))) {
 				gp.map.saveLevel();
-				gp.play.getAmountLevel()[3]++;
+				gp.play.getAmountLevel()[4]++;
+				gp.ui.selectOverlay.update(gp.play.getAmountLevel(), gp.play.getUnlocked());
 				gp.gameState = State.BUILDSELECT;
 			}
 			else if (isIn(e, gp.map.getBuildButton(6))) {
@@ -61,8 +62,9 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 				gp.map.setGameMode(GameMode.BUILDER);
 				gp.repaint();
 			}
+		}
 	        gp.map.rotatePipe(mouseX, mouseY,gp.tileSize);
-			}
+			
 		}
 		
 		// GAME STATE : PAUSE
@@ -82,7 +84,11 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 		// GAME STATE : SELECT
 		else if (gp.gameState == State.SELECT) {
 			for (int i = 0; i < ui.selectOverlay.getLevelButton()[gp.play.getGameMode().getValue()].length ; i++){
-				if ( isIn(e, ui.selectOverlay.getLevelButton()[gp.play.getGameMode().getValue()][i]) && gp.play.getUnlocked()[gp.play.getGameMode().getValue()][i]) {
+				if ((isIn(e, ui.selectOverlay.getLevelButton()[gp.play.getGameMode().getValue()][i]) && gp.play.getGameMode()==GameMode.PLAYBUILD)){
+					gp.play.setLevel(i+1);
+					gp.gameState = State.PLAYING;
+				}
+				else if (isIn(e, ui.selectOverlay.getLevelButton()[gp.play.getGameMode().getValue()][i]) && gp.play.getUnlocked()[gp.play.getGameMode().getValue()][i]){
 					gp.play.setLevel(i+1);
 					gp.gameState = State.PLAYING;
 				}
@@ -169,7 +175,7 @@ public class MouseHandler extends MouseAdapter implements MouseListener {
 			}
 			if (isIn(e, ui.buildOverlay.getCreateBtn())) {
 				gp.play.setGameMode(GameMode.BUILDER);
-				gp.play.setLevel(gp.play.getAmountLevel()[3]+1);
+				gp.play.setLevel(gp.play.getAmountLevel()[4]+1);
 				gp.gameState = State.PLAYING;
 			}
 			if (isIn(e,ui.buildOverlay.getBackBtn())){

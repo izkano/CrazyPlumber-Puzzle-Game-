@@ -20,10 +20,12 @@ public class TransitionOverlay extends Overlay {
     private int screenHeight;
     private int minimumMoves;
     private int playerMoves;
+    private int scale;
 
     public TransitionOverlay(int screenWidth, int screenHeight, int scale) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
+        this.scale = scale;
         
         loadAssets();
     }

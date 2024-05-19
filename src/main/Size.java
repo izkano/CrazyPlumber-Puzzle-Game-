@@ -17,6 +17,9 @@ public class Size extends JPanel implements MouseListener{
     private Button medium;
     private Button large;
 
+    public GraphicsEnvironment ge;
+    public Font retro;
+
     private JFrame frame;
 
     public Size(JFrame frame){
@@ -30,13 +33,23 @@ public class Size extends JPanel implements MouseListener{
     setCursor();
     setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
 
+    int buttonCenterX = (640 / 2) - 275*2/3;
+    int startY = 640 / 8;
+    int offy = 150*2/3;
     
-    int offy = 104;
-    
-    small = new Button("/menu/pause/buttons/continue_pause_",300,320,2);
-    medium = new Button("/menu/pause/buttons/select_pause_",300,320+offy,2);
-    large = new Button("/menu/pause/buttons/settings_pause_",300,320+offy*2,2);
+    small = new Button("/menu/size/buttons/small",buttonCenterX,startY+2*offy,2);
+    medium = new Button("/menu/size/buttons/medium",buttonCenterX,startY+offy*3,2);
+    large = new Button("/menu/size/buttons/large",buttonCenterX,startY+offy*4,2);
+
+    try {
+        ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        retro = Font.createFont(Font.TRUETYPE_FONT, Main.class.getResourceAsStream("/menu/Retro_Gaming.ttf"));
+        ge.registerFont(retro);
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+}
+    
 
     private void loadBackgroundImages() {
         try {
@@ -110,6 +123,11 @@ public class Size extends JPanel implements MouseListener{
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(playingBackground, 0, 0, this.getWidth(), this.getHeight(), null);
+        g.setColor(Color.BLACK);
+		g.setFont(new Font("Retro Gaming", Font.PLAIN, 35));
+        g.drawString("Welcome to Crazy Plumber", 40, 100);
+        g.setFont(new Font("Retro Gaming", Font.PLAIN, 25));
+        g.drawString("Choose the size of the grid :", 100, 250);
         Graphics2D g2 = (Graphics2D) g;
         draw(g2);
     }

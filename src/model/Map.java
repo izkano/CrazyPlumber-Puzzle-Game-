@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.RandomAccessFile;
 import java.io.IOException;
 import java.util.Arrays;
@@ -22,7 +23,7 @@ import java.util.Random;
 public class Map {
 
 	private int level;
-	private int minimumMoves;
+	private int minimumMoves = 0;
 	private int playerMoves;
 
 	private Cell[][] start;
@@ -56,7 +57,6 @@ public class Map {
 	 */
 	public Map(GameMode gameMode, int level, SoundManager soundManager, int screenWidth, int screenHeight, int scale) throws MapException {
 		this.level = level;
-		this.minimumMoves = calculateMinimumMoves(level);
 		this.playerMoves = 0;
 		this.soundManager = soundManager;
 		this.screenWidth = screenWidth;
@@ -70,8 +70,7 @@ public class Map {
 			String modePath = switch (gameMode) {
 				case CLASSIC, TIMER -> "classic/";
 				case LIMITED -> "limited/";
-				case BUILDER -> "builder/";
-				case ONLINE -> "online/";
+				case PLAYBUILD -> "builder/";
 				default -> throw new MapException();
 			};
 
@@ -182,8 +181,8 @@ public class Map {
 	}
 
 public void saveLevel() {
-    String modePath = "builder";
-    String filePath = "res/level/" + modePath +"/"+ level + ".txt";
+    String modePath = "builder/";
+    String filePath = "res/level/" + modePath + level + ".txt";
 
     try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
         for (int i = 0; i <6; i++) {
@@ -255,7 +254,10 @@ public void saveLevel() {
 		newHeight = screenHeight - 300*scale/3;
 	}
 	
-	
+	public int calculateMinimumMoves(int level){
+		return 100;
+	}
+
 	/**
 	 * Lis le fichier et construit une matrice afin de représenter les cellules du jeu
 	 * @param filePath : chemin d'accès au fichier correspondant
@@ -278,12 +280,13 @@ public void saveLevel() {
 	        for (int j = 0; j < line.length(); j+=2) {
 	            char c = line.charAt(j);
 				int r = random.nextInt(4);
-
 				if (j != line.length()-1 && c == '2' && line.charAt(j+1) == '+') {
 					matrix[i][k] = new Cell(2,r,true);
 					matrix[i][k].setCurve();
+					this.minimumMoves++;
 				} else if (c != '0') {
 					matrix[i][k] = new Cell(Character.getNumericValue(c),r,false);
+					this.minimumMoves++;
 				} else {
 					matrix[i][k] = null;
 				}
@@ -295,7 +298,7 @@ public void saveLevel() {
 	        }
 			k=0;
 	    }
-
+		this.minimumMoves = this.minimumMoves*4 + 5;
 	    reader.close();
 	    return matrix;
 	}
@@ -512,6 +515,12 @@ public void saveLevel() {
 		}
 	}
 
+	public int getMinimumMoves() {
+        return minimumMoves;
+    }
+    public int getPlayerMoves() {
+        return playerMoves;
+    }
 
 	public static ArrayList<Integer> getNeighbors(Cell[][] maze, int i, int j) {
 		ArrayList<Integer> neighbors = new ArrayList<>();
@@ -536,6 +545,7 @@ public void saveLevel() {
 
 
 	public void draw(Graphics2D g2,int tileSize, int mapOffset)  {
+		if (start==null) return;
 		g2.drawImage(gridBackground, gridX, gridY,newWidth, newHeight-40*scale/3,  null);
 
 		for (int i = 0 ; i < getHeight() ; i++)
@@ -554,6 +564,9 @@ public void saveLevel() {
 		}
 		if (gamemode == GameMode.TIMER) {
 			g2.drawString("Temps restant : " + getRemainnig_time(), 250*scale/3, 125*scale/3);
+		}
+		if (gamemode == GameMode.LIMITED) {
+			g2.drawString("Coups restants : " + (getMinimumMoves()-getPlayerMoves()), 250*scale/3, 125*scale/3);
 		}
 	}
 
@@ -575,4 +588,14 @@ public void saveLevel() {
 	public GameMode getGameMode() {
 		return gamemode;
 	}
+
+	public int nbMIN(){
+        int s=0;
+        for (int i = 0; i <6; i++){
+            for (int j = 0; j <6; j++){
+                if(start[i][j]!=null&&start[i][j].getPipeType()!=0) {s++;}
+            }
+        }
+        return s;
+    }
 }

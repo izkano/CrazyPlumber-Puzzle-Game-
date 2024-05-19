@@ -5,10 +5,9 @@ public enum GameMode {
 	RANDOM(1),
 	TIMER (2),
 	LIMITED (3),
-	BUILDER (4),
-	ONLINE (5),
+	BUILDER (7),
 	TESTING(6),
-	PLAYBUILD(7);
+	PLAYBUILD(4);
 
 	private final int value;
 

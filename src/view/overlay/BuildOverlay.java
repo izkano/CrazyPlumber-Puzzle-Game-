@@ -22,12 +22,12 @@ public class BuildOverlay extends Overlay{
     }
 
     public void loadAssets() {
-        int buttonCenterXtransition = (screenWidth / 2) - 246;
-        int startYtransition = screenHeight / 4;
-        int gapYtransition = 200;
+        int startYBuild = screenHeight / 4;
+        int buttonCenterXBuild = (screenWidth / 2) - 275*scale/3;
+        int gapYBuild = 300*scale/3;
 
-        play = new Button("/menu/build/buttons/play", buttonCenterXtransition, startYtransition, scale);
-        create = new Button("/menu/build/buttons/create", buttonCenterXtransition, startYtransition+gapYtransition, scale);
+        play = new Button("/menu/build/buttons/play", buttonCenterXBuild, startYBuild, scale);
+        create = new Button("/menu/build/buttons/create", buttonCenterXBuild, startYBuild+gapYBuild, scale);
         back = new Button("/menu/previous", 15*scale/3,15*scale/3, scale);
     }
 
