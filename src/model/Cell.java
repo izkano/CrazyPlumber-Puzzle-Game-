@@ -144,6 +144,8 @@ public class Cell {
         } else if (pipeType == 3) {
             imagePath = "res/pipes/cross.png";
             imageBluePath = "res/pipes/crossBLUE.png";
+        } else if (pipeType == 4){
+            imagePath = "res/pipes/void.png";
         } else {
             imagePath = "res/pipes/none.png";
         }

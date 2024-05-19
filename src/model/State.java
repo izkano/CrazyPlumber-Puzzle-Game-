@@ -14,5 +14,7 @@ public enum State {
 	GAMEOVER,
 	PAUSE,
 	SETTINGS,
-	CREDITS
+	CREDITS,
+	BUILDSELECT,
+	BUILDING,
 }

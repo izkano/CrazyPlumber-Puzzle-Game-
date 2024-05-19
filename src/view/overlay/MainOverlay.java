@@ -18,10 +18,12 @@ public class MainOverlay extends Overlay {
 
     private final int screenWidth;
     private final int screenHeight;
+    private int scale;
 
-    public MainOverlay(int screenWidth, int screenHeight) {
+    public MainOverlay(int screenWidth, int screenHeight, int scale) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
+        this.scale = scale;
         loadAssets();
     }
 
@@ -46,13 +48,13 @@ public class MainOverlay extends Overlay {
             e.printStackTrace();
         }
 
-        int buttonCenterXmainMenu = (screenWidth / 2) - 314;
-        int startYmainMenu = (screenHeight / 4) + 250;
-        int gapYmainMenu = 160;
+        int buttonCenterXmainMenu = (screenWidth / 2) - 314*scale/3;
+        int startYmainMenu = screenHeight / 4;
+        int gapYmainMenu = 200*scale/3;
 
-        startBtn = new Button("/menu/main/buttons/newGame", buttonCenterXmainMenu, startYmainMenu);
-        creditsBtn = new Button("/menu/main/buttons/credits", buttonCenterXmainMenu, startYmainMenu + gapYmainMenu);
-        exitBtn = new Button("/menu/main/buttons/exit", buttonCenterXmainMenu, startYmainMenu + 2 * gapYmainMenu);
+        startBtn = new Button("/menu/main/buttons/newGame", buttonCenterXmainMenu, startYmainMenu, scale);
+        creditsBtn = new Button("/menu/main/buttons/credits", buttonCenterXmainMenu, startYmainMenu + gapYmainMenu, scale);
+        exitBtn = new Button("/menu/main/buttons/exit", buttonCenterXmainMenu, startYmainMenu + 2 * gapYmainMenu, scale);
     }
 
     private BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) {

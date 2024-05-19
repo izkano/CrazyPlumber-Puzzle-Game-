@@ -19,25 +19,25 @@ import model.*;
  */
 public class GamePanel extends JPanel implements Runnable {
 	
-	// SIZES
+    // SIZES
 	final int originalTileSize = 32;
-	final int scale = 3;
+	final int scale;
 	
-	public final int tileSize = originalTileSize * scale;
+	public final int tileSize;
 	public final int maxScreenCol = 10;
 	public final int maxScreenRow = 10;
-	final int screenWidth = tileSize * maxScreenCol;
-	final int screenHeight = tileSize * maxScreenRow; 
-	public final int mapOffset = tileSize*2;
+	final int screenWidth;
+	final int screenHeight; 
+	public final int mapOffset;
 
 
 	// SYSTEM
 	public Map map;
 	public State gameState;
     public final Play play = new Play(this);
-	public UserInterface ui = new UserInterface(this);
-    private final MouseHandler mouseHandler = new MouseHandler(this);
-    private final KeyHandler keyHandler = new KeyHandler(this);
+	public UserInterface ui;
+    private final MouseHandler mouseHandler;
+    private final KeyHandler keyHandler;
     private final Thread gameThread = new Thread(this);
     public static boolean sound = true;
 
@@ -46,8 +46,21 @@ public class GamePanel extends JPanel implements Runnable {
 
     private BufferedImage playingBackground;
     
+    
 
-    public GamePanel() {
+    public GamePanel(int scale) {
+        
+        this.scale = scale;
+        tileSize = originalTileSize * scale;
+        screenWidth = tileSize * maxScreenCol;
+        screenHeight = tileSize * maxScreenRow;
+        mapOffset = tileSize;
+
+        ui = new UserInterface(this);
+        mouseHandler = new MouseHandler(this);
+        keyHandler = new KeyHandler(this);
+
+
         this.setPreferredSize(new Dimension(tileSize*maxScreenCol,tileSize*maxScreenRow));
         this.setBackground(Color.decode("#6735"));
 		this.setDoubleBuffered(true);
@@ -128,7 +141,7 @@ public class GamePanel extends JPanel implements Runnable {
      * Méthode appelé tous les tours de boucles, met à jour la partie méchanique du jeu
      */
 	public void update() {
-	    if (gameState == State.PLAYING) {
+	    if (gameState == State.PLAYING || gameState == State.BUILDING) {
 	    	play.play();
 	    }
 	}
@@ -150,5 +163,9 @@ public class GamePanel extends JPanel implements Runnable {
         else {
             ui.draw(g2);
         }
+    }
+
+    public int getScale() {
+        return scale;
     }
 }

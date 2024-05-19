@@ -71,7 +71,7 @@ public class Play {
 				soundManager.stopBackgroundMusic();
 				soundManager.playLevelMusic();
 				break;
-			case BUILDER:
+			case TESTING:
 				builder();
 				soundManager.stopBackgroundMusic();
 				soundManager.playLevelMusic();
@@ -92,6 +92,8 @@ public class Play {
                 lastPlayerMoves = gp.map.getPlayerMoves();
 				gp.ui.transitionOverlay.setMoves(lastMinimumMoves, lastPlayerMoves);
 	        	gp.repaint();
+				if(this.gameMode.getValue()==0) gp.map.sauvgarde("res/sauvgarde/sauvgarde.txt","classique",lvl);
+				if(this.gameMode.getValue()==1) gp.map.sauvgarde("res/sauvgarde/sauvgarde.txt","random",lvl);
 	            unlockNextLvl(lvl);
 	            try {
 					Thread.sleep(300);
@@ -121,6 +123,7 @@ public class Play {
 	        if (gp.map.won) {
 					soundManager.stopTimerMusic();
 					gp.repaint();
+					gp.map.sauvgarde("res/sauvgarde/sauvgarde.txt","timer",lvl);
 	                unlockNextLvl(lvl);
 	                soundManager.playWinSound();
 	                try {
@@ -167,7 +170,6 @@ public class Play {
 	
 	
 	private void builder() {
-	
 	}
 	
 	private void online() {
@@ -182,7 +184,7 @@ public class Play {
 		this.lvl = level;
 
 		try {
-			gp.map = new Map(gameMode,level,soundManager,gp.getWidth(),gp.getHeight());
+			gp.map = new Map(gameMode,level,soundManager,gp.getWidth(),gp.getHeight(), gp.getScale());
 		} catch (MapException e) {
 			System.out.println(e.getMessage());
 		}
@@ -197,16 +199,46 @@ public class Play {
 		updateSelectOverlay();
 	}
 
-
+	/**
+	 * mettre à jour les niveaux debloquables 
+	 * à partir du fichier sauvgarde.txt
+	 */
 	public boolean[][] createUnlock(){
 		boolean[][] unlock = new boolean[4][];
-		for (int i = 0 ; i<4 ; i++){
-			unlock[i] = new boolean[amountLevel[i]];
-			for (int j = 1; j<amountLevel[i];j++){
-				unlock[i][j] = false;
-			}
-			unlock[i][0] = true;
-		}
+		 try (BufferedReader reader = new BufferedReader(new FileReader("res/sauvgarde/sauvgarde.txt"))) {
+	            String line;
+	            String gamemode1="classique";
+	            String gamemode2="random";
+	            String gamemode3="timer";
+	            String gamemode4="limited";
+	            for (int i =0 ; i<4 ; i++){
+	            	String gamemode;
+	            	if(i==0 )gamemode=gamemode1;
+	            	else if (i==1)gamemode=gamemode2;
+	            	else if (i==2)gamemode=gamemode3;
+	            	else  gamemode=gamemode4;
+	            	boolean foundGamemode = false;
+	            while( (line=reader.readLine())!=null) {
+	   			 if (line.equals(gamemode)) {
+	   				foundGamemode = true;
+	                    continue;
+	                }
+	   			if(foundGamemode) {
+	   				unlock[i] = new boolean[amountLevel[i]];
+	   				String[] values = line.split("");
+	   				for (int j = 0; j<amountLevel[i];j++){
+	   					unlock[i][j] =values[j].equals("1");
+	   					System.out.print(unlock[i][j]+" ");
+	   				}
+	   				System.out.println();
+	   				System.out.println(i);
+	   			}
+	   			break;
+	            }
+	            }
+		 } catch (IOException e) {
+	            e.printStackTrace();
+	     }
 		return unlock;
 	}
 

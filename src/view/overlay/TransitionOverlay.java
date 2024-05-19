@@ -22,8 +22,7 @@ public class TransitionOverlay extends Overlay {
     private int minimumMoves;
     private int playerMoves;
 
-
-    public TransitionOverlay(int screenWidth, int screenHeight) {
+    public TransitionOverlay(int screenWidth, int screenHeight, int scale) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         
@@ -54,9 +53,9 @@ public class TransitionOverlay extends Overlay {
             e.printStackTrace();
         }
 
-        int buttonCenterXtransition = (screenWidth / 2) - 246;
+        int buttonCenterXtransition = (screenWidth / 2) - 246*scale/3;
         int startYtransition = screenHeight / 2;
-        int gapYtransition = 100;
+        int gapYtransition = 100*scale/3;
 
         // initialisation avec les images pour la transition
         this.nextLevelBtn = new view.Button("/menu/transition/buttons/nextLevel", buttonCenterXtransition, startYtransition);
@@ -95,14 +94,14 @@ public class TransitionOverlay extends Overlay {
             BufferedImage starImage = ImageIO.read(getClass().getResourceAsStream("/menu/transition/starsss.png"));
             BufferedImage emptyStarImage = ImageIO.read(getClass().getResourceAsStream("/menu/transition/emptyStar.png"));
 
-            starImage = resizeImage(starImage, 150, 150);
-            emptyStarImage = resizeImage(emptyStarImage, 150, 150);
+            starImage = resizeImage(starImage, 150*scale/3, 150*scale/3);
+            emptyStarImage = resizeImage(emptyStarImage, 150*scale/3, 150*scale/3);
 
             int starWidth = starImage.getWidth();
             int starHeight = starImage.getHeight();
 
             int startX = (screenWidth - (totalStars * starWidth)) / 2;
-            int startY = (screenHeight - starHeight) / 2 - 230;
+            int startY = (screenHeight - starHeight) / 2 - 230*scale/3;
 
             for (int i = 0; i < numStarsGained; i++) {
                 g2.drawImage(starImage, startX + i * starWidth, startY, null);
@@ -157,18 +156,18 @@ public class TransitionOverlay extends Overlay {
                 break;
         }
 
-        Font font = new Font("Retro Gaming", Font.BOLD, 23);
+        Font font = new Font("Retro Gaming", Font.BOLD, 23*scale/3);
         g2.setFont(font);
         g2.setColor(Color.BLACK);
 
         FontMetrics metrics = g2.getFontMetrics(font);
         int messageWidth = metrics.stringWidth(message1);
         int messageX = (screenWidth - messageWidth) / 2;
-        int messageY = screenHeight / 2 - 100;
-        int message2Width = metrics.stringWidth(message2);
+        int messageY = screenHeight / 2 - 100*scale/3*scale/3;
+        int message2Width = metrics.stringWidth(message2)*scale/3;
         int message2X = (screenWidth - message2Width) / 2;
         g2.drawString(message1, messageX, messageY);
-        g2.drawString(message2, message2X, messageY+50);
+        g2.drawString(message2, message2X-50*scale/3, messageY+50*scale/3);
     }
     public void setMoves(int minimumMoves, int playerMoves) {
         this.minimumMoves = minimumMoves;
@@ -176,8 +175,9 @@ public class TransitionOverlay extends Overlay {
     }
 
 
-    public void draw(Graphics2D g2, int currentLevel) {
-        g2.drawImage(victoryWindow, screenWidth / 2 - 261, screenHeight / 2 - 400, null);
+    public void draw(Graphics2D g2) {
+        g2.drawImage(victoryWindow, screenWidth/2 - 261*scale/3, screenHeight/2-400*scale/3,victoryWindow.getWidth()*scale/3,
+        victoryWindow.getHeight()*scale/3, null);
 
         int stars = calculateStars();
         drawStars(g2, stars, 3);

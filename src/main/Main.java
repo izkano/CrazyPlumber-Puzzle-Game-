@@ -5,40 +5,20 @@ import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
+import javax.swing.*;
 import view.GamePanel;
 
 /**
- * Point d'entrée du programme
+ * Main class of the game
  */
 public class Main {
-
     public static void main(String[] args) {
-        JFrame frame = new JFrame();
-        GamePanel gamePanel = new GamePanel();
 
-        try {
-            BufferedImage image = ImageIO.read(Main.class.getResourceAsStream("/images/plumber.png"));
-            frame.setIconImage(image);
-            frame.setTitle("CRAZY PLUMBER ED3A");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        frame.setLocationRelativeTo(null);
-        
-        frame.setResizable(false);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        frame.add(gamePanel);
-        
-        frame.pack();
-        frame.setVisible(true);
-        
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation(dim.width/2 - frame.getWidth()/2, dim.height/2 - frame.getHeight()/2);
-        
-        gamePanel.startGameThread();
+        JFrame frame1 = new JFrame();
+        Size size = new Size(frame1);
+        frame1.add(size);
+        frame1.pack();
+        frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame1.setVisible(true);
     }
-
 }
