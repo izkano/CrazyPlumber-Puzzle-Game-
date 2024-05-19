@@ -200,7 +200,10 @@ public class Play {
 		updateSelectOverlay();
 	}
 
-
+	/**
+	 * mettre à jour les niveaux debloquables 
+	 * à partir du fichier sauvgarde.txt
+	 */
 	public boolean[][] createUnlock(){
 		boolean[][] unlock = new boolean[4][];
 		 try (BufferedReader reader = new BufferedReader(new FileReader("res/sauvgarde/sauvgarde.txt"))) {

@@ -323,6 +323,13 @@ public class Map {
                 if (cell != null)
                     cell.reset();
 	}
+	/**
+	 * Permet de sauvgarder les niveaux débloquables aprés les avoir réussi
+	 * on modifiant le contenu du fichier sauvgarde.txt.
+	 * @param fileName : le chemain d'accés vers le fichier sauvgarde.txt.
+	 * @param gamemode : le mode de jeux.
+	 * @param positionToChange : la postion du changement.
+	 */
 	public void sauvgarde(String fileName, String gamemode, int positionToChange) {
 	    try (RandomAccessFile file = new RandomAccessFile(fileName, "rw")) {
 	        String line;
@@ -333,14 +340,11 @@ public class Map {
 	            	 currentPosition += positionToChange;
 	                 file.seek(currentPosition);
 	                char c = (char) file.read(); 
-	                System.out.println("!!!!!!!!!!!!!!!!!!!!!!!"+c);
 	                if (c == '0') {
 	                	file.seek(currentPosition);
 	                    file.write('1');
-	                    System.out.println("Le fichier a été modifié avec succès : '0' à la position " +   positionToChange + " modifié en '1'.");
 	                    return; 
 	                } else {
-	                    System.out.println("Aucun changement effectué : La position " + positionToChange   + " contient déjà un '1'.");
 	                    return; 
 	                }
 	            } else {
@@ -350,7 +354,6 @@ public class Map {
 	                }
 	            }
 	        }
-	        System.out.println("Le fichier n'a pas été modifié : le mode de jeu recherché '" + gamemode +  "' n'a pas été trouvé.");
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
