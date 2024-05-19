@@ -1,5 +1,7 @@
 package model;
 
+import view.Button;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -8,7 +10,9 @@ import exception.MapException;
 
 import javax.imageio.ImageIO;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,9 +25,14 @@ public class Map {
 
 	private Cell[][] start;
 	private final ArrayList<int[]> first;
+	private final Button[] test = new Button[6];
+	private Cell place;
+	private int delete = -1;
+
 
 	private int Time_start=0;
 	private int Time_level;
+	private GameMode gamemode;
 
 	public boolean won;
 
@@ -36,22 +45,24 @@ public class Map {
 	private int gridY;
 	private int newWidth;
 	private int newHeight;
-
+	private int scale;
 
 	/**
 	 * Permet de stocker les informations sur la partie en cours
 	 * @param level : niveau représenter par un entier
 	 * @throws MapException : si le fichier texte ne se charge pas
 	 */
-	public Map(GameMode gameMode, int level, SoundManager soundManager, int screenWidth, int screenHeight) throws MapException {
+	public Map(GameMode gameMode, int level, SoundManager soundManager, int screenWidth, int screenHeight, int scale) throws MapException {
 		this.level = level;
 		this.soundManager = soundManager;
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
+		this.gamemode = gameMode;
+		this.scale = scale;
 
 		this.first = new ArrayList<>();
 
-		if (gameMode != GameMode.RANDOM) {
+		if (gameMode != GameMode.RANDOM && gameMode != GameMode.BUILDER) {
 			String modePath = switch (gameMode) {
 				case CLASSIC, TIMER -> "classic/";
 				case LIMITED -> "limited/";
@@ -67,18 +78,119 @@ public class Map {
 			} catch (IOException e) {
 				throw new MapException("Unable to load map : " + e.getMessage());
 			}
-		} else {
+		} else if (gameMode == GameMode.RANDOM){
 			generateRandom();
+		}
+		else if (gameMode == GameMode.BUILDER){
+			createEmpty();
 		}
 
 		loadAssets();
-
+		loadTest();
 		parcoursProfondeurRec();
 		resetCells();
 
 		Time_level = 14 + level;
 	}
 
+	public void placePipe(int x, int y, int tileSize){
+		if (place==null) {
+			return;
+		}
+		if (gamemode == GameMode.BUILDER) {
+			int row = x / tileSize;
+			int col = y / tileSize;
+			if (row >= 0 && row < start.length && col >= 0 && col < start[0].length && start[row][col] != null) {
+				start[col][row] = place;
+				place = null;
+			}
+		}
+	}
+
+	public void choseDeletePipe(int x, int y, int tileSize){
+		int row = x / tileSize;
+		int col = y / tileSize;
+		if (row >= 0 && row < start.length && col >= 0 && col < start[0].length && start[col][row] != null && place==null) {
+			if (start[col][row].getPipeType()!= 4) {
+				delete = row+col*6;
+			}
+		}
+	}
+	public void setPlacePipe(int i){
+		switch(i){
+			case 0:
+				place = new Cell(1,0,false);
+				break;
+			case 1:
+				place = new Cell(2,0,false);
+				break;
+			case 2:
+				place = new Cell(2,0,true);
+				break;
+			case 3:
+				place = new Cell(3,0,false);
+				break;
+		}
+	}
+	public void deletePipe(){
+		if (delete==-1) {
+			return;}
+		if (gamemode == GameMode.BUILDER) {
+			start[delete/6][delete%6] = new Cell(4,0,false);
+			delete = -1;
+		}
+	}
+
+	public Button getBuildButton(int i){
+		return test[i];
+	}
+
+	public void testBuild(){
+		if (gamemode == GameMode.BUILDER) {
+			for (int i = 0; i<start.length; i++) {
+				for (int j = 0; j<start[0].length; j++) {
+					if (start[i][j].getPipeType() == 4) {
+						start[i][j] = new Cell(0,0,false);
+					}
+				}
+			}
+		}
+	}
+
+	public void loadTest() {
+		test[0] = new Button("/menu/build/building/start",240*scale/3,800*scale/3,9*scale/3);
+		test[1] = new Button("/menu/build/building/horizontal",384*scale/3,800*scale/3,9*scale/3);
+		test[2] = new Button("/menu/build/building/curve",528*scale/3,800*scale/3,9*scale/3);
+		test[3] = new Button("/menu/build/building/cross",672*scale/3,800*scale/3,9*scale/3);
+		test[4] = new Button("/menu/build/building/save",850*scale/3,250*scale/3,3*scale/3);
+		test[5] = new Button("/menu/build/building/delete",850*scale/3,370*scale/3,3*scale/3);
+	}
+
+public void saveLevel() {
+    String modePath = "builder";
+    String filePath = "res/level/" + modePath + level + ".txt";
+
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 6; j++) {
+                if (start[i][j] == null) {
+                    writer.write("0 ");
+                } else {
+                    writer.write(String.valueOf(start[i][j].getPipeType()));
+                    if (start[i][j].isCurve()) {
+                        writer.write("+ ");
+                    } else {
+                        writer.write(" ");
+                    }
+                }
+            }
+            writer.newLine();
+        }
+    } catch (IOException e) {
+        e.printStackTrace(); 
+    }
+}
+	
 
 	public int getHeight() {
 		return start.length;
@@ -113,7 +225,7 @@ public class Map {
 	}
 
 	public boolean level_Fail() {
-		return this.getTime_now()-this.getTime_start()>=getTime_level();
+		return (this.getTime_now()-this.getTime_start()>=getTime_level());
 	}
 
 	public int getRemainnig_time() {
@@ -128,10 +240,10 @@ public class Map {
 			e.printStackTrace();
 		}
 
-		gridX = (screenWidth - gridBackground.getWidth()) / 2 - 65;
-		gridY = (screenHeight - gridBackground.getHeight()) / 2 - 50;
-		newWidth = screenWidth - 300;
-		newHeight = screenHeight - 300;
+		gridX = (screenWidth - gridBackground.getWidth()*scale/3) / 2 - 65*scale/3;
+		gridY = (screenHeight - gridBackground.getHeight()*scale/3) / 2 - 50*scale/3;
+		newWidth = screenWidth - 300*scale/3;
+		newHeight = screenHeight - 300*scale/3;
 	}
 	
 	
@@ -188,6 +300,7 @@ public class Map {
 	 * @param tileSize : taille d'une cellule
 	 */
 	public void rotatePipe(int mouseX, int mouseY, int tileSize) {
+		if (gamemode == GameMode.BUILDER) return;
         int row = mouseY / tileSize;
         int col = mouseX / tileSize;
 
@@ -198,7 +311,7 @@ public class Map {
 			if (b)
 				won = true;
 			resetCells();
-        }
+		}
     }
 	
 	
@@ -277,6 +390,17 @@ public class Map {
                     cell.reset();
 	}
 
+
+	public void createEmpty() {
+		Cell[][] map = new Cell[6][6];
+		for (int i = 0 ; i < 6 ; i++) {
+			for (int j = 0 ; j < 6 ; j++) {
+				map[i][j] = new Cell(4,0,false);
+			}
+		}
+		this.start = map;
+		resetCells();
+	}
 
 	public void generateRandom() {
 		Cell[][] maze = new Cell[6][6];
@@ -365,16 +489,32 @@ public class Map {
 
 
 	public void draw(Graphics2D g2,int tileSize, int mapOffset)  {
-
-		g2.drawImage(gridBackground, gridX, gridY,newWidth, newHeight,  null);
+		g2.drawImage(gridBackground, gridX, gridY,newWidth, newHeight-40*scale/3,  null);
 
 		for (int i = 0 ; i < getHeight() ; i++)
 			for (int j = 0 ; j < getWidth() ; j++)
 				if (start[i][j] != null)
-					start[i][j].draw(g2, j*tileSize+mapOffset, i*tileSize+mapOffset, tileSize);
+					start[i][j].draw(g2, (j+1)*tileSize+mapOffset, (i+1)*tileSize+mapOffset, tileSize);
 
 		g2.setColor(Color.BLACK);
-		g2.setFont(new Font("Retro Gaming", Font.PLAIN, 45));
-		g2.drawString("Niveau " + level, 345, 50);
+		g2.setFont(new Font("Retro Gaming", Font.PLAIN, 45*scale/3));
+		g2.drawString("Niveau " + level, 370*scale/3, 50*scale/3);
+		if (gamemode == GameMode.BUILDER) {
+			drawBuild(g2, tileSize);
+		}
+	}
+
+	public void drawBuild(Graphics2D g2, int tileSize) {
+		for (int i = 0; i<6; i++) {
+			test[i].draw(g2);
+		}
+	}
+
+	public void setGameMode(GameMode gameMode) {
+		this.gamemode = gameMode;
+	}
+
+	public GameMode getGameMode() {
+		return gamemode;
 	}
 }

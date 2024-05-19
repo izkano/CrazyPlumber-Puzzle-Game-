@@ -17,11 +17,12 @@ public class ModeOverlay extends Overlay {
 
     int screenWidth;
     int screenHeight;
+    int scale;
 
-
-    public ModeOverlay(int screenWidth, int screenHeight) {
+    public ModeOverlay(int screenWidth, int screenHeight, int scale) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
+        this.scale = scale;
         loadAssets();
     }
 
@@ -52,17 +53,17 @@ public class ModeOverlay extends Overlay {
 
 
     public void loadAssets() {
-        int startYGamemode = screenHeight / 18;
-        int buttonCenterXGamemode = (screenWidth / 2) - 275;
-        int gapYGamemode = 150;
+        int startYGamemode = screenHeight / 8;
+        int buttonCenterXGamemode = (screenWidth / 2) - 275*scale/3;
+        int gapYGamemode = 150*scale/3;
 
-        classicButton = new Button("/menu/gamemode/buttons/classic_", buttonCenterXGamemode, startYGamemode);
-        randomButton = new Button("/menu/gamemode/buttons/random_",buttonCenterXGamemode, startYGamemode+gapYGamemode);
-        timerButton = new Button("/menu/gamemode/buttons/timer_", buttonCenterXGamemode, startYGamemode+2*gapYGamemode);
-        limitedButton = new Button("/menu/gamemode/buttons/limited_", buttonCenterXGamemode, startYGamemode+3*gapYGamemode);
-        builderButton = new Button("/menu/gamemode/buttons/builder_", buttonCenterXGamemode, startYGamemode+4*gapYGamemode);
-        onlineButton = new Button("/menu/gamemode/buttons/online_", buttonCenterXGamemode, startYGamemode+5*gapYGamemode);
-        backBtn = new Button("/menu/previous", 15,15);
+        classicButton = new Button("/menu/gamemode/buttons/classic_", buttonCenterXGamemode, startYGamemode, scale);
+        randomButton = new Button("/menu/gamemode/buttons/random_",buttonCenterXGamemode, startYGamemode+gapYGamemode, scale);
+        timerButton = new Button("/menu/gamemode/buttons/timer_", buttonCenterXGamemode, startYGamemode+2*gapYGamemode, scale);
+        limitedButton = new Button("/menu/gamemode/buttons/limited_", buttonCenterXGamemode, startYGamemode+3*gapYGamemode, scale);
+        builderButton = new Button("/menu/gamemode/buttons/builder_", buttonCenterXGamemode, startYGamemode+4*gapYGamemode, scale);
+        onlineButton = new Button("/menu/gamemode/buttons/online_", buttonCenterXGamemode, startYGamemode+5*gapYGamemode, scale);
+        backBtn = new Button("/menu/previous", 15,15, scale);
     }
 
 

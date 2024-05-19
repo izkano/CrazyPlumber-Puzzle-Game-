@@ -12,7 +12,6 @@ import javax.imageio.ImageIO;
  * Classe qui permet de représenter des boutons, notamment les boutons des menus
  */
 public class Button {
-
 	private BufferedImage[] src;
 	private BufferedImage current;
 	
@@ -20,53 +19,23 @@ public class Button {
 	private int y;
 	private int height;
 	private int width;
-	
+	private int scale;
+
 	private Rectangle bounds;
 	
 	
-	public Button(String path, int x, int y) {
+	public Button(String path, int x, int y, int scale) {
 		loadImage(path);
 		
 		this.current = src[0];
 		
 		this.x = x;
 		this.y = y;
-		this.height = src[0].getHeight();
-		this.width = src[0].getWidth();
-		
+		this.height = src[0].getHeight()*scale/3;
+		this.width = src[0].getWidth()*scale/3;
+		this.scale = scale;
+
 		createBounds();
-	}
-
-
-	public int getX() {
-		return this.x;
-	}
-
-	public int getY() {
-		return this.y;
-	}
-
-	public int getHeight() {
-		return this.height;
-	}
-
-	public int getWidth() {
-		return this.width;
-	}
-
-	public Rectangle getBounds() {
-		return this.bounds;
-	}
-
-	public BufferedImage getImage() {
-		return this.current;
-	}
-
-	public void setMouseOver(boolean b) {
-		if (b)
-			this.current = src[1];
-		else
-			this.current = src[0];
 	}
 	
 	
@@ -92,9 +61,39 @@ public class Button {
 	private void createBounds() {
 		this.bounds = new Rectangle(x,y,width,height);
 	}
-
+	
+	public BufferedImage getImage() {
+		return this.current;
+	}
+	
+	public void setMouseOver(boolean b) {
+		if (b) 
+			this.current = src[1];
+		else
+			this.current = src[0];
+	}
+	
+	public int getX() {
+		return this.x;
+	}
+	
+	public int getY() {
+		return this.y;
+	}
+	
+	public int getHeight() {
+		return this.height;
+	}
+	
+	public int getWidth() {
+		return this.width;
+	}
+	
+	public Rectangle getBounds() {
+		return this.bounds;
+	}
 	
 	public void draw(Graphics2D g2) {
-		g2.drawImage(current,x,y,null);
+		g2.drawImage(current,x,y,width,height,null);
 	}
 }

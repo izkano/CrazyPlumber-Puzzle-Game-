@@ -18,11 +18,12 @@ public class SettingsOverlay extends Overlay {
 
     int screenWidth;
     int screenHeight;
+    int scale;
 
-
-    public SettingsOverlay(int screenWidth, int screenHeight) {
+    public SettingsOverlay(int screenWidth, int screenHeight, int scale) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
+        this.scale = scale;
         loadAssets();
     }
 
@@ -45,9 +46,9 @@ public class SettingsOverlay extends Overlay {
             e.printStackTrace();
         }
 
-        backBtn = new Button("/menu/previous", 15,15);
-        musicButton= new Button("/menu/setting/sound", (screenWidth/2)-120, (screenHeight/2)-92);
-        sfxButton= new Button("/menu/setting/sound", (screenWidth/2)+50, (screenHeight/2)-92);
+        backBtn = new Button("/menu/previous", 15,15, scale);
+        musicButton= new Button("/menu/setting/sound", (screenWidth/2)-120, (screenHeight/2)-92, scale);
+        sfxButton= new Button("/menu/setting/sound", (screenWidth/2)+50, (screenHeight/2)-92, scale);
     }
 
 

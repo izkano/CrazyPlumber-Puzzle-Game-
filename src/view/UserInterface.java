@@ -18,19 +18,22 @@ public class UserInterface {
 	public ModeOverlay modeOverlay;
 	public LoseOverlay loseOverlay;
 	public SettingsOverlay settingsOverlay;
-
+	public BuildOverlay buildOverlay;
+	public int scale;
 	private static SoundManager soundManager = SoundManager.getInstance();
 
 
 	public UserInterface(GamePanel gp) {
 		this.gp = gp;
-		this.pauseOverlay = new PauseOverlay();
-		this.mainOverlay = new MainOverlay(gp.screenWidth, gp.screenHeight);
-		this.transitionOverlay = new TransitionOverlay(gp.screenWidth, gp.screenHeight);
-		this.modeOverlay = new ModeOverlay(gp.screenWidth, gp.screenHeight);
-		this.selectOverlay = new SelectOverlay(gp.screenWidth, gp.screenHeight,gp.play.getAmountLevel(),gp.play.getUnlocked(),gp.play.getGameMode());
-		this.loseOverlay = new LoseOverlay(gp.screenWidth, gp.screenHeight);
-		this.settingsOverlay = new SettingsOverlay(gp.screenWidth, gp.screenHeight);
+		this.scale = gp.scale;
+		this.pauseOverlay = new PauseOverlay(scale);
+		this.mainOverlay = new MainOverlay(gp.screenWidth, gp.screenHeight, scale);
+		this.transitionOverlay = new TransitionOverlay(gp.screenWidth, gp.screenHeight, scale);
+		this.modeOverlay = new ModeOverlay(gp.screenWidth, gp.screenHeight, scale);
+		this.selectOverlay = new SelectOverlay(gp.screenWidth, gp.screenHeight,gp.play.getAmountLevel(),gp.play.getUnlocked(), scale);
+		this.loseOverlay = new LoseOverlay(gp.screenWidth, gp.screenHeight, scale);
+		this.settingsOverlay = new SettingsOverlay(gp.screenWidth, gp.screenHeight, scale);
+		this.buildOverlay = new BuildOverlay(gp.screenWidth, gp.screenHeight, scale);
 	}
 	
 	
@@ -67,6 +70,9 @@ public class UserInterface {
 
 		else if (gp.gameState == State.SETTINGS) {
 			settingsOverlay.draw(g2);
+		}
+		else if (gp.gameState == State.BUILDSELECT) {
+			buildOverlay.draw(g2);
 		}
 	}
 }
