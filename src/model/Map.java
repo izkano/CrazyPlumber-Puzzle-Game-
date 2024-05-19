@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.RandomAccessFile;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,6 +22,8 @@ import java.util.Random;
 public class Map {
 
 	private int level;
+	private int minimumMoves;
+	private int playerMoves;
 
 	private Cell[][] start;
 	private final ArrayList<int[]> first;
@@ -54,6 +56,8 @@ public class Map {
 	 */
 	public Map(GameMode gameMode, int level, SoundManager soundManager, int screenWidth, int screenHeight, int scale) throws MapException {
 		this.level = level;
+		this.minimumMoves = calculateMinimumMoves(level);
+		this.playerMoves = 0;
 		this.soundManager = soundManager;
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
@@ -308,8 +312,11 @@ public void saveLevel() {
 		if (gamemode == GameMode.BUILDER) return;
         int row = mouseY / tileSize;
         int col = mouseX / tileSize;
+		
 
         if (row >= 0 && row < start.length && col >= 0 && col < start[0].length && start[row][col] != null) {
+			playerMoves++;
+
         	start[row][col].rotate(soundManager);
 
 			boolean b = parcoursProfondeurRec();
@@ -393,6 +400,41 @@ public void saveLevel() {
             for (Cell cell : c_row)
                 if (cell != null)
                     cell.reset();
+	}
+	/**
+	 * Permet de sauvgarder les niveaux débloquables aprés les avoir réussi
+	 * on modifiant le contenu du fichier sauvgarde.txt.
+	 * @param fileName : le chemain d'accés vers le fichier sauvgarde.txt.
+	 * @param gamemode : le mode de jeux.
+	 * @param positionToChange : la postion du changement.
+	 */
+	public void sauvgarde(String fileName, String gamemode, int positionToChange) {
+	    try (RandomAccessFile file = new RandomAccessFile(fileName, "rw")) {
+	        String line;
+	        boolean foundGamemode = false;
+	        long currentPosition = file.getFilePointer();
+	        while ((line = file.readLine()) != null) {
+	            if (foundGamemode) {
+	            	 currentPosition += positionToChange;
+	                 file.seek(currentPosition);
+	                char c = (char) file.read(); 
+	                if (c == '0') {
+	                	file.seek(currentPosition);
+	                    file.write('1');
+	                    return; 
+	                } else {
+	                    return; 
+	                }
+	            } else {
+	                if (line.equals(gamemode)) {
+	                    foundGamemode = true;
+	                    currentPosition = file.getFilePointer();
+	                }
+	            }
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 	}
 
 

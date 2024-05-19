@@ -1,6 +1,7 @@
 package view.overlay;
 
 import view.Button;
+import model.Map;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -17,12 +18,13 @@ public class TransitionOverlay extends Overlay {
 
     private int screenWidth;
     private int screenHeight;
-    private int scale;
+    private int minimumMoves;
+    private int playerMoves;
 
     public TransitionOverlay(int screenWidth, int screenHeight, int scale) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
-        this.scale = scale;
+        
         loadAssets();
     }
 
@@ -66,12 +68,11 @@ public class TransitionOverlay extends Overlay {
 
 
     private int calculateStars() {
-        int movesMade = 5;
-        int minMoves = 4;
+        
 
-        if (movesMade <= minMoves) {
+        if (minimumMoves >= playerMoves) {
             return 3;
-        } else if (movesMade < minMoves * 2) {
+        } else if (minimumMoves * 2 > playerMoves ) {
             return 2;
         } else {
             return 1;
@@ -158,6 +159,10 @@ public class TransitionOverlay extends Overlay {
         int message2X = (screenWidth - message2Width) / 2;
         g2.drawString(message1, messageX, messageY);
         g2.drawString(message2, message2X-50*scale/3, messageY+50*scale/3);
+    }
+    public void setMoves(int minimumMoves, int playerMoves) {
+        this.minimumMoves = minimumMoves;
+        this.playerMoves = playerMoves;
     }
 
 

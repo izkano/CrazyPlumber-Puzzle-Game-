@@ -17,6 +17,9 @@ public class Play {
 
 	private final int[] amountLevel = countLevel();
 	private final boolean[][] unlocked;
+
+	private int lastMinimumMoves;
+    private int lastPlayerMoves;
 	
 	
 	public Play(GamePanel gp) {
@@ -85,7 +88,12 @@ public class Play {
 	private void classic() {
 		if (gp.map != null) {
 	        if (gp.map.won) {
+				lastMinimumMoves = gp.map.getMinimumMoves();
+                lastPlayerMoves = gp.map.getPlayerMoves();
+				gp.ui.transitionOverlay.setMoves(lastMinimumMoves, lastPlayerMoves);
 	        	gp.repaint();
+				if(this.gameMode.getValue()==0) gp.map.sauvgarde("res/sauvgarde/sauvgarde.txt","classique",lvl);
+				if(this.gameMode.getValue()==1) gp.map.sauvgarde("res/sauvgarde/sauvgarde.txt","random",lvl);
 	            unlockNextLvl(lvl);
 	            try {
 					Thread.sleep(300);
@@ -115,6 +123,7 @@ public class Play {
 	        if (gp.map.won) {
 					soundManager.stopTimerMusic();
 					gp.repaint();
+					gp.map.sauvgarde("res/sauvgarde/sauvgarde.txt","timer",lvl);
 	                unlockNextLvl(lvl);
 	                soundManager.playWinSound();
 	                try {
@@ -131,8 +140,33 @@ public class Play {
 	
 	
 	private void limited() {
-		gp.repaint();
+		if (gp.map != null) {
+			lastMinimumMoves = gp.map.getMinimumMoves();
+			lastPlayerMoves = gp.map.getPlayerMoves();
+			gp.ui.transitionOverlay.setMoves(lastMinimumMoves, lastPlayerMoves);
+	        if (gp.map.won) {
+					
+					gp.repaint();
+	                unlockNextLvl(lvl);
+	                soundManager.playWinSound();
+	                try {
+                       Thread.sleep(300);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+	                gp.gameState = State.TRANSITION;
+	        }
+			else{
+				if (lastPlayerMoves>lastMinimumMoves) {
+					soundManager.playLostBoom();
+					gp.gameState=State.GAMEOVER;
+				}
+			}
+			gp.map.resetCells();
+	    }
 	}
+	
+	
 	
 	
 	private void builder() {
@@ -165,50 +199,85 @@ public class Play {
 		updateSelectOverlay();
 	}
 
-
+	/**
+	 * mettre à jour les niveaux debloquables 
+	 * à partir du fichier sauvgarde.txt
+	 */
 	public boolean[][] createUnlock(){
-		boolean[][] unlock = new boolean[3][];
-		for (int i = 0 ; i<3 ; i++){
-			unlock[i] = new boolean[amountLevel[i]];
-			for (int j = 1; j<amountLevel[i];j++){
-				unlock[i][j] = false;
-			}
-			unlock[i][0] = true;
-		}
+		boolean[][] unlock = new boolean[4][];
+		 try (BufferedReader reader = new BufferedReader(new FileReader("res/sauvgarde/sauvgarde.txt"))) {
+	            String line;
+	            String gamemode1="classique";
+	            String gamemode2="random";
+	            String gamemode3="timer";
+	            String gamemode4="limited";
+	            for (int i =0 ; i<4 ; i++){
+	            	String gamemode;
+	            	if(i==0 )gamemode=gamemode1;
+	            	else if (i==1)gamemode=gamemode2;
+	            	else if (i==2)gamemode=gamemode3;
+	            	else  gamemode=gamemode4;
+	            	boolean foundGamemode = false;
+	            while( (line=reader.readLine())!=null) {
+	   			 if (line.equals(gamemode)) {
+	   				foundGamemode = true;
+	                    continue;
+	                }
+	   			if(foundGamemode) {
+	   				unlock[i] = new boolean[amountLevel[i]];
+	   				String[] values = line.split("");
+	   				for (int j = 0; j<amountLevel[i];j++){
+	   					unlock[i][j] =values[j].equals("1");
+	   					System.out.print(unlock[i][j]+" ");
+	   				}
+	   				System.out.println();
+	   				System.out.println(i);
+	   			}
+	   			break;
+	            }
+	            }
+		 } catch (IOException e) {
+	            e.printStackTrace();
+	     }
 		return unlock;
 	}
 
 
 	public int[] countLevel(){
-		int[] res = new int[4];
-		for (int j =0;j<4;j++){
-			int i = 1;
-			while (true){
-				try{
-					switch(j){
-						case 0:
-							BufferedReader reader = new BufferedReader(new FileReader("res/level/classic/" + i + ".txt"));
-							break;
-						case 1:
-							BufferedReader reader1 = new BufferedReader(new FileReader("res/level/timer/" + i + ".txt"));
-							break;
-						case 2:
-							BufferedReader reader2 = new BufferedReader(new FileReader("res/level/limited/" + i + ".txt"));
-							break;
-						case 3:
-							BufferedReader reader3 = new BufferedReader(new FileReader("res/level/builder/" + i + ".txt"));
-							break;
-					}
-				}
-				catch (IOException e){
-					break;
-				}
-				i++;
-			}
-			res[j] = i-1;
-		}
-		return res;
-	}
+        int[] res = new int[5];
+        for (int j =0;j<5;j++){
+            int i = 1;
+            if(j!=1){
+            while (true){
+                try{
+                    switch(j){
+                        case 0:
+                            BufferedReader reader = new BufferedReader(new FileReader("res/level/classic/" + i + ".txt"));
+                            break;
+                        case 1:
+                            break;
+                        case 2:
+                            BufferedReader reader1 = new BufferedReader(new FileReader("res/level/timer/" + i + ".txt"));
+                            break;
+                        case 3:
+                            BufferedReader reader2 = new BufferedReader(new FileReader("res/level/limited/" + i + ".txt"));
+                            break;
+                        case 4:
+                            BufferedReader reader3 = new BufferedReader(new FileReader("res/level/builder/" + i + ".txt"));
+                            break;
+                    }
+                }
+                catch (IOException e){
+                    break;
+                }
+                i++;
+            }
+            }
+            res[j] = i-1;
+        }
+        res[1]=12;
+        return res;
+    }
 
 
 	private void updateSelectOverlay() {
