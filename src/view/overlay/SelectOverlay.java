@@ -9,8 +9,8 @@ public class SelectOverlay extends Overlay {
 
     private Button backBtn;
 
-	private Button[][] level = new Button[3][];
-    private Button[][] locked = new Button[3][];
+	private Button[][] level = new Button[4][];
+    private Button[][] locked = new Button[4][];
 
     private GameMode gameMode;
 
@@ -50,7 +50,7 @@ public class SelectOverlay extends Overlay {
 		int gapYLevel = 125; 
         int gapXtransition = 100;
 
-        for (int k = 0; k < 3; k++) {
+        for (int k = 0; k < 4; k++) {
             int taille = amountLevel[k];
             level[k] = new Button[taille];
             locked[k] = new Button[taille];
