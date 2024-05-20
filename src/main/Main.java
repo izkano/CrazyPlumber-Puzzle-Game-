@@ -2,32 +2,28 @@ package main;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 
-import javax.swing.JFrame;
-
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import view.GamePanel;
 
 /**
- * Point d'entrée du programme
+ * Main class of the game
  */
 public class Main {
     public static void main(String[] args) {
-        JFrame frame = new JFrame();
-        GamePanel gamePanel = new GamePanel();
-        
-        frame.setLocationRelativeTo(null);
-        
-        frame.setResizable(false);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        frame.add(gamePanel);
-        
-        frame.pack();
-        frame.setVisible(true);
-        
+
+        JFrame frame1 = new JFrame();
+        Size size = new Size(frame1);
+        frame1.setLocationRelativeTo(null);
+        frame1.setResizable(false);
+        frame1.add(size);
+        frame1.pack();
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation(dim.width/2 - frame.getWidth()/2, dim.height/2 - frame.getHeight()/2);
-        
-        gamePanel.startGameThread();
+        frame1.setLocation(dim.width/2 - frame1.getWidth()/2, dim.height/2 - frame1.getHeight()/2);
+        frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame1.setVisible(true);
+
     }
 }

@@ -19,20 +19,22 @@ public class Button {
 	private int y;
 	private int height;
 	private int width;
-	
+	private int scale;
+
 	private Rectangle bounds;
 	
 	
-	public Button(String path, int x, int y) {
+	public Button(String path, int x, int y, int scale) {
 		loadImage(path);
 		
 		this.current = src[0];
 		
 		this.x = x;
 		this.y = y;
-		this.height = src[0].getHeight();
-		this.width = src[0].getWidth();
-		
+		this.height = src[0].getHeight()*scale/3;
+		this.width = src[0].getWidth()*scale/3;
+		this.scale = scale;
+
 		createBounds();
 	}
 	
@@ -92,6 +94,6 @@ public class Button {
 	}
 	
 	public void draw(Graphics2D g2) {
-		g2.drawImage(current,x,y,null);
+		g2.drawImage(current,x,y,width,height,null);
 	}
 }
